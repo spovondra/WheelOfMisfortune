@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/task_shape"
+    android:padding="14dp">
+
+    <ImageView
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:contentDescription="Ikonka úlohy"
+        android:background="@drawable/icon_shape"
+        android:src="@drawable/ic_launcher_foreground"/>
+
+    <LinearLayout
+        android:paddingLeft="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/taskTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Název úlohy"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/taskDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Popis úlohy"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="#717171"
+            android:textSize="20sp" />
+    </LinearLayout>
+</LinearLayout>
+

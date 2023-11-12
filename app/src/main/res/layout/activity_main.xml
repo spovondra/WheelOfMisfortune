@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainViewImp"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Kolo neštěstí"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:layout_marginVertical="5dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="110dp"
+                android:layout_height="48dp"
+                android:layout_gravity="right"
+                android:layout_marginVertical="5dp"
+                android:layout_marginEnd="5dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <Button
+                    android:id="@+id/buttonUp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/button_shape"
+                    android:drawableStart="@drawable/medail"
+                    android:gravity="start|center"
+                    android:text="0 bodů"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textSize="18sp" />
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/countdownTimerTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="00:00"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="36sp"
+                android:textStyle="bold" />
+
+            <com.kolecko.koleckonestestiv4.CircularProgressBar
+                android:id="@+id/circularProgressBar"
+                android:layout_width="363dp"
+                android:layout_height="363dp"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true" />
+
+            <ImageView
+                android:id="@+id/wheel_spin"
+                android:layout_width="315dp"
+                android:layout_height="315dp"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                android:src="@drawable/wheel_spin" />
+
+            <ImageView
+                android:id="@+id/wheel_static"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/wheel_static" />
+        </RelativeLayout>
+
+
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="96dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="240dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp">
+
+                <Button
+                    android:id="@+id/buttonSetTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/button_shape"
+                    android:text="Změnit čas notifikace"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textSize="18sp" />
+            </androidx.cardview.widget.CardView>
+
+
+        </FrameLayout>
+
+        <TextView
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:id="@+id/textNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="16sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/taskList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="0dp"
+            android:layout_marginVertical="14dp"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+</ScrollView>
+

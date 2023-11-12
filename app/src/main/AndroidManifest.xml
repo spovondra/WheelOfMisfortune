@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.kolecko.koleckonestestiv4">
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.KoleckoNestestiV2"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainViewImp"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.KoleckoNestestiV2">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".StatisticsActivity"
+            android:exported="true"
+            android:label="Statistics Activity"
+            android:theme="@style/Theme.KoleckoNestestiV2">
+        </activity>
+        <activity
+            android:name=".SetTimeActivity"
+            android:exported="true"
+            android:label="Set Time Activity"
+            android:theme="@style/Theme.KoleckoNestestiV2">
+        </activity>
+    </application>
+</manifest>
