@@ -30,8 +30,6 @@ interface MainView {
     fun showAllTasks()
     fun showStatistics()
     fun showTaskDialog(task: Task) //tmp
-    //fun showNotification() //hodit jinam
-    //fun createNotificationChannel(notificationManager: NotificationManager) //hodit jinam
     fun showSetTime()
     fun showBarAndTime(progress: Int, currentCountdownTime: Int)
     fun wheelAbleToTouch ()
@@ -125,8 +123,6 @@ class MainViewImp : ComponentActivity(), MainView {
         val dialog = dialogBuilder.create()
         dialog.show()
     }
-
-
 
     override fun showSetTime() {
         val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
