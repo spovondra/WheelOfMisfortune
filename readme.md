@@ -13,12 +13,12 @@
 
 ## Instalace
 
-Pokud si chcete vyzkoušet **Kolečko Neštěstí V2**, můžete aplikaci stáhnout z [tohoto odkazu](https://github.com/spovondra/KoleckoNestestiV2.git) nebo můžete využít Android Studio a zdrojový kód této aplikace. Postupujte podle následujících kroků:
+Pokud si chcete vyzkoušet **Kolečko Neštěstí V4**, můžete aplikaci stáhnout z [tohoto odkazu](https://github.com/spovondra/KoleckoNestestiV4.git) nebo můžete využít Android Studio a zdrojový kód této aplikace. Postupujte podle následujících kroků:
 
 1. Naklonujte si tento repozitář:
 
    ```bash
-   git clone https://github.com/spovondra/KoleckoNestestiV2.git
+   git clone https://github.com/spovondra/KoleckoNestestiV4.git
 Otevřete projekt v Android Studiu.
 
 Spusťte projekt na emulátoru nebo fyzickém zařízení.
