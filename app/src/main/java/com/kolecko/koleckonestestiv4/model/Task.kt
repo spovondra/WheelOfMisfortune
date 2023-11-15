@@ -1,7 +1,11 @@
 package com.kolecko.koleckonestestiv4
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class Task (
-    val id: Int,
+@Entity
+data class Task(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
     val title: String,
     val description: String,
 ) {

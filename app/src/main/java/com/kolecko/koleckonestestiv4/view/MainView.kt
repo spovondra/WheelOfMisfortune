@@ -20,8 +20,8 @@ import kotlin.random.Random
 interface MainView {
     fun showWheelSpin()
     fun showUpdatedPoints(text : String)
-    fun showNumberOfTasks ()
-    fun showAllTasks()
+    suspend fun showNumberOfTasks ()
+    suspend fun showAllTasks()
     fun showStatistics()
     fun showTaskDialog(task: Task) //tmp
     fun showSetTime()
@@ -42,14 +42,16 @@ class MainViewImp : ComponentActivity(), MainView {
         circularProgressBar = findViewById(R.id.circularProgressBar)
         countdownTimerTextView = findViewById(R.id.countdownTimerTextView)
 
-        val taskRepository: TaskModel = TaskModelImpl()
+        val taskRepository: TaskModel = TaskModelImpl(this)  // Pass the context to the constructor
         notificationHandler = NotificationHandler(this)
 
         controller = MainControllerImpl(this, notificationHandler, taskRepository)
         controller.startCountdownTime(10)
 
-        showNumberOfTasks()
-        showAllTasks()
+        GlobalScope.launch {
+            showNumberOfTasks()
+            showAllTasks()
+        }
         showStatistics()
         showSetTime()
 
@@ -95,12 +97,12 @@ class MainViewImp : ComponentActivity(), MainView {
         }
     }
 
-    override fun showNumberOfTasks() {
+    override suspend fun showNumberOfTasks() {
         val textNum: TextView = findViewById(R.id.textNum)
         textNum.text = "Vaše úlohy (${controller.getAllTasks().size})"
     }
 
-    override fun showAllTasks() {
+    override suspend fun showAllTasks() {
         val taskList = findViewById<RecyclerView>(R.id.taskList)
         taskList.layoutManager = LinearLayoutManager(this)
         taskList.adapter = TaskAdapter(controller.getAllTasks())

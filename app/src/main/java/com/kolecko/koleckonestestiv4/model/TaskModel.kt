@@ -2,35 +2,48 @@ package com.kolecko.koleckonestestiv4
 
 import java.util.ArrayList
 
+import android.content.Context
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 interface TaskModel {
-    fun getAllTasks(): List<Task>
-    fun removeTask(task: Task)
+    suspend fun getAllTasks(): List<Task>
+    suspend fun removeTask(task: Task)
+    suspend fun insertTask(task: Task)
 }
 
-class TaskModelImpl : TaskModel {
-    private val tasks = ArrayList<Task>()
+class TaskModelImpl(private val context: Context) : TaskModel {
+    private val taskDao = TaskDatabase.getDatabase(context).taskDao()
 
+    // Function to insert initial tasks
+    private suspend fun insertInitialTasks() {
+        val initialTasks = listOf(
+            Task("Task 1", "Description 1"),
+            Task("Task 2", "Description 2"),
+            // Add more tasks as needed
+        )
+
+        initialTasks.forEach { taskDao.insertTask(it) }
+
+    }
     init {
-        tasks.add(Task("Naučit se ke zkoušce", "Zkouška z Elektrotechniky"))
-        tasks.add(Task("Úklid chodby", "Zamést a vytřít"))
-        tasks.add(Task("Nakoupit", "4x Olomoucké tvarůžky"))
-        tasks.add(Task("Vytvořit Android app", "\"Hello World\""))
-        tasks.add(Task("Vyprat prádlo", "Praločka a žehlení"))
-        tasks.add(Task("Udělat domácí úkoly", "Matematika, čeština, angličtina"))
-        tasks.add(Task("Sportovat", "Jít běhat nebo cvičit"))
-        tasks.add(Task("Připravit večeři", "Nakoupit a uvařit večeři"))
-        tasks.add(Task("Číst knihu", "1 kapitola denně"))
-        tasks.add(Task("Udělat prezentaci", "Pro školu nebo práci"))
-        tasks.add(Task("Poslouchat hudbu", "Objevovat novou hudbu"))
-        tasks.add(Task("Zaměřit se na sebe", "Meditovat nebo jóga"))
-        tasks.add(Task("Udělat výlet", "Navštívit nové místo"))
+        // Call the function to insert initial tasks when TaskModelImpl is created
+        GlobalScope.launch(Dispatchers.IO) {
+            insertInitialTasks()
+        }
     }
 
-    override fun getAllTasks(): List<Task> {
-        return tasks.toList()
+    override suspend fun getAllTasks(): List<Task> = withContext(Dispatchers.IO) {
+        return@withContext taskDao.getAllTasks()
     }
 
-    override fun removeTask(task: Task) {
-        tasks.remove(task)
+    override suspend fun removeTask(task: Task) {
+        taskDao.deleteTask(task)
+    }
+
+    override suspend fun insertTask(task: Task) = withContext(Dispatchers.IO) {
+        taskDao.insertTask(task)
     }
 }

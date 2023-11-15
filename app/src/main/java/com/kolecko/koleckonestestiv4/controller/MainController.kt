@@ -20,7 +20,7 @@ interface MainController {
     fun startCountdownTime(maxCountdown: Int)
     fun showStatistics()
     fun onTimeSet(hourOfDay: Int, minute: Int)
-    fun getAllTasks(): List<Task>
+    suspend fun getAllTasks(): List<Task>
 }
 
 class MainControllerImpl(private val view: MainView, private val notification: Notification, private val model: TaskModel) : ComponentActivity(), MainController {
@@ -42,15 +42,14 @@ class MainControllerImpl(private val view: MainView, private val notification: N
         lifecycleScope.launch(Dispatchers.Main) {
             delay(3000)
             currentPoints++
-            if(model.getAllTasks().size > 0) {
+            if (model.getAllTasks().size > 0) {
                 val selectedTask = model.getAllTasks().random()
                 view.showTaskDialog(selectedTask)
-                model.removeTask(selectedTask)
+                model.removeTask(selectedTask) // Remove the selected task
                 view.showAllTasks()
                 updatePoints()
                 isWheelSpinning = false
-            }
-            else {
+            } else {
                 isWheelSpinning = true
                 view.showAllTasks()
                 updatePoints()
@@ -127,7 +126,7 @@ class MainControllerImpl(private val view: MainView, private val notification: N
         startCountdownTime(countdown)
     }
 
-    override fun getAllTasks(): List<Task> {
+    override suspend fun getAllTasks(): List<Task> {
         return model.getAllTasks()
     }
 }
