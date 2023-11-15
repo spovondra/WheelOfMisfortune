@@ -3,124 +3,113 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp">
 
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Nová úloha"
-        android:textColor="#000000" />
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_below="@id/textViewTitle"> <!-- Position content below the title -->
+        android:scrollbars="none"> <!-- Position content below the title -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center"> <!-- Center the content both vertically and horizontally -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="8dp"> <!-- Center the content both vertically and horizontally -->
 
-    <EditText
-        android:id="@+id/editTextTaskName"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Task Name (One Line)"
-        android:inputType="text"
-        android:maxLength="50"
-        android:background="@drawable/edittext_border" />
+            <EditText
+                android:id="@+id/editTextTaskName"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/edittext_border"
+                android:hint="Task Name (One Line)"
+                android:inputType="text"
+                android:maxLength="50" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
 
-    <EditText
-        android:id="@+id/editTextTaskDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Task Description (Block)"
-        android:inputType="textMultiLine"
-        android:lines="10"
-        android:maxLength="200"
-        android:background="@drawable/edittext_block_border" />
+            <EditText
+                android:id="@+id/editTextTaskDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_block_border"
+                android:hint="Task Description (Block)"
+                android:inputType="textMultiLine"
+                android:lines="10"
+                android:maxLength="200" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Priority:" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Priority:" />
 
-    <SeekBar
-        android:id="@+id/seekBarPriority"
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
-    android:max="10"
-    android:progressDrawable="@drawable/seekbar_custom" />
+            <SeekBar
+                android:id="@+id/seekBarPriority"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:max="20"
+                android:progressDrawable="@drawable/seekbar_custom" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <!-- Clickable icon images with equal weight -->
+                <ImageView
+                    android:id="@+id/icon1"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/icon1" />
+
+                <ImageView
+                    android:id="@+id/icon2"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/icon2" />
+
+                <ImageView
+                    android:id="@+id/icon3"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/icon3" />
+
+                <ImageView
+                    android:id="@+id/icon4"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/icon4" />
+            </LinearLayout>
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="40dp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"> <!-- Center the icons horizontally -->
-
-        <!-- Clickable icon images with spacing between them -->
-        <ImageView
-            android:id="@+id/icon1"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/icon1"
-            android:layout_marginRight="50dp" />
-
-        <ImageView
-            android:id="@+id/icon2"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/icon2"
-            android:layout_marginRight="50dp" />
-
-        <ImageView
-            android:id="@+id/icon3"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/icon3"
-            android:layout_marginRight="50dp" />
-
-        <ImageView
-            android:id="@+id/icon4"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/icon4" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="80dp" />
-
-    <Button
-        android:id="@+id/buttonAddTask"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Přidat úlohu"
-        android:textColor="#FFFFFF"
-        android:gravity="center"
-        android:background="@drawable/rounded_half_circle_button" />
-</LinearLayout>
-
-    </LinearLayout>
+            <Button
+                android:id="@+id/buttonAddTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_half_circle_button"
+                android:gravity="center"
+                android:text="Přidat úlohu"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
