@@ -25,7 +25,9 @@
                 android:background="@drawable/edittext_border"
                 android:hint="Task Name (One Line)"
                 android:inputType="text"
-                android:maxLength="50" />
+                android:maxLength="50"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -38,8 +40,13 @@
                 android:background="@drawable/edittext_block_border"
                 android:hint="Task Description (Block)"
                 android:inputType="textMultiLine"
-                android:lines="10"
-                android:maxLength="200" />
+                android:minLines="5"
+                android:maxLines="10"
+                android:maxLength="200"
+                android:paddingTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:gravity="top"/>
 
             <View
                 android:layout_width="match_parent"
