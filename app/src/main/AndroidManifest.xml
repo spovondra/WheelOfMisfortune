@@ -36,5 +36,11 @@
             android:label="Set Time Activity"
             android:theme="@style/Theme.KoleckoNestestiV2">
         </activity>
+        <activity
+            android:name=".NewTaskActivity"
+            android:exported="true"
+            android:label="New Task Activity"
+            android:theme="@style/Theme.KoleckoNestestiV2">
+        </activity>
     </application>
 </manifest>
