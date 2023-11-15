@@ -1,12 +1,7 @@
 package com.kolecko.koleckonestestiv4
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.app.TimePickerDialog
-import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
@@ -19,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -58,6 +52,14 @@ class MainViewImp : ComponentActivity(), MainView {
         showAllTasks()
         showStatistics()
         showSetTime()
+
+        // Add click listener to the orange button (assuming it has an ID 'newTaskButton')
+        val newTaskButton: Button = findViewById(R.id.floatingActionButton)
+        newTaskButton.setOnClickListener {
+            // Open NewTaskActivity when the button is clicked
+            val intent = Intent(this, NewTaskActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun showWheelSpin() {
