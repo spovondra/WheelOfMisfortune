@@ -1,0 +1,8 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/circular_orange_shape" />
+    <item
+        android:drawable="@drawable/ic_plus_icon"
+        android:width="40dp"
+        android:height="40dp"
+        android:gravity="center" />
+</layer-list>
