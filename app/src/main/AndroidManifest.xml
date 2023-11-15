@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StatisticsActivity"
+            android:name=".StatisticsViewImpl"
             android:exported="true"
             android:label="Statistics Activity"
             android:theme="@style/Theme.KoleckoNestestiV2">
@@ -33,13 +33,13 @@
         <activity
             android:name=".SetTimeActivity"
             android:exported="true"
-            android:label="Set Time Activity"
+            android:label="Nastavení času"
             android:theme="@style/Theme.KoleckoNestestiV2">
         </activity>
         <activity
             android:name=".NewTaskActivity"
             android:exported="true"
-            android:label="New Task Activity"
+            android:label="Nová úloha"
             android:theme="@style/Theme.KoleckoNestestiV2">
         </activity>
     </application>

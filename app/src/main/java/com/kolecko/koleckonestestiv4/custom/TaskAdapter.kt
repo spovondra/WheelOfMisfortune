@@ -5,8 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.kolecko.koleckonestestiv4.R
-import com.kolecko.koleckonestestiv4.Task
+import com.kolecko.koleckonestestiv4.model.Task
 
 class TaskAdapter(private val tasks: List<Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 

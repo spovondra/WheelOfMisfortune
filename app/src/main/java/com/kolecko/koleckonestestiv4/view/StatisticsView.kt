@@ -1,15 +1,18 @@
 package com.kolecko.koleckonestestiv4
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
-import androidx.appcompat.widget.Toolbar
-import androidx.compose.ui.graphics.Paint
+import androidx.appcompat.app.AppCompatActivity
 import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.helper.StaticLabelsFormatter
-import com.jjoe64.graphview.series.DataPoint
-import com.jjoe64.graphview.series.BarGraphSeries
-class StatisticsActivity : AppCompatActivity() {
+
+interface StatisticsView {
+    fun showGraph()
+}
+
+class StatisticsViewImpl : StatisticsView, AppCompatActivity() {
+    private lateinit var controller: StatisticsController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,23 +24,19 @@ class StatisticsActivity : AppCompatActivity() {
         supportActionBar?.title = "Statistiky"
         supportActionBar?.elevation = 0f
 
+        controller = AllStatisticsControllerImpl(StatisticsModelImp())
+
+        showGraph()
+    }
+
+    override fun showGraph() {
         // Find the "Clear Data" button
         val clearDataButton = findViewById<Button>(R.id.clearDataButton)
 
         // Get a reference to your GraphView from the XML layout
         val graphView = findViewById<GraphView>(R.id.graph)
 
-        // Create a series for your graph
-        val series = BarGraphSeries(arrayOf(
-            DataPoint(1.0, 10.0),
-            DataPoint(2.0, 20.0),
-            DataPoint(3.0, 30.0),
-            DataPoint(4.0, 40.0),
-            DataPoint(5.0, 50.0),
-            DataPoint(6.0, 20.0),
-        ))
-
-        graphView.addSeries(series)
+        graphView.addSeries(controller.getDataGraph())
 
         graphView.viewport.isXAxisBoundsManual = true
         graphView.viewport.setMinX(0.5)
@@ -56,19 +55,18 @@ class StatisticsActivity : AppCompatActivity() {
 
         graphView.gridLabelRenderer.setHorizontalLabelsAngle(45)
         val staticLabelsFormatter = StaticLabelsFormatter(graphView)
-        val xLabels = arrayOf(
-            "6.10","7.10", "8.10", "9.10", "10.10","11.10", "12.10"
-        )
-        staticLabelsFormatter.setHorizontalLabels(xLabels)
+
+        staticLabelsFormatter.setHorizontalLabels(controller.getXLabelsGraph())
         graphView.gridLabelRenderer.labelFormatter = staticLabelsFormatter
 
         clearDataButton.setOnClickListener {
             // Clear the data in the graph
-            series.resetData(arrayOf())
-            val xLabels = arrayOf("0.0", "0.0")
-            staticLabelsFormatter.setHorizontalLabels(xLabels)
-        }
+            controller.getDataGraph().resetData(arrayOf())
 
+            // Reset X labels
+            controller.setXLabelsGraph(arrayOf("Label 1", "Label 2"))
+            staticLabelsFormatter.setHorizontalLabels(arrayOf("Label 1", "Label 2"))
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

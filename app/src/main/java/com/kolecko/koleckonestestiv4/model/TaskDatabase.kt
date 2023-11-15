@@ -1,4 +1,4 @@
-package com.kolecko.koleckonestestiv4
+package com.kolecko.koleckonestestiv4.model
 
 import android.content.Context
 import androidx.room.Database

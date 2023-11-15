@@ -1,8 +1,8 @@
 package com.kolecko.koleckonestestiv4
 
-import java.util.ArrayList
-
 import android.content.Context
+import com.kolecko.koleckonestestiv4.model.Task
+import com.kolecko.koleckonestestiv4.model.TaskDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -12,6 +12,7 @@ interface TaskModel {
     suspend fun getAllTasks(): List<Task>
     suspend fun removeTask(task: Task)
     suspend fun insertTask(task: Task)
+    suspend fun addNewTask(title: String, description: String)
 }
 
 class TaskModelImpl(private val context: Context) : TaskModel {
@@ -19,6 +20,7 @@ class TaskModelImpl(private val context: Context) : TaskModel {
 
     // Function to insert initial tasks
     private suspend fun insertInitialTasks() {
+        /*
         val initialTasks = listOf(
             Task("Task 1", "Description 1"),
             Task("Task 2", "Description 2"),
@@ -26,6 +28,8 @@ class TaskModelImpl(private val context: Context) : TaskModel {
         )
 
         initialTasks.forEach { taskDao.insertTask(it) }
+
+         */
 
     }
     init {
@@ -45,5 +49,11 @@ class TaskModelImpl(private val context: Context) : TaskModel {
 
     override suspend fun insertTask(task: Task) = withContext(Dispatchers.IO) {
         taskDao.insertTask(task)
+    }
+
+    // Nová metoda pro vložení nové úlohy
+    override suspend fun addNewTask(title: String, description: String) {
+        val newTask = Task(title = title, description = description)
+        insertTask(newTask)
     }
 }

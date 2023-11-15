@@ -2,13 +2,10 @@ package com.kolecko.koleckonestestiv4
 
 import android.os.Handler
 import android.os.Looper
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
+import com.kolecko.koleckonestestiv4.model.Task
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

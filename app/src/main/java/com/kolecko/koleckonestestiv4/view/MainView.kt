@@ -11,10 +11,13 @@ import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kolecko.koleckonestestiv4.model.Task
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlin.random.Random
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 
 interface MainView {
     fun showWheelSpin()
@@ -28,7 +31,7 @@ interface MainView {
     fun wheelAbleToTouch ()
 }
 
-class MainViewImp : ComponentActivity(), MainView {
+class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope() {
     private lateinit var controller: MainControllerImpl
     private lateinit var circularProgressBar: CircularProgressBar
     private lateinit var countdownTimerTextView: TextView
@@ -73,15 +76,17 @@ class MainViewImp : ComponentActivity(), MainView {
         wheel.pivotX = pivotX
         wheel.pivotY = pivotY
 
-        // Náhodné otočení od 2 do 10 otáček
-        val degrees = Random.nextFloat() * 3600 + 720
+        runOnUiThread {
+            // Náhodné otočení od 2 do 10 otáček
+            val degrees = Random.nextFloat() * 3600 + 720
 
-        // Použijeme animaci rotace kolem středu obrázku
-        wheel.animate()
-            .rotationBy(degrees)
-            .setDuration(3000)
-            .setInterpolator(DecelerateInterpolator()) // Plynulý průběh otáčení
-            .start()
+            // Použijeme animaci rotace kolem středu obrázku
+            wheel.animate()
+                .rotationBy(degrees)
+                .setDuration(3000)
+                .setInterpolator(DecelerateInterpolator()) // Plynulý průběh otáčení
+                .start()
+        }
 
         controller.doWithTaskDialog()
     }
@@ -111,7 +116,7 @@ class MainViewImp : ComponentActivity(), MainView {
         val buttonShowStatistics = findViewById<Button>(R.id.buttonUp)
         buttonShowStatistics.setOnClickListener {
             // Po kliknutí na tlačítko zobrazíme statistiky (přejdeme na novou aktivitu)
-            val intent = Intent(this, StatisticsActivity::class.java)
+            val intent = Intent(this, StatisticsViewImpl::class.java)
             startActivity(intent)
         }
     }
@@ -150,13 +155,26 @@ class MainViewImp : ComponentActivity(), MainView {
         countdownTimerTextView.text = String.format("%02d:%02d", currentCountdownTime/60, currentCountdownTime%60)
     }
 
-    override fun wheelAbleToTouch () {
+    override fun wheelAbleToTouch() {
         val wheel: ImageView = findViewById(R.id.wheel_spin)
         wheel.setOnClickListener {
             if (!controller.getIsWheelSpinning()) {
-                controller.setIsWheelSpinning(true)
-                showWheelSpin()
+                GlobalScope.launch {
+                    if (controller.getAllTasks().isNotEmpty()) {
+                        controller.setIsWheelSpinning(true)
+                        showWheelSpin()
+                    }
+                }
             }
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+
+        // Use the activity's coroutine scope and launch on the main thread
+        launch {
+            showNumberOfTasks()
+            showAllTasks()
         }
     }
 }
