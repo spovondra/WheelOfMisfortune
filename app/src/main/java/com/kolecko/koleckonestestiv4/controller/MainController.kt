@@ -66,11 +66,6 @@ class MainControllerImpl(private val view: MainView, private val notification: N
                     view.showBarAndTime(calculatedProgress, currentCountdownTime)
                     currentCountdownTime--
                     handler.postDelayed(this, updateInterval)
-                    //circularProgressBar.setProgress(calculatedProgress)
-                    //countdownTimerTextView.text = String.format("%02d:%02d", currentCountdown / 60, currentCountdown % 60)
-
-                    // Call showBarAndTime to update UI
-
 
                 } else {
                     notification.showNotification()
@@ -78,10 +73,6 @@ class MainControllerImpl(private val view: MainView, private val notification: N
                     currentCountdownTime = 0
                     view.showBarAndTime(calculatedProgress, currentCountdownTime)
                     isWheelSpinning = false
-                    //circularProgressBar.setProgress(100)
-                    //countdownTimerTextView.text = "Start"
-
-
 
                     view.wheelAbleToTouch()
                     // Call showBarAndTime to update UI
@@ -90,7 +81,6 @@ class MainControllerImpl(private val view: MainView, private val notification: N
             }
         })
     }
-
 
     override fun updatePoints() {
         lifecycleScope.launch(Dispatchers.Main) {
@@ -115,7 +105,6 @@ class MainControllerImpl(private val view: MainView, private val notification: N
 
 
     override fun onTimeSet(hourOfDay: Int, minute: Int) {
-        val selectedTime = String.format("%02d:%02d", hourOfDay, minute)
         view.showBarAndTime(calculatedProgress, currentCountdownTime)
         val countdown = hourOfDay * 60 + minute
 
