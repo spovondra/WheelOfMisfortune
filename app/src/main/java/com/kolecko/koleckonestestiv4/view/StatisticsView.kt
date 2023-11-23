@@ -18,7 +18,7 @@ import java.util.*
 class StatisticsViewImpl : AppCompatActivity() {
 
     private lateinit var graphView: GraphView
-    private lateinit var updateGraphButton: Button
+    private lateinit var clearGraphButton: Button
     private lateinit var controller: StatisticsController
     private lateinit var database: AppDatabase
     private var pointCounter: Int = 0
@@ -35,7 +35,7 @@ class StatisticsViewImpl : AppCompatActivity() {
 
         // Inicializace grafu, tlačítka a kontrolleru
         graphView = findViewById(R.id.graph)
-        updateGraphButton = findViewById(R.id.clearDataButton)
+        clearGraphButton = findViewById(R.id.clearDataButton)
 
         // Inicializace databáze a kontroleru s použitím datového rozhraní
         database = AppDatabase.getInstance(this)
@@ -56,22 +56,12 @@ class StatisticsViewImpl : AppCompatActivity() {
             updateGraph()
         }
 
-        // Nastavení posluchače pro tlačítko aktualizace grafu
-        updateGraphButton.setOnClickListener {
-            val currentDate = getCurrentDate()
-
-            // Kontrola, zda začal nový den
-            if (currentDate != lastAddedDate) {
-                pointCounter = 0
-                lastAddedDate = currentDate
-            }
-
-            val value = pointCounter.toDouble()
-
-            // Vložení dat a aktualizace grafu v novém coroutine
+        // Nastavení posluchače pro tlačítko vymazání grafu
+        clearGraphButton.setOnClickListener {
+            // Volání metody pro smazání všech dat
+            clearAllData()
+            // Aktualizace grafu
             GlobalScope.launch {
-                controller.insertOrUpdateData(currentDate, value)
-                pointCounter++
                 updateGraph()
             }
         }
@@ -149,6 +139,18 @@ class StatisticsViewImpl : AppCompatActivity() {
         withContext(Dispatchers.Main) {
             // Vytvoření grafu s daty a popisky
             createGraph(dataEntities, formattedDateStrings)
+        }
+    }
+
+    // Metoda pro smazání všech dat
+    private fun clearAllData() {
+        GlobalScope.launch {
+            // Smazání všech dat v databázi
+            database.dataDao().deleteAllData()
+            // Nastavení čítače bodů na 0
+            pointCounter = 0
+            // Aktualizace grafu
+            updateGraph()
         }
     }
 

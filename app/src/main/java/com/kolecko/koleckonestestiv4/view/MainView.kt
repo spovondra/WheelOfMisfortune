@@ -36,19 +36,27 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private lateinit var circularProgressBar: CircularProgressBar
     private lateinit var countdownTimerTextView: TextView
     private lateinit var notificationHandler: NotificationHandler
+    private lateinit var statisticsController: StatisticsController
+    private lateinit var dataRepository: DataRepository // Placeholder for your DataRepository instance
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Initialize your DataRepository
+        dataRepository = DataRepository(AppDatabase.getInstance(this).dataDao())
+
         circularProgressBar = findViewById(R.id.circularProgressBar)
         countdownTimerTextView = findViewById(R.id.countdownTimerTextView)
 
-        val taskRepository: TaskModel = TaskModelImpl(this)  // Pass the context to the constructor
+        val taskRepository: TaskModel = TaskModelImpl(this)
         notificationHandler = NotificationHandler(this)
+        statisticsController = StatisticsController(dataRepository)
 
-        controller = MainControllerImpl(this, notificationHandler, taskRepository)
+        controller =
+            MainControllerImpl(this, notificationHandler, taskRepository, statisticsController, dataRepository)
         controller.startCountdownTime(10)
+        controller.loadPointsFromDatabase()
 
         GlobalScope.launch {
             showNumberOfTasks()
@@ -57,10 +65,8 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         showStatistics()
         showSetTime()
 
-        // Add click listener to the orange button (assuming it has an ID 'newTaskButton')
         val newTaskButton: Button = findViewById(R.id.floatingActionButton)
         newTaskButton.setOnClickListener {
-            // Open NewTaskActivity when the button is clicked
             val intent = Intent(this, NewTaskActivity::class.java)
             startActivity(intent)
         }
@@ -95,9 +101,18 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         GlobalScope.launch(Dispatchers.Main) {
             val buttonUp: Button = findViewById(R.id.buttonUp)
             buttonUp.text = text
-            // Check if there are tasks available
             showNumberOfTasks()
             showAllTasks()
+
+            // Update the statistics when points are updated
+            updateStatistics()
+        }
+    }
+
+    private fun updateStatistics() {
+        // Fetch the latest statistics data
+        GlobalScope.launch {
+            showStatistics()
         }
     }
 
@@ -139,8 +154,9 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                     // Handle the time set by the user here
                     val selectedTime = String.format("%02d:%02d", hourOfDay, minute)
-                    countdownTimerTextView.text = selectedTime  // Update the TextView with the selected time
-                    var countdown = hourOfDay*60+minute
+                    countdownTimerTextView.text =
+                        selectedTime  // Update the TextView with the selected time
+                    var countdown = hourOfDay * 60 + minute
 
                     // Reset the countdown and progress bar when a new time is set
                     circularProgressBar.setProgress(100) // Reset the progress bar
@@ -152,7 +168,8 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
     override fun showBarAndTime(progress: Int, currentCountdownTime: Int) {
         circularProgressBar.setProgress(progress)
-        countdownTimerTextView.text = String.format("%02d:%02d", currentCountdownTime/60, currentCountdownTime%60)
+        countdownTimerTextView.text =
+            String.format("%02d:%02d", currentCountdownTime / 60, currentCountdownTime % 60)
     }
 
     override fun wheelAbleToTouch() {
@@ -168,6 +185,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             }
         }
     }
+
     override fun onResume() {
         super.onResume()
 

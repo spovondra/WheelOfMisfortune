@@ -18,4 +18,7 @@ interface DataDao {
 
     @Query("SELECT formattedDate FROM data_table")
     suspend fun getFormattedDates(): Array<String>
+
+    @Query("DELETE FROM data_table")
+    suspend fun deleteAllData()
 }
