@@ -21,32 +21,34 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.MainScope
 
+// Rozhraní reprezentující pohled (View) hlavní obrazovky
 interface MainView {
     fun showWheelSpin()
-    fun showUpdatedPoints(text : String)
-    suspend fun showNumberOfTasks ()
+    fun showUpdatedPoints(text: String)
+    suspend fun showNumberOfTasks()
     suspend fun showAllTasks()
     fun showStatistics()
-    fun showTaskDialog(task: Task) //tmp
+    fun showTaskDialog(task: Task)
     fun showSetTime()
     fun showBarAndTime(progress: Int, currentCountdownTime: Int)
-    fun wheelAbleToTouch ()
+    fun wheelAbleToTouch()
 }
 
+// Implementace rozhraní MainView
 class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope() {
     private lateinit var controller: MainControllerImpl
     private lateinit var circularProgressBar: CircularProgressBar
     private lateinit var countdownTimerTextView: TextView
     private lateinit var notificationHandler: NotificationHandler
     private lateinit var statisticsController: StatisticsController
-    private lateinit var dataRepository: DataRepository // Placeholder for your DataRepository instance
+    private lateinit var dataRepository: DataRepository
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Initialize your DataRepository
+        // Inicializace DataRepository
         dataRepository = DataRepository(AppDatabase.getInstance(this).dataDao())
 
         circularProgressBar = findViewById(R.id.circularProgressBar)
@@ -56,8 +58,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         notificationHandler = NotificationHandler(this)
         statisticsController = StatisticsController(dataRepository)
 
-        controller =
-            MainControllerImpl(this, notificationHandler, taskRepository, statisticsController, dataRepository)
+        controller = MainControllerImpl(this, notificationHandler, taskRepository, statisticsController)
         controller.startCountdownTime(10)
         controller.loadPointsFromDatabase()
 
@@ -75,31 +76,28 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
+    // Metoda pro zobrazení animace otáčení kolem
     override fun showWheelSpin() {
-        // Získání reference na ImageView s kolem
         val wheel = findViewById<ImageView>(R.id.wheel_spin)
-
-        // Nastavíme střed otáčení na střed obrázku
         val pivotX = wheel.width / 2f
         val pivotY = wheel.height / 2f
         wheel.pivotX = pivotX
         wheel.pivotY = pivotY
 
         runOnUiThread {
-            // Náhodné otočení od 2 do 10 otáček
             val degrees = Random.nextFloat() * 3600 + 720
 
-            // Použijeme animaci rotace kolem středu obrázku
             wheel.animate()
                 .rotationBy(degrees)
                 .setDuration(3000)
-                .setInterpolator(DecelerateInterpolator()) // Plynulý průběh otáčení
+                .setInterpolator(DecelerateInterpolator())
                 .start()
         }
 
         controller.doWithTaskDialog()
     }
 
+    // Metoda pro zobrazení aktualizovaných bodů
     @OptIn(DelicateCoroutinesApi::class)
     override fun showUpdatedPoints(text: String) {
         GlobalScope.launch(Dispatchers.Main) {
@@ -107,40 +105,42 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             buttonUp.text = text
             showNumberOfTasks()
             showAllTasks()
-
-            // Update the statistics when points are updated
             updateStatistics()
         }
     }
 
+    // Privátní metoda pro aktualizaci statistik
+    @OptIn(DelicateCoroutinesApi::class)
     private fun updateStatistics() {
-        // Fetch the latest statistics data
         GlobalScope.launch {
             showStatistics()
         }
     }
 
+    // Metoda pro zobrazení počtu úkolů
     @SuppressLint("SetTextI18n")
     override suspend fun showNumberOfTasks() {
         val textNum: TextView = findViewById(R.id.textNum)
         textNum.text = "Vaše úlohy (${controller.getAllTasks().size})"
     }
 
+    // Metoda pro zobrazení všech úkolů
     override suspend fun showAllTasks() {
         val taskList = findViewById<RecyclerView>(R.id.taskList)
         taskList.layoutManager = LinearLayoutManager(this)
         taskList.adapter = TaskAdapter(controller.getAllTasks())
     }
 
+    // Metoda pro zobrazení statistik
     override fun showStatistics() {
         val buttonShowStatistics = findViewById<Button>(R.id.buttonUp)
         buttonShowStatistics.setOnClickListener {
-            // Po kliknutí na tlačítko zobrazíme statistiky (přejdeme na novou aktivitu)
             val intent = Intent(this, StatisticsViewImpl::class.java)
             startActivity(intent)
         }
     }
 
+    // Metoda pro zobrazení dialogu s úkolem
     override fun showTaskDialog(task: Task) {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle("Váš úkol")
@@ -152,31 +152,29 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         dialog.show()
     }
 
+    // Metoda pro zobrazení dialogu pro nastavení času
     override fun showSetTime() {
         val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
         buttonSetTime.setOnClickListener {
-            val timePicker =
-                TimePickerDialog(this, { _, hourOfDay, minute ->
-                    // Handle the time set by the user here
-                    val selectedTime = String.format("%02d:%02d", hourOfDay, minute)
-                    countdownTimerTextView.text =
-                        selectedTime  // Update the TextView with the selected time
-                    val countdown = hourOfDay * 60 + minute
+            val timePicker = TimePickerDialog(this, { _, hourOfDay, minute ->
+                val selectedTime = String.format("%02d:%02d", hourOfDay, minute)
+                countdownTimerTextView.text = selectedTime
+                val countdown = hourOfDay * 60 + minute
 
-                    // Reset the countdown and progress bar when a new time is set
-                    circularProgressBar.setProgress(100) // Reset the progress bar
-                    controller.startCountdownTime(countdown) // Start the countdown
-                }, 0, 0, true)
+                circularProgressBar.setProgress(100)
+                controller.startCountdownTime(countdown)
+            }, 0, 0, true)
             timePicker.show()
         }
     }
 
+    // Metoda pro zobrazení průběhu a zbývajícího času
     override fun showBarAndTime(progress: Int, currentCountdownTime: Int) {
         circularProgressBar.setProgress(progress)
-        countdownTimerTextView.text =
-            String.format("%02d:%02d", currentCountdownTime / 60, currentCountdownTime % 60)
+        countdownTimerTextView.text = String.format("%02d:%02d", currentCountdownTime / 60, currentCountdownTime % 60)
     }
 
+    // Metoda pro povolení otáčení kolem
     @OptIn(DelicateCoroutinesApi::class)
     override fun wheelAbleToTouch() {
         val wheel: ImageView = findViewById(R.id.wheel_spin)
@@ -192,10 +190,11 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
+    // Přepsaná metoda pro obnovení aktivity
     override fun onResume() {
         super.onResume()
 
-        // Use the activity's coroutine scope and launch on the main thread
+        // Využití coroutines scope aktivity + spuštění na hlavním vlákně
         launch {
             showNumberOfTasks()
             showAllTasks()

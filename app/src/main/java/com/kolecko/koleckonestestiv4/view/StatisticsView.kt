@@ -7,6 +7,7 @@ import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.helper.StaticLabelsFormatter
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -24,6 +25,7 @@ class StatisticsViewImpl : AppCompatActivity() {
     private var pointCounter: Int = 0
     private lateinit var lastAddedDate: String
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
@@ -60,6 +62,7 @@ class StatisticsViewImpl : AppCompatActivity() {
         clearGraphButton.setOnClickListener {
             // Volání metody pro smazání všech dat
             clearAllData()
+
             // Aktualizace grafu
             GlobalScope.launch {
                 updateGraph()
@@ -135,17 +138,12 @@ class StatisticsViewImpl : AppCompatActivity() {
     }
 
     // Metoda pro smazání všech dat
+    @OptIn(DelicateCoroutinesApi::class)
     private fun clearAllData() {
         GlobalScope.launch {
-            // Smazání všech dat v databázi
-            database.dataDao().deleteAllData()
-            // Nastavení čítače bodů na 0
-            pointCounter = 0
-            // Nastavení čítače bodů na 0 ve MainController
-
-            // Zavolej metodu pro aktualizaci tlačítka s body ve MainView
-            // Aktualizace grafu
-            updateGraph()
+            database.dataDao().deleteAllData()  // Smazání všech dat v databázi
+            pointCounter = 0                    // Nastavení čítače bodů na 0
+            updateGraph()                       // Aktualizace grafu
         }
     }
 

@@ -8,32 +8,42 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TimePicker
 
+// Aktivita pro nastavení času
 class SetTimeActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_set_time)
 
+        // Nalezení tlačítka pro uložení
         val saveButton: Button = findViewById(R.id.saveButton)
 
+        // Nastavení posluchače kliknutí na tlačítko
         saveButton.setOnClickListener {
-            // Create a dialog
+            // Vytvoření a zobrazení dialogu s TimePickerem
             val dialog = createDialog()
             dialog.show()
         }
     }
 
+    // Metoda pro vytvoření dialogu s TimePickerem
     private fun createDialog(): Dialog {
+        // Nafukování layoutu dialogu
         val dialogView = layoutInflater.inflate(R.layout.activity_set_time, null)
+
+        // Nalezení TimePickeru a tlačítka pro uložení v layoutu dialogu
         val timePicker: TimePicker = dialogView.findViewById(R.id.timePicker)
         val saveButton: Button = dialogView.findViewById(R.id.saveButton)
 
-        // Nastavení TimePicker na 24hodinový režim
+        // Nastavení TimePickeru na 24hodinový režim
         timePicker.setIs24HourView(true)
 
+        // Vytvoření AlertDialogu s nastavením layoutu
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
             .create()
 
+        // Nastavení posluchače kliknutí na tlačítko pro uložení
         saveButton.setOnClickListener {
             // Získání vybraného času z TimePickeru
             val hour = timePicker.hour
