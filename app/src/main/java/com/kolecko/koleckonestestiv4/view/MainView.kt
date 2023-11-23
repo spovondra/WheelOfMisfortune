@@ -1,5 +1,6 @@
 package com.kolecko.koleckonestestiv4
 
+import android.annotation.SuppressLint
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
@@ -17,6 +18,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.MainScope
 
 interface MainView {
@@ -39,6 +41,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private lateinit var statisticsController: StatisticsController
     private lateinit var dataRepository: DataRepository // Placeholder for your DataRepository instance
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -97,6 +100,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         controller.doWithTaskDialog()
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun showUpdatedPoints(text: String) {
         GlobalScope.launch(Dispatchers.Main) {
             val buttonUp: Button = findViewById(R.id.buttonUp)
@@ -116,6 +120,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override suspend fun showNumberOfTasks() {
         val textNum: TextView = findViewById(R.id.textNum)
         textNum.text = "Vaše úlohy (${controller.getAllTasks().size})"
@@ -151,12 +156,12 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
         buttonSetTime.setOnClickListener {
             val timePicker =
-                TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                TimePickerDialog(this, { _, hourOfDay, minute ->
                     // Handle the time set by the user here
                     val selectedTime = String.format("%02d:%02d", hourOfDay, minute)
                     countdownTimerTextView.text =
                         selectedTime  // Update the TextView with the selected time
-                    var countdown = hourOfDay * 60 + minute
+                    val countdown = hourOfDay * 60 + minute
 
                     // Reset the countdown and progress bar when a new time is set
                     circularProgressBar.setProgress(100) // Reset the progress bar
@@ -172,6 +177,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             String.format("%02d:%02d", currentCountdownTime / 60, currentCountdownTime % 60)
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun wheelAbleToTouch() {
         val wheel: ImageView = findViewById(R.id.wheel_spin)
         wheel.setOnClickListener {

@@ -117,16 +117,8 @@ class StatisticsViewImpl : AppCompatActivity() {
             graphView.gridLabelRenderer.numHorizontalLabels = allFormattedDates.size
             graphView.gridLabelRenderer.textSize = 30f
         }
-
-        // Aktualizace TextView s hodnotami na ose Y
-        updateYValuesTextView(dataEntities)
     }
 
-    // Metoda pro aktualizaci TextView s hodnotami na ose Y
-    private fun updateYValuesTextView(dataEntities: List<DataEntity>) {
-        // Tato metoda není v kódu používána
-        // Můžete ji odstranit, pokud není potřebná
-    }
 
     // Metoda pro aktualizaci grafu ve specifickém vlákně
     private suspend fun updateGraph() {
@@ -149,6 +141,9 @@ class StatisticsViewImpl : AppCompatActivity() {
             database.dataDao().deleteAllData()
             // Nastavení čítače bodů na 0
             pointCounter = 0
+            // Nastavení čítače bodů na 0 ve MainController
+
+            // Zavolej metodu pro aktualizaci tlačítka s body ve MainView
             // Aktualizace grafu
             updateGraph()
         }

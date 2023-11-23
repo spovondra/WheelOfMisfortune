@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -22,6 +23,8 @@ interface MainController {
     fun showStatistics()
     fun onTimeSet(hourOfDay: Int, minute: Int)
     suspend fun getAllTasks(): List<Task>
+    fun loadPointsFromDatabase()
+    fun getCurrentDate(): String
 }
 
 class MainControllerImpl(
@@ -36,6 +39,7 @@ class MainControllerImpl(
     private var currentPoints = 0
     private var calculatedProgress = 0
     private var currentCountdownTime = 0
+    private var lastAddedDate: String = getCurrentDate()
     private val handler = Handler(Looper.getMainLooper())
 
     override fun setIsWheelSpinning(isIt: Boolean) {
@@ -54,6 +58,13 @@ class MainControllerImpl(
 
                 if (tasks.isNotEmpty()) {
                     val selectedTask = tasks.random()
+
+                    // Check if a new day has started
+                    val currentDate = getCurrentDate()
+                    if (currentDate != lastAddedDate) {
+                        currentPoints = 0
+                        lastAddedDate = currentDate
+                    }
 
                     // Increment points based on the default points in the task
                     currentPoints += selectedTask.points
@@ -74,6 +85,8 @@ class MainControllerImpl(
                     val formattedDate = SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
                     statisticsController.insertOrUpdateData(formattedDate, currentPoints.toDouble())
 
+                    view.showTaskDialog(selectedTask)
+
                     // Remove the selected task from the database
                     model.removeTask(selectedTask)
                 }
@@ -86,34 +99,16 @@ class MainControllerImpl(
     override fun doWithTaskDialog() {
         lifecycleScope.launch(Dispatchers.Main) {
             delay(3000)
-            if (model.getAllTasks().isNotEmpty() && !isWheelSpinning) {
+            if (model.getAllTasks().isNotEmpty()) {
                 isWheelSpinning = true
-                val selectedTask = model.getAllTasks().random()
-                view.showTaskDialog(selectedTask)
-                model.removeTask(selectedTask)
                 view.showAllTasks()
+                updatePoints()
 
-                // Task completion logic
-                taskCompleted(selectedTask)
             } else {
                 view.showAllTasks()
                 updatePoints()
             }
             isWheelSpinning = false
-        }
-    }
-
-    private fun taskCompleted(task: Task) {
-        lifecycleScope.launch(Dispatchers.Main) {
-            // Increment points based on the completed task
-            currentPoints += task.points
-
-            // Ukládání bodů do databáze
-            val formattedDate = SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
-            statisticsController.insertOrUpdateData(formattedDate, currentPoints.toDouble())
-
-            // Aktualizace bodů ve view
-            updatePoints()
         }
     }
 
@@ -158,7 +153,8 @@ class MainControllerImpl(
         return model.getAllTasks()
     }
 
-    fun loadPointsFromDatabase() {
+    override fun loadPointsFromDatabase() {
+        var storedPoints: Int = 0
         lifecycleScope.launch(Dispatchers.Main) {
             // Získání dat z databáze
             val currentDate = SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
@@ -172,5 +168,10 @@ class MainControllerImpl(
                 view.showUpdatedPoints("$currentPoints $text")
             }
         }
+    }
+    override fun getCurrentDate(): String {
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return dateFormat.format(calendar.time)
     }
 }
