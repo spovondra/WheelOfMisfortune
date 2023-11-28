@@ -1,8 +1,8 @@
-# Kolečko Neštěstí V4
+# Kolečko Neštěstí
 
 ![Kolečko Neštěstí](/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp)
 
-**Kolečko Neštěstí V4** je mobilní aplikace pro Android, která vám pomáhá řešit otázky, jako je "Co budu dělat dnes?" nebo "Kde si dám oběd?". Aplikace využívá zábavný způsob rozhodování, který je založen na otáčení kola štěstí. S **Kolečkem Neštěstí** můžete zadat různé úkoly a nápady a nechat aplikaci rozhodnout za vás.
+**Kolečko Neštěstí** je mobilní aplikace pro Android, která vám pomáhá řešit otázky, jako je "Co budu dělat dnes?" nebo "Kde si dám oběd?". Aplikace využívá zábavný způsob rozhodování, který je založen na otáčení kola štěstí. S **Kolečkem Neštěstí** můžete zadat různé úkoly a nápady a nechat aplikaci rozhodnout za vás.
 
 ## Funkce
 
@@ -13,17 +13,17 @@
 
 ## Instalace
 
-Pokud si chcete vyzkoušet **Kolečko Neštěstí V4**, můžete aplikaci stáhnout z [tohoto odkazu](https://github.com/spovondra/KoleckoNestestiV4.git) nebo můžete využít Android Studio a zdrojový kód této aplikace. Postupujte podle následujících kroků:
+Pokud si chcete vyzkoušet **Kolečko Neštěstí**, můžete aplikaci stáhnout z [tohoto odkazu](https://github.com/spovondra/KoleckoNestesti.git) nebo můžete využít Android Studio a zdrojový kód této aplikace. Postupujte podle následujících kroků:
 
 1. Naklonujte si tento repozitář:
 
    ```bash
-   git clone https://github.com/spovondra/KoleckoNestestiV4.git
+   git clone https://github.com/spovondra/KoleckoNestesti.git
 Otevřete projekt v Android Studiu.
 
 Spusťte projekt na emulátoru nebo fyzickém zařízení.
 
 Zábava a Produktivita na Dosah
-S Kolečkem Neštěstí V4 můžete snadno najít způsob, jak trávit svůj volný čas nebo rozhodnout o svých úkolech. Užijte si to!
+S Kolečkem Neštěstí můžete snadno najít způsob, jak trávit svůj volný čas nebo rozhodnout o svých úkolech. Enjoy it!
 
-This README was beautifully crafted with ❤ by Šimon. :)
+This README was beautifully crafted with ❤ by spovondra. :)
