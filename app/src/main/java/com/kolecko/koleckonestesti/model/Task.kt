@@ -1,4 +1,4 @@
-package com.kolecko.koleckonestestiv4.model
+package com.kolecko.koleckonestesti.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

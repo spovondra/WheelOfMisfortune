@@ -1,4 +1,4 @@
-package com.kolecko.koleckonestestiv4
+package com.kolecko.koleckonestesti
 
 import android.os.Bundle
 import android.widget.Button

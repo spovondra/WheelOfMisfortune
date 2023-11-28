@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.kolecko.koleckonestestiv4">
+    package="com.kolecko.koleckonestesti">
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
@@ -15,7 +15,7 @@
         android:theme="@style/Theme.KoleckoNestestiV2"
         tools:targetApi="31">
         <activity
-            android:name=".MainViewImp"
+            android:name="com.kolecko.koleckonestesti.MainViewImp"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.KoleckoNestestiV2">
@@ -25,19 +25,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StatisticsViewImpl"
+            android:name="com.kolecko.koleckonestesti.StatisticsViewImpl"
             android:exported="true"
             android:label="Statistics Activity"
             android:theme="@style/Theme.KoleckoNestestiV2">
         </activity>
         <activity
-            android:name=".SetTimeActivity"
+            android:name="com.kolecko.koleckonestesti.SetTimeActivity"
             android:exported="true"
             android:label="Nastavení času"
             android:theme="@style/Theme.KoleckoNestestiV2">
         </activity>
         <activity
-            android:name=".NewTaskActivity"
+            android:name="com.kolecko.koleckonestesti.NewTaskActivity"
             android:exported="true"
             android:label="Nová úloha"
             android:theme="@style/Theme.KoleckoNestestiV2">

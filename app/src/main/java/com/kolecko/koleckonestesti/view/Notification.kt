@@ -1,4 +1,4 @@
-package com.kolecko.koleckonestestiv4
+package com.kolecko.koleckonestesti
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

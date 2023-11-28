@@ -1,10 +1,10 @@
-package com.kolecko.koleckonestestiv4
+package com.kolecko.koleckonestesti
 
 import android.os.Handler
 import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
-import com.kolecko.koleckonestestiv4.model.Task
+import com.kolecko.koleckonestesti.model.Task
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

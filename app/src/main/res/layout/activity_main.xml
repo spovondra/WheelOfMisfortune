@@ -73,7 +73,7 @@
                 android:textSize="36sp"
                 android:textStyle="bold" />
 
-            <com.kolecko.koleckonestestiv4.CircularProgressBar
+            <com.kolecko.koleckonestesti.CircularProgressBar
                 android:id="@+id/circularProgressBar"
                 android:layout_width="363dp"
                 android:layout_height="363dp"

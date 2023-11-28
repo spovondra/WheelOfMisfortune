@@ -1,4 +1,4 @@
-package com.kolecko.koleckonestestiv4
+package com.kolecko.koleckonestesti
 
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
@@ -12,7 +12,7 @@ import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.kolecko.koleckonestestiv4.model.Task
+import com.kolecko.koleckonestesti.model.Task
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

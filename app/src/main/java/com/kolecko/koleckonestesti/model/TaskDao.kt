@@ -1,4 +1,4 @@
-package com.kolecko.koleckonestestiv4.model
+package com.kolecko.koleckonestesti.model
 
 import androidx.room.Dao
 import androidx.room.Delete

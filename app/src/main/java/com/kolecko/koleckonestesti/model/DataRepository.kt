@@ -1,4 +1,4 @@
-package com.kolecko.koleckonestestiv4
+package com.kolecko.koleckonestesti
 
 // Repozitář pro přístup k datům prostřednictvím DataDao
 class DataRepository(private val dataDao: DataDao) {

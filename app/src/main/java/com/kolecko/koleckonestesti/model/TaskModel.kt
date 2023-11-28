@@ -1,12 +1,10 @@
-package com.kolecko.koleckonestestiv4
+package com.kolecko.koleckonestesti
 
 import android.content.Context
-import com.kolecko.koleckonestestiv4.model.Task
-import com.kolecko.koleckonestestiv4.model.TaskDatabase
+import com.kolecko.koleckonestesti.model.Task
+import com.kolecko.koleckonestesti.model.TaskDatabase
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 // Rozhraní reprezentující model úkolů

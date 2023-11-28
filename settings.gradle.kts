@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "KoleckoNestestiV4"
+rootProject.name = "KoleckoNestesti"
 include(":app")
  

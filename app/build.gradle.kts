@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.kolecko.koleckonestestiv4"
+    namespace = "com.kolecko.koleckonestesti"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.kolecko.koleckonestestiv4"
+        applicationId = "com.kolecko.koleckonestesti"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

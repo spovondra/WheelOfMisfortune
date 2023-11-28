@@ -1,4 +1,4 @@
-package com.kolecko.koleckonestestiv4.ui.theme
+package com.kolecko.koleckonestesti.ui.theme
 
 import android.app.Activity
 import android.os.Build
