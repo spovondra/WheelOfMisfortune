@@ -4,11 +4,18 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+// Rozhraní pro presenter (kontroler) statistik
+interface StatisticsController {
+    suspend fun insertOrUpdateData(date: String, value: Double)
+    suspend fun getDataByDate(date: String): DataEntity?
+}
+
+
 // Kontroler pro statistiky, který zpracovává vkládání a aktualizaci dat
-class StatisticsController(private val repository: DataRepository) {
+class StatisticsControllerImp(private val repository: DataRepository): StatisticsController {
 
     // Metoda pro vložení nebo aktualizaci dat na základě data a hodnoty
-    suspend fun insertOrUpdateData(date: String, value: Double) {
+    override suspend fun insertOrUpdateData(date: String, value: Double) {
         // Převod data na hash pro použití jako klíč v databázi
         val day = date.hashCode()
         // Formátování data pro zobrazení ve formátu "dd.MM"
@@ -29,7 +36,7 @@ class StatisticsController(private val repository: DataRepository) {
     }
 
     // Metoda pro získání dat pro konkrétní datum
-    suspend fun getDataByDate(date: String): DataEntity? {
+    override suspend fun getDataByDate(date: String): DataEntity? {
         val day = date.hashCode()
         return repository.getDataByDate(day)
     }

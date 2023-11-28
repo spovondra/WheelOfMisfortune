@@ -49,14 +49,14 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         setContentView(R.layout.activity_main)
 
         // Inicializace DataRepository
-        dataRepository = DataRepository(AppDatabase.getInstance(this).dataDao())
+        dataRepository = DataRepository(DataDatabase.getInstance(this).dataDao())
 
         circularProgressBar = findViewById(R.id.circularProgressBar)
         countdownTimerTextView = findViewById(R.id.countdownTimerTextView)
 
         val taskRepository: TaskModel = TaskModelImpl(this)
         notificationHandler = NotificationHandler(this)
-        statisticsController = StatisticsController(dataRepository)
+        statisticsController = StatisticsControllerImp(dataRepository)
 
         controller = MainControllerImpl(this, notificationHandler, taskRepository, statisticsController)
         controller.startCountdownTime(10)
@@ -135,7 +135,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     override fun showStatistics() {
         val buttonShowStatistics = findViewById<Button>(R.id.buttonUp)
         buttonShowStatistics.setOnClickListener {
-            val intent = Intent(this, StatisticsViewImpl::class.java)
+            val intent = Intent(this, StatisticsViewImp::class.java)
             startActivity(intent)
         }
     }

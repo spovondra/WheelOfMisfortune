@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">KoleckoNestestiV2</string>
+    <string name="app_name">KoleckoNestesti</string>
+    <string name="main_name">Kolo neštěstí</string>
+    <string name="zero_points">0 bodů</string>
+    <string name="zero_time">00:00</string>
+    <string name="wheel_spin_description">Wheel To Spin</string>
+    <string name="button_change_time_of_notification">Změnit čas notifikace</string>
+    <string name="wheel_static_description">Statické okolí kolečka</string>
+    <string name="button_add">Add Button</string>
+
+
 </resources>

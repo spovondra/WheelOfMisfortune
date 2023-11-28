@@ -15,13 +15,20 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
+// Rozhraní pro pohled (view) statistik
+interface StatisticsView {
+    suspend fun updateGraph()
+    fun clearAllData()
+}
+
+
 // Třída pro zobrazování statistik v uživatelském rozhraní
-class StatisticsViewImpl : AppCompatActivity() {
+class StatisticsViewImp : AppCompatActivity(), StatisticsView {
 
     private lateinit var graphView: GraphView
     private lateinit var clearGraphButton: Button
     private lateinit var controller: StatisticsController
-    private lateinit var database: AppDatabase
+    private lateinit var database: DataDatabase
     private var pointCounter: Int = 0
     private lateinit var lastAddedDate: String
 
@@ -40,8 +47,8 @@ class StatisticsViewImpl : AppCompatActivity() {
         clearGraphButton = findViewById(R.id.clearDataButton)
 
         // Inicializace databáze a kontroleru s použitím datového rozhraní
-        database = AppDatabase.getInstance(this)
-        controller = StatisticsController(DataRepository(database.dataDao()))
+        database = DataDatabase.getInstance(this)
+        controller = StatisticsControllerImp(DataRepository(database.dataDao()))
         lastAddedDate = getCurrentDate()
 
         // Načtení aktuálních dat
@@ -124,7 +131,7 @@ class StatisticsViewImpl : AppCompatActivity() {
 
 
     // Metoda pro aktualizaci grafu ve specifickém vlákně
-    private suspend fun updateGraph() {
+    override suspend fun updateGraph() {
         // Získání všech dat z databáze
         val dataEntities = database.dataDao().getAllData()
         // Získání formátovaných popisků pro osu X z databáze
@@ -139,7 +146,7 @@ class StatisticsViewImpl : AppCompatActivity() {
 
     // Metoda pro smazání všech dat
     @OptIn(DelicateCoroutinesApi::class)
-    private fun clearAllData() {
+    override fun clearAllData() {
         GlobalScope.launch {
             database.dataDao().deleteAllData()  // Smazání všech dat v databázi
             pointCounter = 0                    // Nastavení čítače bodů na 0

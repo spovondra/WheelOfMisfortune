@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 // Tato třída představuje Room Database v aplikaci
 @Database(entities = [DataEntity::class], version = 4, exportSchema = false)
-abstract class AppDatabase : RoomDatabase() {
+abstract class DataDatabase : RoomDatabase() {
 
     // Abstraktní metoda pro získání přístupu k rozhraní pro práci s daty
     abstract fun dataDao(): DataDao
@@ -15,10 +15,10 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         // Volatile instance databáze pro zajištění správné synchronizace
         @Volatile
-        private var instance: AppDatabase? = null
+        private var instance: DataDatabase? = null
 
         // Metoda pro získání instance databáze
-        fun getInstance(context: Context): AppDatabase {
+        fun getInstance(context: Context): DataDatabase {
             // Pokud instance neexistuje, vytvoříme ji s použitím synchronizace
             return instance ?: synchronized(this) {
                 instance ?: buildDatabase(context).also { instance = it }
@@ -26,11 +26,11 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         // Metoda pro vytvoření instance databáze
-        private fun buildDatabase(context: Context): AppDatabase {
+        private fun buildDatabase(context: Context): DataDatabase {
             return Room.databaseBuilder(
                 context.applicationContext,
-                AppDatabase::class.java,
-                "app_database"
+                DataDatabase::class.java,
+                "data_database"
             )
                 .fallbackToDestructiveMigration() // Při aktualizaci databáze odstraní všechna data
                 .build()
