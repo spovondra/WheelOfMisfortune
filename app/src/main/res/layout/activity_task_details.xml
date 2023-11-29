@@ -1,0 +1,67 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/taskName"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:background="@drawable/edittext_border"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="29dp" />
+
+            <TextView
+                android:id="@+id/taskDescription"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/edittext_block_border"
+                android:gravity="top"
+                android:maxLines="10"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="334dp" />
+
+            <Button
+                android:id="@+id/buttonAddTask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_half_circle_button_done"
+                android:gravity="center"
+                android:text="Hotovo"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/buttonBack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rounded_half_circle_button_back"
+                android:gravity="center"
+                android:text="Zpět"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
