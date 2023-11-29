@@ -10,9 +10,10 @@ import kotlinx.coroutines.withContext
 // Rozhraní reprezentující model úkolů
 interface TaskModel {
     suspend fun getAllTasks(): List<Task>
+    suspend fun getTaskById(taskId: Int): Task?  // New method for getting a task by ID
     suspend fun removeTask(task: Task)
     suspend fun insertTask(task: Task)
-    suspend fun addNewTask(title: String, description: String, priority: Int, iconResId: Int)
+    suspend fun addNewTask(title: String, description: String)
 }
 
 // Implementace rozhraní TaskModel
@@ -26,6 +27,11 @@ class TaskModelImpl(private val context: Context) : TaskModel {
         return@withContext taskDao.getAllTasks()
     }
 
+    // Metoda pro získání úkolu podle ID (implementace z rozhraní TaskModel)
+    override suspend fun getTaskById(taskId: Int): Task? = withContext(Dispatchers.IO) {
+        return@withContext taskDao.getTaskById(taskId)
+    }
+
     // Metoda pro odstranění úkolu (implementace z rozhraní TaskModel)
     override suspend fun removeTask(task: Task) {
         taskDao.deleteTask(task)
@@ -37,9 +43,10 @@ class TaskModelImpl(private val context: Context) : TaskModel {
     }
 
     // Nová metoda pro vložení nové úlohy s parametry názvu a popisu
-    override suspend fun addNewTask(title: String, description: String, priority: Int, iconResId: Int) {
-        val newTask = Task(title, description, priority, iconResId)
+    override suspend fun addNewTask(title: String, description: String) {
+        // Vytvoření nové instance úkolu pomocí primárního konstruktoru entity Task
+        val newTask = Task(title = title, description = description)
+        // Volání metody pro vložení úkolu do databáze
         insertTask(newTask)
     }
-
 }

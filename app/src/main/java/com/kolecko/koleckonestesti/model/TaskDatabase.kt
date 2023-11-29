@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 // Abstraktní třída reprezentující databázi úkolů
-@Database(entities = [Task::class], version = 2, exportSchema = false)
+@Database(entities = [Task::class], version = 1, exportSchema = false)
 abstract class TaskDatabase : RoomDatabase() {
     // Abstraktní metoda pro získání přístupu k DAO pro úkoly
     abstract fun taskDao(): TaskDao
