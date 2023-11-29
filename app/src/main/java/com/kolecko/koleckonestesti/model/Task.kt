@@ -10,10 +10,17 @@ data class Task(
     val id: Long = 0,             // Identifikační číslo úkolu
     val title: String,            // Název úkolu
     val description: String,      // Popis úkolu
-    val points: Int = DEFAULT_POINTS // Počet bodů při splnění úkolu, defaultně nastaven na 5
+    val points: Int = DEFAULT_POINTS, // Počet bodů při splnění úkolu, defaultně nastaven na 5
+    val priority: Int = 0,        // Priorita úkolu
+    val iconResId: Int = 0        // ID ikonky úkolu
 ) {
     // Alternativní konstruktor pro vytvoření instance Task s určenými vlastnostmi
-    constructor(title: String, description: String) : this(0, title, description)
+    constructor(
+        title: String,
+        description: String,
+        priority: Int,
+        iconResId: Int
+    ) : this(0, title, description, DEFAULT_POINTS, priority, iconResId)
 
     // Společné hodnoty pro všechny instance třídy Task
     companion object {

@@ -75,34 +75,45 @@
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
-                <!-- Clickable icon images with equal weight -->
-                <ImageView
+                <ImageButton
                     android:id="@+id/icon1"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:src="@drawable/icon1" />
+                    android:src="@drawable/icon1"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="Icon 1"
+                    android:onClick="onIconClick" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/icon2"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:src="@drawable/icon2" />
+                    android:src="@drawable/icon2"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="Icon 2"
+                    android:onClick="onIconClick" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/icon3"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:src="@drawable/icon3" />
+                    android:src="@drawable/icon3"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="Icon 3"
+                    android:onClick="onIconClick" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/icon4"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:src="@drawable/icon4" />
+                    android:src="@drawable/icon4"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:contentDescription="Icon 4"
+                    android:onClick="onIconClick" />
             </LinearLayout>
 
 

@@ -10,4 +10,6 @@
     <color name="colorPrimary">#FAFAFA</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="selectedIconColor">#F9351B</color>
+    <color name="iconColor">#F9661B</color>
 </resources>

@@ -8,13 +8,14 @@ import androidx.room.Query
 // Rozhraní pro přístup k datům úkolů v databázi
 @Dao
 interface TaskDao {
-    // Metoda pro vložení úkolu do databáze
+    /// Metoda pro vložení úkolu do databáze
     @Insert
     suspend fun insertTask(task: Task)
 
     // Metoda pro získání všech úkolů uložených v databázi
     @Query("SELECT * FROM Task")
     suspend fun getAllTasks(): List<Task>
+
 
     // Metoda pro smazání úkolu z databáze
     @Delete

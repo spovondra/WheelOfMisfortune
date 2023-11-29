@@ -6,7 +6,7 @@
     <string name="wheel_spin_description">Wheel To Spin</string>
     <string name="button_change_time_of_notification">Změnit čas notifikace</string>
     <string name="wheel_static_description">Statické okolí kolečka</string>
-    <string name="button_add">Add Button</string>
+    <string name="button_add_description">Add Button</string>
 
 
 </resources>
