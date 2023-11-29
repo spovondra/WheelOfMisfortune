@@ -1,0 +1,5 @@
+<!-- res/drawable/half_circle_button_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#525252" /> <!-- Background color of the button -->
+    <corners android:radius="100dp" /> <!-- Adjust the radius to create half-circle edges -->
+</shape>
