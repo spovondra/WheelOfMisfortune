@@ -13,15 +13,16 @@
 
 ## Instalace
 
-Pokud si chcete vyzkoušet **Kolečko Neštěstí**, můžete aplikaci stáhnout ve formátu balíčku .apk z [tohoto odkazu](https://github.com/spovondra/KoleckoNestesti.git). Nebo můžete využít Android Studia a zdrojový kód této aplikace a to dle následujících kroků:
+Pokud si chcete vyzkoušet **Kolečko Neštěstí**, můžete aplikaci stáhnout ve formátu balíčku .apk z [tohoto odkazu](https://github.com/spovondra/KoleckoNestesti.git). 
+Nebo můžete využít Android Studia a zdrojový kód této aplikace a to dle následujících kroků:
 
 1. Naklonujte si tento repozitář:
 
    ```bash
    git clone https://github.com/spovondra/KoleckoNestesti.git
-Otevřete projekt v Android Studiu.
+2. Otevřete projekt v Android Studiu.
 
-Spusťte projekt na emulátoru nebo fyzickém Android zařízení.
+3. Spusťte projekt na emulátoru nebo fyzickém Android zařízení.
 
 Zábava a Produktivita je s Kolečekm Neštěstí na Dosah.
 S Kolečkem Neštěstí můžete snadno najít zábavný způsob, jak trávit svůj volný čas a snadno nechat náhodu rozhodnout o svých úkolech. Enjoy it!
