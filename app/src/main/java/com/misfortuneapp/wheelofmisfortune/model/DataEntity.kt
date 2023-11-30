@@ -1,4 +1,4 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.misfortuneapp.wheelofmisfortune.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

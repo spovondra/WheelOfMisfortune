@@ -1,23 +1,29 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.misfortuneapp.wheelofmisfortune.model
 
 import android.content.Context
 import com.misfortuneapp.wheelofmisfortune.model.Task
 import com.misfortuneapp.wheelofmisfortune.model.TaskDatabase
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 // Rozhraní reprezentující model úkolů
 interface TaskModel {
     suspend fun getAllTasks(): List<Task>
-    suspend fun getTaskById(taskId: Int): Task?  // New method for getting a task by ID
+    suspend fun getTaskById(taskId: Int): Task?
     suspend fun removeTask(task: Task)
     suspend fun insertTask(task: Task)
-    suspend fun addNewTask(title: String, description: String, priority: Int, iconResId: Int)
+    suspend fun updateTask(task: Task)
+    suspend fun addNewTask(
+        title: String,
+        description: String,
+        priority: Int,
+        iconResId: Int,
+        startTime: Long,
+        endTime: Long
+    )
 }
 
 // Implementace rozhraní TaskModel
-@OptIn(DelicateCoroutinesApi::class)
 class TaskModelImpl(private val context: Context) : TaskModel {
     // Získání přístupu k DAO pro úkoly
     private val taskDao = TaskDatabase.getDatabase(context).taskDao()
@@ -42,9 +48,34 @@ class TaskModelImpl(private val context: Context) : TaskModel {
         taskDao.insertTask(task)
     }
 
+    // Metoda pro aktualizaci úkolu (implementace z rozhraní TaskModel)
+    override suspend fun updateTask(task: Task) {
+        taskDao.updateTask(task)
+    }
+
     // Nová metoda pro vložení nové úlohy s parametry názvu a popisu
-    override suspend fun addNewTask(title: String, description: String, priority: Int, iconResId: Int) {
-        val newTask = Task(title, description, priority, iconResId)
+    override suspend fun addNewTask(
+        title: String,
+        description: String,
+        priority: Int,
+        iconResId: Int,
+        startTime: Long,
+        endTime: Long
+    ) {
+        val lastTask = taskDao.getLastTask()
+        val newDisplayId = lastTask?.displayId?.plus(1) ?: 1
+
+        val newTask = Task(
+            displayId = newDisplayId,
+            title = title,
+            description = description,
+            priority = priority,
+            iconResId = iconResId,
+            startTime = startTime,
+            taskState = TaskState.AVAILABLE,
+            endTime = endTime
+        )
+
         insertTask(newTask)
     }
 }

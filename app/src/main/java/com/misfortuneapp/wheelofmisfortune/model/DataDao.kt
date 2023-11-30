@@ -1,4 +1,4 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.misfortuneapp.wheelofmisfortune.model
 
 import androidx.room.Dao
 import androidx.room.Insert

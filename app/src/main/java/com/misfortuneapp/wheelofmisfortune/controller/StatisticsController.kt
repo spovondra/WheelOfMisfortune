@@ -1,5 +1,6 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.misfortuneapp.wheelofmisfortune.controller
 
+import com.misfortuneapp.wheelofmisfortune.model.*
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

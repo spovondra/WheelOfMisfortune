@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 
 // Rozhraní pro přístup k datům úkolů v databázi
 @Dao
@@ -24,5 +25,16 @@ interface TaskDao {
     @Query("SELECT * FROM Task WHERE id = :taskId")
     suspend fun getTaskById(taskId: Int): Task?
 
-}
+    // Metoda pro aktualizaci úkolu v databázi
+    @Update
+    suspend fun updateTask(task: Task)
 
+    // Metoda pro nastavení startTime a endTime pro úkol
+    @Query("UPDATE Task SET startTime = :startTime, endTime = :endTime, taskState = :taskState WHERE id = :taskId")
+    suspend fun setTaskTimeFrame(taskId: Int, startTime: Long, endTime: Long, taskState: TaskState)
+
+    // Metoda pro získání posledního úkolu
+    @Query("SELECT * FROM Task ORDER BY id DESC LIMIT 1")
+    suspend fun getLastTask(): Task?
+
+}

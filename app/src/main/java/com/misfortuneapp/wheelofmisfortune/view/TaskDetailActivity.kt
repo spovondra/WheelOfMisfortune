@@ -1,4 +1,4 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.misfortuneapp.wheelofmisfortune.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,12 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.misfortuneapp.wheelofmisfortune.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import com.misfortuneapp.wheelofmisfortune.controller.*
+import com.misfortuneapp.wheelofmisfortune.model.TaskModelImpl
 
 class TaskDetailsActivity : AppCompatActivity() {
 

@@ -1,5 +1,6 @@
-package com.misfortuneapp.wheelofmisfortune
-import  android.util.Log;
+package com.misfortuneapp.wheelofmisfortune.view
+
+import android.util.Log;
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
 import android.content.Intent
@@ -12,7 +13,10 @@ import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.misfortuneapp.wheelofmisfortune.model.Task
+import com.misfortuneapp.wheelofmisfortune.R
+import com.misfortuneapp.wheelofmisfortune.controller.*
+import com.misfortuneapp.wheelofmisfortune.custom.*
+import com.misfortuneapp.wheelofmisfortune.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -22,12 +26,12 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.MainScope
 
 interface MainView {
-    fun showUpdatedPoints(text: String) //nechat
-    suspend fun showAllTasks() //nechat
-    fun showStatistics() //nechat
-    fun showTaskDialog(task: Task) //nechat
-    fun showBarAndTime(progress: Int, currentCountdownTime: Int) //nechat
-    fun wheelAbleToTouch() //nechat
+    fun showUpdatedPoints(text: String)
+    suspend fun showAllTasks()
+    fun showStatistics()
+    fun showTaskDialog(task: Task)
+    fun showBarAndTime(progress: Int, currentCountdownTime: Int)
+    fun wheelAbleToTouch()
 }
 
 class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope() {

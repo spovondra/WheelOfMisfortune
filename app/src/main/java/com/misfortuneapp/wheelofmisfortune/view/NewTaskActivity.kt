@@ -1,4 +1,4 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.misfortuneapp.wheelofmisfortune.view
 
 import android.content.Context
 import android.os.Bundle
@@ -10,10 +10,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.misfortuneapp.wheelofmisfortune.R
+import com.misfortuneapp.wheelofmisfortune.controller.*
+import com.misfortuneapp.wheelofmisfortune.model.*
 import kotlinx.coroutines.launch
 
 class NewTaskActivity : AppCompatActivity() {
+    private lateinit var taskController: MainController
+    private lateinit var mainView: MainView
+    private lateinit var notification: Notification
     private lateinit var taskModel: TaskModel
+    private lateinit var statisticsController: StatisticsController
     private var selectedIconResId: Int = R.drawable.icon1 // Výchozí ikona
     private var selectedImageView: ImageView? = null
 
@@ -26,9 +33,19 @@ class NewTaskActivity : AppCompatActivity() {
         supportActionBar?.elevation = 0f
         supportActionBar?.title = "Nová úloha"
 
-        // Inicializace instance TaskModel
+        // Initialize instances
+        mainView = MainViewImp()
+        notification = NotificationHandler(this)
         taskModel = TaskModelImpl(this)
+        statisticsController = StatisticsControllerImp(DataRepository(DataDatabase.getInstance(this).dataDao()))
 
+        // Inicializace instance TaskController
+        taskController = MainControllerImpl(
+            view = mainView,
+            notification = notification,
+            model = taskModel,
+            statisticsController = statisticsController
+        )
         // Nastavení posluchače tlačítka pro přidání úlohy
         val addTaskButton: Button = findViewById(R.id.buttonAddTask)
         addTaskButton.setOnClickListener {
@@ -80,7 +97,18 @@ class NewTaskActivity : AppCompatActivity() {
 
         if (taskName.isNotBlank() && taskDescription.isNotBlank()) {
             lifecycleScope.launch {
-                taskModel.addNewTask(taskName, taskDescription, priority, selectedIconResId)
+                // Use TaskModel methods to add a new task
+                taskModel.addNewTask(
+                    title = taskName,
+                    description = taskDescription,
+                    priority = priority,
+                    iconResId = selectedIconResId,
+                    startTime = 22, // Docasne
+                    endTime = 22 // Docasne
+                )
+
+                // Optionally, you can update the UI or perform other actions after adding a new task
+
                 finish()
                 showToast("Úloha přidána!", Toast.LENGTH_SHORT)
             }

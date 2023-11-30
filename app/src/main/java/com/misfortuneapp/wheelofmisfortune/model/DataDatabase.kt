@@ -1,4 +1,4 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.misfortuneapp.wheelofmisfortune.model
 
 import android.content.Context
 import androidx.room.Database

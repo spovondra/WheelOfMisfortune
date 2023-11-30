@@ -1,4 +1,4 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.misfortuneapp.wheelofmisfortune.custom
 
 import android.content.Context
 import android.graphics.Canvas

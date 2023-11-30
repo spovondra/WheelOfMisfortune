@@ -14,7 +14,7 @@
         android:theme="@style/Theme.KoleckoNestesti"
         tools:targetApi="31">
         <activity
-            android:name=".MainViewImp"
+            android:name=".view.MainViewImp"
             android:exported="true"
             android:theme="@style/Theme.KoleckoNestesti">
             <intent-filter>
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StatisticsViewImp"
+            android:name=".view.StatisticsViewImp"
             android:exported="true"
             android:label="Statistics Activity"
             android:theme="@style/Theme.KoleckoNestesti">
@@ -35,13 +35,13 @@
             android:theme="@style/Theme.KoleckoNestesti">
         </activity>
         <activity
-            android:name=".NewTaskActivity"
+            android:name=".view.NewTaskActivity"
             android:exported="true"
             android:label="Nová úloha"
             android:theme="@style/Theme.KoleckoNestesti">
         </activity>
         <activity
-            android:name=".TaskDetailsActivity"
+            android:name=".view.TaskDetailsActivity"
             android:exported="true"
             android:label="Denní úloha"
             android:theme="@style/Theme.KoleckoNestesti">

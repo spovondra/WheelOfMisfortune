@@ -1,10 +1,11 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.misfortuneapp.wheelofmisfortune.controller
 
 import android.os.Handler
 import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
-import com.misfortuneapp.wheelofmisfortune.model.Task
+import com.misfortuneapp.wheelofmisfortune.model.*
+import com.misfortuneapp.wheelofmisfortune.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,6 +21,14 @@ interface MainController {
     fun startCountdownTime(maxCountdown: Int) //nechat
     suspend fun getAllTasks(): List<Task> //nechat
     fun loadPointsFromDatabase() //nechat
+    suspend fun addNewTask(
+        title: String,
+        description: String,
+        priority: Int,
+        iconResId: Int,
+        startTime: Long,
+        endTime: Long
+    )
 }
 
 class MainControllerImpl(
@@ -134,21 +143,6 @@ class MainControllerImpl(
         })
     }
 
-
-    // Metoda pro zobrazení statistik
-    private fun showStatistics() {
-        view.showStatistics()
-    }
-
-    // Metoda pro nastavení času po výběru času v dialogu
-    private fun onTimeSet(hourOfDay: Int, minute: Int) {
-        view.showBarAndTime(calculatedProgress, currentCountdownTime)
-        val countdown = hourOfDay * 60 + minute
-
-        isWheelSpinning = true
-        startCountdownTime(countdown)
-    }
-
     // Metoda pro asynchronní získání všech úloh
     override suspend fun getAllTasks(): List<Task> {
         return model.getAllTasks()
@@ -177,5 +171,18 @@ class MainControllerImpl(
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return dateFormat.format(calendar.time)
+    }
+
+    override suspend fun addNewTask(
+        title: String,
+        description: String,
+        priority: Int,
+        iconResId: Int,
+        startTime: Long,
+        endTime: Long
+    ) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            model.addNewTask(title, description, priority, iconResId, startTime, endTime)
+        }
     }
 }

@@ -1,11 +1,12 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.misfortuneapp.wheelofmisfortune.custom
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.misfortuneapp.wheelofmisfortune.model.Task
+import com.misfortuneapp.wheelofmisfortune.R
+import com.misfortuneapp.wheelofmisfortune.model.*
 
 
 class TaskAdapter(private val tasks: List<Task>, private val onItemClick: (Task) -> Unit) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {

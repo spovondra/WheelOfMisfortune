@@ -1,4 +1,4 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.misfortuneapp.wheelofmisfortune.view
 
 import android.os.Bundle
 import android.widget.Button
@@ -7,6 +7,7 @@ import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.helper.StaticLabelsFormatter
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
+import com.misfortuneapp.wheelofmisfortune.R
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -14,6 +15,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
+import com.misfortuneapp.wheelofmisfortune.controller.*
+import com.misfortuneapp.wheelofmisfortune.custom.*
+import com.misfortuneapp.wheelofmisfortune.model.*
 
 // Rozhraní pro pohled (view) statistik
 interface StatisticsView {

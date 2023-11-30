@@ -1,4 +1,4 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.misfortuneapp.wheelofmisfortune.model
 
 // Repozitář pro přístup k datům prostřednictvím DataDao
 class DataRepository(private val dataDao: DataDao) {
