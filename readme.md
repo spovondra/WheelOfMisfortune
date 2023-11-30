@@ -25,6 +25,7 @@ Nebo můžete využít Android Studia a zdrojový kód této aplikace a to dle n
 
 3. Spusťte projekt na emulátoru nebo fyzickém Android zařízení.
 
+
 Zábava a Produktivita je s Kolečekm Neštěstí na Dosah.
 
 S Kolečkem Neštěstí můžete snadno najít zábavný způsob, jak trávit svůj volný čas a snadno nechat náhodu rozhodnout o svých úkolech. Enjoy it!
