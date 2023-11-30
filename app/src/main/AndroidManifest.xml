@@ -40,5 +40,11 @@
             android:label="Nová úloha"
             android:theme="@style/Theme.KoleckoNestesti">
         </activity>
+        <activity
+            android:name=".TaskDetailsActivity"
+            android:exported="true"
+            android:label="Denní úloha"
+            android:theme="@style/Theme.KoleckoNestesti">
+        </activity>
     </application>
 </manifest>

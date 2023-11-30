@@ -14,16 +14,12 @@ import java.util.Date
 import java.util.Locale
 
 interface MainController {
-    fun setIsWheelSpinning (isIt: Boolean)
-    fun getIsWheelSpinning () : Boolean
-    fun updatePoints()
-    fun doWithTaskDialog()
-    fun startCountdownTime(maxCountdown: Int)
-    fun showStatistics()
-    fun onTimeSet(hourOfDay: Int, minute: Int)
-    suspend fun getAllTasks(): List<Task>
-    fun loadPointsFromDatabase()
-    fun getCurrentDate(): String
+    fun setIsWheelSpinning (isIt: Boolean) //nechat
+    fun getIsWheelSpinning () : Boolean //nechat
+    fun doWithTaskDialog() //nechat
+    fun startCountdownTime(maxCountdown: Int) //nechat
+    suspend fun getAllTasks(): List<Task> //nechat
+    fun loadPointsFromDatabase() //nechat
 }
 
 class MainControllerImpl(
@@ -51,7 +47,7 @@ class MainControllerImpl(
     }
 
     // Metoda pro aktualizaci bodů na základě vybrané úlohy
-    override fun updatePoints() {
+    private fun updatePoints() {
         lifecycleScope.launch(Dispatchers.Main) {
             if (!isWheelSpinning) {
                 // Náhodně vybere úlohu
@@ -105,17 +101,17 @@ class MainControllerImpl(
                 isWheelSpinning = true
                 view.showAllTasks()
                 updatePoints()
-
             } else {
                 view.showAllTasks()
                 updatePoints()
             }
-            isWheelSpinning = false
+            isWheelSpinning = false  // Nastavte na false po skončení dialogu úlohy
         }
     }
 
     // Metoda pro spuštění odpočtu času
     override fun startCountdownTime(maxCountdown: Int) {
+        isWheelSpinning = true  // Nastavte na true na začátku odpočtu
         handler.removeCallbacksAndMessages(null)
         val updateInterval = 1000L
         handler.post(object : Runnable {
@@ -126,27 +122,26 @@ class MainControllerImpl(
                     view.showBarAndTime(calculatedProgress, currentCountdownTime)
                     currentCountdownTime--
                     handler.postDelayed(this, updateInterval)
-
                 } else {
                     notification.showNotification()
                     calculatedProgress = 100
                     currentCountdownTime = 0
                     view.showBarAndTime(calculatedProgress, currentCountdownTime)
-                    isWheelSpinning = false
-
+                    isWheelSpinning = false  // Nastavte na false po skončení odpočtu
                     view.wheelAbleToTouch()
                 }
             }
         })
     }
 
+
     // Metoda pro zobrazení statistik
-    override fun showStatistics() {
+    private fun showStatistics() {
         view.showStatistics()
     }
 
     // Metoda pro nastavení času po výběru času v dialogu
-    override fun onTimeSet(hourOfDay: Int, minute: Int) {
+    private fun onTimeSet(hourOfDay: Int, minute: Int) {
         view.showBarAndTime(calculatedProgress, currentCountdownTime)
         val countdown = hourOfDay * 60 + minute
 
@@ -178,7 +173,7 @@ class MainControllerImpl(
     }
 
     // Metoda pro vrácení aktuálního data
-    override fun getCurrentDate(): String {
+    private fun getCurrentDate(): String {
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return dateFormat.format(calendar.time)

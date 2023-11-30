@@ -23,15 +23,12 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.MainScope
 
 interface MainView {
-    fun showWheelSpin()
-    fun showUpdatedPoints(text: String)
-    suspend fun showNumberOfTasks()
-    suspend fun showAllTasks()
-    fun showStatistics()
-    fun showTaskDialog(task: Task)
-    fun showSetTime()
-    fun showBarAndTime(progress: Int, currentCountdownTime: Int)
-    fun wheelAbleToTouch()
+    fun showUpdatedPoints(text: String) //nechat
+    suspend fun showAllTasks() //nechat
+    fun showStatistics() //nechat
+    fun showTaskDialog(task: Task) //nechat
+    fun showBarAndTime(progress: Int, currentCountdownTime: Int) //nechat
+    fun wheelAbleToTouch() //nechat
 }
 
 class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope() {
@@ -76,7 +73,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
-    override fun showWheelSpin() {
+    private fun showWheelSpin() {
         val wheel = findViewById<ImageView>(R.id.wheel_spin)
         val pivotX = wheel.width / 2f
         val pivotY = wheel.height / 2f
@@ -115,7 +112,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     }
 
     @SuppressLint("SetTextI18n")
-    override suspend fun showNumberOfTasks() {
+    private suspend fun showNumberOfTasks() {
         val textNum: TextView = findViewById(R.id.textNum)
         textNum.text = "Your tasks (${controller.getAllTasks().size})"
     }
@@ -157,7 +154,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         dialog.show()
     }
 
-    override fun showSetTime() {
+    private fun showSetTime() {
         val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
         buttonSetTime.setOnClickListener {
             val timePicker = TimePickerDialog(this, { _, hourOfDay, minute ->

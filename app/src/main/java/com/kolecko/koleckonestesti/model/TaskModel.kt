@@ -13,7 +13,7 @@ interface TaskModel {
     suspend fun getTaskById(taskId: Int): Task?  // New method for getting a task by ID
     suspend fun removeTask(task: Task)
     suspend fun insertTask(task: Task)
-    suspend fun addNewTask(title: String, description: String)
+    suspend fun addNewTask(title: String, description: String, priority: Int, iconResId: Int)
 }
 
 // Implementace rozhraní TaskModel
@@ -43,10 +43,8 @@ class TaskModelImpl(private val context: Context) : TaskModel {
     }
 
     // Nová metoda pro vložení nové úlohy s parametry názvu a popisu
-    override suspend fun addNewTask(title: String, description: String) {
-        // Vytvoření nové instance úkolu pomocí primárního konstruktoru entity Task
-        val newTask = Task(title = title, description = description)
-        // Volání metody pro vložení úkolu do databáze
+    override suspend fun addNewTask(title: String, description: String, priority: Int, iconResId: Int) {
+        val newTask = Task(title, description, priority, iconResId)
         insertTask(newTask)
     }
 }
