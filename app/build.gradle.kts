@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.kolecko.koleckonestesti"
+    namespace = "com.misfortuneapp.wheelofmisfortune"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.kolecko.koleckonestesti"
+        applicationId = "com.misfortuneapp.wheelofmisfortune"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

@@ -78,7 +78,7 @@
                 android:textSize="36sp"
                 android:textStyle="bold" />
 
-            <com.kolecko.koleckonestesti.CircularProgressBar
+            <com.misfortuneapp.wheelofmisfortune.CircularProgressBar
                 android:id="@+id/circularProgressBar"
                 android:layout_width="363dp"
                 android:layout_height="363dp"
