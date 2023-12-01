@@ -29,12 +29,6 @@
             android:theme="@style/Theme.KoleckoNestesti">
         </activity>
         <activity
-            android:name=".SetTimeActivity"
-            android:exported="true"
-            android:label="Nastavení času"
-            android:theme="@style/Theme.KoleckoNestesti">
-        </activity>
-        <activity
             android:name=".view.NewTaskActivity"
             android:exported="true"
             android:label="Nová úloha"
