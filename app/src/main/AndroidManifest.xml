@@ -42,7 +42,7 @@
             android:label="Denní úloha"
             android:theme="@style/Theme.KoleckoNestesti">
         </activity>
-
+            
         <service
             android:name=".custom.BroadcastService"
             android:enabled="true"

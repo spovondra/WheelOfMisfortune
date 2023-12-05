@@ -3,16 +3,14 @@ package com.misfortuneapp.wheelofmisfortune.controller
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Handler
-import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.misfortuneapp.wheelofmisfortune.custom.BroadcastService
 import com.misfortuneapp.wheelofmisfortune.model.*
 import com.misfortuneapp.wheelofmisfortune.view.*
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -51,20 +49,16 @@ class MainControllerImpl(
     private val model: TaskModel, // Instance pro práci s úlohami
     private val statisticsController: StatisticsController // Instance pro správu statistik
 ) : ComponentActivity(), MainController {
-
     private var isWheelSpinning = false // Příznak, zda se kolo otáčí
     private var currentPoints = 0 // Aktuální počet bodů
     private var calculatedProgress = 0 // Vypočtený postup odpočtu
-    //private var currentCountdownTime = 0 // Aktuální doba odpočtu
     private var lastAddedDate: String = getCurrentDate() // Poslední datum přidání bodů
-    //private val handler = Handler(Looper.getMainLooper()) // Handler pro plánování úkolů na hlavním vlákně
-
     private var countdownServiceIntent: Intent? = null
 
+    @OptIn(DelicateCoroutinesApi::class)
     val countdownReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == BroadcastService.COUNTDOWN_BR) {
-                val taskId = intent.getIntExtra(BroadcastService.EXTRA_TASK_ID, -1)
                 val remainingTime = intent.getLongExtra("countdown", 0)
                 val timerRunning = intent.getBooleanExtra("countdownTimerRunning", false)
                 val timerFinished = intent.getBooleanExtra("countdownTimerFinished", false)
@@ -77,23 +71,20 @@ class MainControllerImpl(
                         calculatedProgress = ((getTimeSetByUser() - remainingTime) * 100 / getTimeSetByUser()).toInt()
                     }
 
-
-                    if(hours.toInt() == 0) {
-
-                        text = "$minutes:$seconds"
-                    }
-                    else {
-                        text = "$hours:$minutes"
+                    text = if(hours.toInt() == 0) {
+                        String.format("%02d:%02d", minutes, seconds)
+                    } else {
+                        String.format("%02d:%02d", hours, minutes)
                     }
 
                 } else if (timerFinished) {
-                    text = "Finish"
+                    text = "Start"
                     notification.showNotification()
                     calculatedProgress = 100
                     isWheelSpinning = false  // Nastavte na false po skončení odpočtu
                     view.wheelAbleToTouch()
                 }
-                view.showBarAndTime(calculatedProgress,text)
+                view.showBarAndTime(calculatedProgress, text)
             }
         }
     }
@@ -145,16 +136,12 @@ class MainControllerImpl(
                     SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
                 statisticsController.insertOrUpdateData(formattedDate, currentPoints.toDouble())
 
-                if (selectedTask != null) {
-                    view.showTaskDialog(selectedTask)
-                }
+                view.showTaskDialog(selectedTask)
 
                 // Odebere vybranou úlohu z databáze
-                if (selectedTask != null) {
-                    model.removeTask(selectedTask)
-                }
+                model.removeTask(selectedTask)
             }
-
+            selectedTask()
             isWheelSpinning = true
         }
     }
@@ -163,45 +150,11 @@ class MainControllerImpl(
     override fun doWithTaskDialog() {
         lifecycleScope.launch(Dispatchers.Main) {
             delay(3000)
-            if (model.getAllTasks().isNotEmpty()) {
-                isWheelSpinning = true
-                view.showAllTasks()
-                updatePoints()
-            } else {
-                view.showAllTasks()
-                updatePoints()
-            }
+            view.showAllTasks()
+            updatePoints()
             isWheelSpinning = false  // Nastavte na false po skončení dialogu úlohy
         }
     }
-
-    // Metoda pro spuštění odpočtu času
-    /*
-    override fun startCountdownTime(maxCountdown: Int) {
-        isWheelSpinning = true  // Nastavte na true na začátku odpočtu
-        handler.removeCallbacksAndMessages(null)
-        val updateInterval = 1000L
-        handler.post(object : Runnable {
-            var currentCountdownTime = maxCountdown
-            override fun run() {
-                if (currentCountdownTime > 0) {
-                    calculatedProgress = (maxCountdown - currentCountdownTime) * 100 / maxCountdown
-                    view.showBarAndTime(calculatedProgress, currentCountdownTime)
-                    currentCountdownTime--
-                    handler.postDelayed(this, updateInterval)
-                } else {
-                    notification.showNotification()
-                    calculatedProgress = 100
-                    currentCountdownTime = 0
-                    view.showBarAndTime(calculatedProgress, currentCountdownTime)
-                    isWheelSpinning = false  // Nastavte na false po skončení odpočtu
-                    view.wheelAbleToTouch()
-                }
-            }
-        })
-    }
-
-     */
 
     override fun startTimer(taskId: Int) {
         isWheelSpinning = true
@@ -287,9 +240,7 @@ class MainControllerImpl(
             task.endTime = System.currentTimeMillis() + selectedTimeInMillis
             model.updateTask(task)
 
-            if (task != null) {
-                startTimer(task.id)
-            }
+            startTimer(task.id)
         }
     }
 

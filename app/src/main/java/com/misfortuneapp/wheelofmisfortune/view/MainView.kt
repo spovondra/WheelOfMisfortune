@@ -1,13 +1,11 @@
 package com.misfortuneapp.wheelofmisfortune.view
 
-import android.util.Log;
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.ImageView
@@ -45,10 +43,8 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private lateinit var notificationHandler: NotificationHandler
     private lateinit var statisticsController: StatisticsController
     private lateinit var dataRepository: DataRepository
-    private var countdownServiceIntent: Intent? = null
 
-
-
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +67,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
         GlobalScope.launch {
             controller.selectedTask()?.let { controller.startTimer(it.id) }
-            showNumberOfTasks()
             showAllTasks()
         }
         showStatistics()
@@ -112,7 +107,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         GlobalScope.launch(Dispatchers.Main) {
             val buttonUp: Button = findViewById(R.id.buttonUp)
             buttonUp.text = text
-            showNumberOfTasks()
             showAllTasks()
             updateStatistics()
         }
@@ -132,6 +126,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     }
 
     override suspend fun showAllTasks() {
+        showNumberOfTasks()
         val taskList = findViewById<RecyclerView>(R.id.taskList)
         taskList.layoutManager = LinearLayoutManager(this)
 
@@ -158,16 +153,22 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     }
 
     override fun showTaskDialog(task: Task) {
+        runOnUiThread {
+            launch {
+                showAllTasks()
+            }
+        }
         val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setTitle("Your Task")
+        dialogBuilder.setTitle("Vaše vylosovaná úloha")
         dialogBuilder.setMessage("${task.title} - ${task.description}")
-        dialogBuilder.setPositiveButton("OK") { dialog, _ ->
+        dialogBuilder.setPositiveButton("Dokončit") { dialog, _ ->
             dialog.dismiss()
         }
         val dialog = dialogBuilder.create()
         dialog.show()
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun showSetTime() {
         val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
         val calendar = Calendar.getInstance()
@@ -214,14 +215,12 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
-
-
     override fun onResume() {
         super.onResume()
 
         launch {
-            showNumberOfTasks()
             showAllTasks()
+            controller.selectedTask()
         }
     }
 }
