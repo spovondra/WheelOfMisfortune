@@ -34,7 +34,7 @@ interface MainView {
     suspend fun showAllTasks()
     fun showStatistics()
     fun showTaskDialog(task: Task)
-    fun showBarAndTime(progress: Int, currentCountdownTime: Int)
+    fun showBarAndTime(progress: Int, currentCountdownTime: String)
     fun wheelAbleToTouch()
 }
 
@@ -47,23 +47,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private lateinit var dataRepository: DataRepository
     private var countdownServiceIntent: Intent? = null
 
-    private val countdownReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action == BroadcastService.COUNTDOWN_BR) {
-                val taskId = intent.getIntExtra(BroadcastService.EXTRA_TASK_ID, -1)
-                val remainingTime = intent.getLongExtra("countdown", 0)
-                val timerRunning = intent.getBooleanExtra("countdownTimerRunning", false)
-                val timerFinished = intent.getBooleanExtra("countdownTimerFinished", false)
 
-                if (timerRunning) {
-                    val (hours, minutes, seconds) = controller.calculateRemainingTime(remainingTime)
-                    countdownTimerTextView.text = "Remaining Time: $hours hours, $minutes minutes, $seconds seconds"
-                } else if (timerFinished) {
-                    countdownTimerTextView.text = "Timer Finished"
-                }
-            }
-        }
-    }
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,7 +84,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             startActivity(intent)
         }
 
-        registerReceiver(countdownReceiver, IntentFilter(BroadcastService.COUNTDOWN_BR))
+        registerReceiver(controller.countdownReceiver, IntentFilter(BroadcastService.COUNTDOWN_BR))
     }
 
     private fun showWheelSpin() {
@@ -194,8 +178,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 this,
                 { _, hourOfDay, minute ->
                     val selectedTimeInMillis = (hourOfDay * 60 + minute) * 60 * 1000L
-                    val selectedTime = String.format("%02d:%02d", hourOfDay, minute)
-                    countdownTimerTextView.text = selectedTime
 
                     GlobalScope.launch {
                         controller.setTimeToTask(selectedTimeInMillis)
@@ -212,9 +194,9 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
-    override fun showBarAndTime(progress: Int, currentCountdownTime: Int) {
+    override fun showBarAndTime(progress: Int, currentCountdownTime: String) {
         circularProgressBar.setProgress(progress)
-        countdownTimerTextView.text = String.format("%02d:%02d", currentCountdownTime / 60, currentCountdownTime % 60)
+        countdownTimerTextView.text = currentCountdownTime
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -232,10 +214,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
-    override fun onDestroy() {
-        unregisterReceiver(countdownReceiver)
-        super.onDestroy()
-    }
+
 
     override fun onResume() {
         super.onResume()

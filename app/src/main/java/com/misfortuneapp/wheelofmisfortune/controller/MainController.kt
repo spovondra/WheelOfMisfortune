@@ -1,5 +1,6 @@
 package com.misfortuneapp.wheelofmisfortune.controller
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
@@ -10,6 +11,7 @@ import com.misfortuneapp.wheelofmisfortune.custom.BroadcastService
 import com.misfortuneapp.wheelofmisfortune.model.*
 import com.misfortuneapp.wheelofmisfortune.view.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -22,7 +24,7 @@ interface MainController {
     fun setIsWheelSpinning (isIt: Boolean) //nechat
     fun getIsWheelSpinning () : Boolean //nechat
     fun doWithTaskDialog() //nechat
-    fun startCountdownTime(maxCountdown: Int) //nechat
+    //fun startCountdownTime(maxCountdown: Int) //nechat
     suspend fun getAllTasks(): List<Task> //nechat
     fun loadPointsFromDatabase() //nechat
     suspend fun addNewTask(
@@ -53,11 +55,52 @@ class MainControllerImpl(
     private var isWheelSpinning = false // Příznak, zda se kolo otáčí
     private var currentPoints = 0 // Aktuální počet bodů
     private var calculatedProgress = 0 // Vypočtený postup odpočtu
-    private var currentCountdownTime = 0 // Aktuální doba odpočtu
+    //private var currentCountdownTime = 0 // Aktuální doba odpočtu
     private var lastAddedDate: String = getCurrentDate() // Poslední datum přidání bodů
-    private val handler = Handler(Looper.getMainLooper()) // Handler pro plánování úkolů na hlavním vlákně
+    //private val handler = Handler(Looper.getMainLooper()) // Handler pro plánování úkolů na hlavním vlákně
 
     private var countdownServiceIntent: Intent? = null
+
+    val countdownReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == BroadcastService.COUNTDOWN_BR) {
+                val taskId = intent.getIntExtra(BroadcastService.EXTRA_TASK_ID, -1)
+                val remainingTime = intent.getLongExtra("countdown", 0)
+                val timerRunning = intent.getBooleanExtra("countdownTimerRunning", false)
+                val timerFinished = intent.getBooleanExtra("countdownTimerFinished", false)
+                var text = ""
+
+                if (timerRunning) {
+                    val (hours, minutes, seconds) = calculateRemainingTime(remainingTime)
+
+                    GlobalScope.launch {
+                        calculatedProgress = ((getTimeSetByUser() - remainingTime) * 100 / getTimeSetByUser()).toInt()
+                    }
+
+
+                    if(hours.toInt() == 0) {
+
+                        text = "$minutes:$seconds"
+                    }
+                    else {
+                        text = "$hours:$minutes"
+                    }
+
+                } else if (timerFinished) {
+                    text = "Finish"
+                    notification.showNotification()
+                    calculatedProgress = 100
+                    isWheelSpinning = false  // Nastavte na false po skončení odpočtu
+                    view.wheelAbleToTouch()
+                }
+                view.showBarAndTime(calculatedProgress,text)
+            }
+        }
+    }
+
+    private suspend fun getTimeSetByUser (): Long {
+        return selectedTask()!!.endTime-selectedTask()!!.startTime
+    }
 
     // Metoda pro nastavení příznaku, zda se kolo otáčí
     override fun setIsWheelSpinning(isIt: Boolean) {
@@ -73,41 +116,41 @@ class MainControllerImpl(
     private fun updatePoints() {
         lifecycleScope.launch(Dispatchers.Main) {
             if (!isWheelSpinning) {
-                // Náhodně vybere úlohu
-                val tasks = model.getAllTasks()
 
-                if (tasks.isNotEmpty()) {
-                    val selectedTask = tasks.random()
+                val selectedTask = selectedTask()
 
-                    // Zkontroluje, zda začal nový den
-                    val currentDate = getCurrentDate()
-                    if (currentDate != lastAddedDate) {
-                        currentPoints = 0
-                        lastAddedDate = currentDate
-                    }
+                // Zkontroluje, zda začal nový den
+                val currentDate = getCurrentDate()
+                if (currentDate != lastAddedDate) {
+                    currentPoints = 0
+                    lastAddedDate = currentDate
+                }
 
-                    // Zvýší body na základě výchozích bodů úlohy
-                    currentPoints += selectedTask.points
+                // Zvýší body na základě výchozích bodů úlohy
+                currentPoints += selectedTask!!.points
 
-                    // Text pro zobrazení v UI
-                    var text = "bodů"
-                    if (currentPoints == 1) {
-                        text = "bod"
-                    } else if (currentPoints in 2..4) {
-                        text = "body"
-                    }
+                // Text pro zobrazení v UI
+                var text = "bodů"
+                if (currentPoints == 1) {
+                    text = "bod"
+                } else if (currentPoints in 2..4) {
+                    text = "body"
+                }
 
-                    val finalText = "$currentPoints $text"
-                    view.showUpdatedPoints(finalText)
+                val finalText = "$currentPoints $text"
+                view.showUpdatedPoints(finalText)
 
-                    // Uloží body do databáze
-                    val formattedDate =
-                        SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
-                    statisticsController.insertOrUpdateData(formattedDate, currentPoints.toDouble())
+                // Uloží body do databáze
+                val formattedDate =
+                    SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
+                statisticsController.insertOrUpdateData(formattedDate, currentPoints.toDouble())
 
+                if (selectedTask != null) {
                     view.showTaskDialog(selectedTask)
+                }
 
-                    // Odebere vybranou úlohu z databáze
+                // Odebere vybranou úlohu z databáze
+                if (selectedTask != null) {
                     model.removeTask(selectedTask)
                 }
             }
@@ -133,6 +176,7 @@ class MainControllerImpl(
     }
 
     // Metoda pro spuštění odpočtu času
+    /*
     override fun startCountdownTime(maxCountdown: Int) {
         isWheelSpinning = true  // Nastavte na true na začátku odpočtu
         handler.removeCallbacksAndMessages(null)
@@ -155,6 +199,21 @@ class MainControllerImpl(
                 }
             }
         })
+    }
+
+     */
+
+    override fun startTimer(taskId: Int) {
+        isWheelSpinning = true
+
+        if (countdownServiceIntent != null) {
+            context.stopService(countdownServiceIntent)
+        }
+
+        countdownServiceIntent = Intent(context, BroadcastService::class.java)
+        countdownServiceIntent?.putExtra(BroadcastService.EXTRA_TASK_ID, taskId)
+        countdownServiceIntent?.action = BroadcastService.COUNTDOWN_BR
+        context.startService(countdownServiceIntent)
     }
 
     // Metoda pro asynchronní získání všech úloh
@@ -199,16 +258,7 @@ class MainControllerImpl(
             model.addNewTask(title, description, priority, iconResId, startTime, endTime)
         }
     }
-    override fun startTimer(taskId: Int) {
-        if (countdownServiceIntent != null) {
-            context.stopService(countdownServiceIntent)
-        }
 
-        countdownServiceIntent = Intent(context, BroadcastService::class.java)
-        countdownServiceIntent?.putExtra(BroadcastService.EXTRA_TASK_ID, taskId)
-        countdownServiceIntent?.action = BroadcastService.COUNTDOWN_BR
-        context.startService(countdownServiceIntent)
-    }
 
     override fun stopTimer() {
         if (countdownServiceIntent != null) {
@@ -257,5 +307,10 @@ class MainControllerImpl(
         }
 
         return selectedTask
+    }
+
+    override fun onDestroy() {
+        unregisterReceiver(countdownReceiver)
+        super.onDestroy()
     }
 }
