@@ -32,10 +32,12 @@
             <TextView
                 android:id="@+id/taskDescription"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/edittext_block_border"
                 android:gravity="top"
-                android:maxLines="10"
+                android:minLines="8"
+                android:maxLines="20"
+                android:maxLength="200"
                 android:paddingLeft="16dp"
                 android:paddingTop="8dp"
                 android:paddingRight="16dp" />

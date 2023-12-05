@@ -1,12 +1,16 @@
 package com.misfortuneapp.wheelofmisfortune.controller
 
+import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
+import com.misfortuneapp.wheelofmisfortune.custom.BroadcastService
 import com.misfortuneapp.wheelofmisfortune.model.*
 import com.misfortuneapp.wheelofmisfortune.view.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -29,9 +33,17 @@ interface MainController {
         startTime: Long,
         endTime: Long
     )
+    fun startTimer(taskId: Int)
+    fun stopTimer()
+    fun calculateRemainingTime(remainingTimeMillis: Long): Triple<Long, Long, Long>
+    suspend fun setTaskInProgress(task: Task)
+    suspend fun getTasksInProgress(): List<Task>
+    suspend fun setTimeToTask(selectedTimeInMillis: Long)
+    suspend fun selectedTask(): Task?
 }
 
 class MainControllerImpl(
+    private val context: Context,
     private val view: MainView, // Instance pro interakci s uživatelským rozhraním
     private val notification: Notification, // Instance pro zobrazení oznámení
     private val model: TaskModel, // Instance pro práci s úlohami
@@ -44,6 +56,8 @@ class MainControllerImpl(
     private var currentCountdownTime = 0 // Aktuální doba odpočtu
     private var lastAddedDate: String = getCurrentDate() // Poslední datum přidání bodů
     private val handler = Handler(Looper.getMainLooper()) // Handler pro plánování úkolů na hlavním vlákně
+
+    private var countdownServiceIntent: Intent? = null
 
     // Metoda pro nastavení příznaku, zda se kolo otáčí
     override fun setIsWheelSpinning(isIt: Boolean) {
@@ -184,5 +198,64 @@ class MainControllerImpl(
         lifecycleScope.launch(Dispatchers.IO) {
             model.addNewTask(title, description, priority, iconResId, startTime, endTime)
         }
+    }
+    override fun startTimer(taskId: Int) {
+        if (countdownServiceIntent != null) {
+            context.stopService(countdownServiceIntent)
+        }
+
+        countdownServiceIntent = Intent(context, BroadcastService::class.java)
+        countdownServiceIntent?.putExtra(BroadcastService.EXTRA_TASK_ID, taskId)
+        countdownServiceIntent?.action = BroadcastService.COUNTDOWN_BR
+        context.startService(countdownServiceIntent)
+    }
+
+    override fun stopTimer() {
+        if (countdownServiceIntent != null) {
+            context.stopService(countdownServiceIntent)
+        }
+    }
+
+    override fun calculateRemainingTime(remainingTimeMillis: Long): Triple<Long, Long, Long> {
+        val remainingSeconds = remainingTimeMillis / 1000
+        val remainingMinutes = remainingSeconds / 60
+        val remainingHours = remainingMinutes / 60
+        return Triple(remainingHours, remainingMinutes % 60, remainingSeconds % 60)
+    }
+
+    override suspend fun setTaskInProgress(task: Task) {
+        task.taskState = TaskState.IN_PROGRESS
+        model.updateTask(task)
+    }
+    override suspend fun getTasksInProgress(): List<Task> {
+        return model.getTasksByState(TaskState.IN_PROGRESS)
+    }
+
+    override suspend fun setTimeToTask(selectedTimeInMillis: Long) {
+        for (task in getTasksInProgress()) {
+            task.startTime = System.currentTimeMillis()
+            task.endTime = System.currentTimeMillis() + selectedTimeInMillis
+            model.updateTask(task)
+
+            if (task != null) {
+                startTimer(task.id)
+            }
+        }
+    }
+
+    override suspend fun selectedTask(): Task? {
+        val tasks = model.getAllTasks()
+        var selectedTask: Task? = null
+
+        if (tasks.isNotEmpty() && model.getTasksByState(TaskState.IN_PROGRESS).isNotEmpty()) {
+            selectedTask = getTasksInProgress()[0]
+        }
+
+        else if (tasks.isNotEmpty()) {
+            selectedTask = tasks.random()
+            setTaskInProgress(selectedTask)
+        }
+
+        return selectedTask
     }
 }

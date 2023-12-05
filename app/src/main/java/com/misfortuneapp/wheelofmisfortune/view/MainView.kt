@@ -3,7 +3,10 @@ package com.misfortuneapp.wheelofmisfortune.view
 import android.util.Log;
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
@@ -24,6 +27,7 @@ import kotlin.random.Random
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.MainScope
+import java.util.Calendar
 
 interface MainView {
     fun showUpdatedPoints(text: String)
@@ -41,6 +45,25 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private lateinit var notificationHandler: NotificationHandler
     private lateinit var statisticsController: StatisticsController
     private lateinit var dataRepository: DataRepository
+    private var countdownServiceIntent: Intent? = null
+
+    private val countdownReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action == BroadcastService.COUNTDOWN_BR) {
+                val taskId = intent.getIntExtra(BroadcastService.EXTRA_TASK_ID, -1)
+                val remainingTime = intent.getLongExtra("countdown", 0)
+                val timerRunning = intent.getBooleanExtra("countdownTimerRunning", false)
+                val timerFinished = intent.getBooleanExtra("countdownTimerFinished", false)
+
+                if (timerRunning) {
+                    val (hours, minutes, seconds) = controller.calculateRemainingTime(remainingTime)
+                    countdownTimerTextView.text = "Remaining Time: $hours hours, $minutes minutes, $seconds seconds"
+                } else if (timerFinished) {
+                    countdownTimerTextView.text = "Timer Finished"
+                }
+            }
+        }
+    }
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,11 +80,13 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         notificationHandler = NotificationHandler(this)
         statisticsController = StatisticsControllerImp(dataRepository)
 
-        controller = MainControllerImpl(this, notificationHandler, taskRepository, statisticsController)
-        controller.startCountdownTime(10)
+        controller = MainControllerImpl(this,this, notificationHandler, taskRepository, statisticsController)
+
+        //controller.startCountdownTime(10)
         controller.loadPointsFromDatabase()
 
         GlobalScope.launch {
+            controller.selectedTask()?.let { controller.startTimer(it.id) }
             showNumberOfTasks()
             showAllTasks()
         }
@@ -74,6 +99,8 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             val intent = Intent(this, NewTaskActivity::class.java)
             startActivity(intent)
         }
+
+        registerReceiver(countdownReceiver, IntentFilter(BroadcastService.COUNTDOWN_BR))
     }
 
     private fun showWheelSpin() {
@@ -159,15 +186,28 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
     private fun showSetTime() {
         val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
         buttonSetTime.setOnClickListener {
-            val timePicker = TimePickerDialog(this, { _, hourOfDay, minute ->
-                val selectedTime = String.format("%02d:%02d", hourOfDay, minute)
-                countdownTimerTextView.text = selectedTime
-                val countdown = hourOfDay * 60 + minute
+            val timePicker = TimePickerDialog(
+                this,
+                { _, hourOfDay, minute ->
+                    val selectedTimeInMillis = (hourOfDay * 60 + minute) * 60 * 1000L
+                    val selectedTime = String.format("%02d:%02d", hourOfDay, minute)
+                    countdownTimerTextView.text = selectedTime
 
-                circularProgressBar.setProgress(100)
-                controller.startCountdownTime(countdown)
-            }, 0, 0, true)
+                    GlobalScope.launch {
+                        controller.setTimeToTask(selectedTimeInMillis)
+                    }
+
+                    circularProgressBar.setProgress(100)
+                    //controller.startCountdownTime(countdown) //uz neni
+                },
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                true
+            )
             timePicker.show()
         }
     }
@@ -190,6 +230,11 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        unregisterReceiver(countdownReceiver)
+        super.onDestroy()
     }
 
     override fun onResume() {

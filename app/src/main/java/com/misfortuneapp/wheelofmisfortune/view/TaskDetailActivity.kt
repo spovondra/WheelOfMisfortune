@@ -39,7 +39,7 @@ class TaskDetailsActivity : AppCompatActivity() {
                     // Update UI with task details
                     Log.d("TaskDetailsActivity", "Task ID!!!!!§: $taskId")
                     taskNameTextView.text = it.title
-                    taskDescriptionTextView.text = it.description
+                    taskDescriptionTextView.text = it.toString()
                 }
             }
         }

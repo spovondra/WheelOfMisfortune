@@ -37,4 +37,7 @@ interface TaskDao {
     @Query("SELECT * FROM Task ORDER BY id DESC LIMIT 1")
     suspend fun getLastTask(): Task?
 
+    @Query("SELECT * FROM Task WHERE taskState = :taskState")
+    suspend fun getTasksByState(taskState: TaskState): List<Task>
+
 }

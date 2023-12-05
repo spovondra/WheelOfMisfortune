@@ -21,6 +21,7 @@ interface TaskModel {
         startTime: Long,
         endTime: Long
     )
+    suspend fun getTasksByState(taskState: TaskState): List<Task>
 }
 
 // Implementace rozhraní TaskModel
@@ -77,5 +78,8 @@ class TaskModelImpl(private val context: Context) : TaskModel {
         )
 
         insertTask(newTask)
+    }
+    override suspend fun getTasksByState(taskState: TaskState): List<Task> {
+        return taskDao.getTasksByState(taskState)
     }
 }

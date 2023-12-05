@@ -41,6 +41,7 @@ class NewTaskActivity : AppCompatActivity() {
 
         // Inicializace instance TaskController
         taskController = MainControllerImpl(
+            context = mainView as MainViewImp,
             view = mainView,
             notification = notification,
             model = taskModel,
@@ -103,8 +104,8 @@ class NewTaskActivity : AppCompatActivity() {
                     description = taskDescription,
                     priority = priority,
                     iconResId = selectedIconResId,
-                    startTime = 22, // Docasne
-                    endTime = 22 // Docasne
+                    startTime = 0, // Docasne
+                    endTime = 0 // Docasne
                 )
 
                 // Optionally, you can update the UI or perform other actions after adding a new task
