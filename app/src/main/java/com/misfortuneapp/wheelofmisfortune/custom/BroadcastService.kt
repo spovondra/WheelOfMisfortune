@@ -12,7 +12,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.misfortuneapp.wheelofmisfortune.R
-import com.misfortuneapp.wheelofmisfortune.model.TaskDatabase
+import com.misfortuneapp.wheelofmisfortune.model.TimeDatabase
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -20,13 +20,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 // Třída reprezentující službu pro odpočet času
-class BroadcastService : Service() {
+class BroadcastService: Service() {
 
     // Konstanty pro ID kanálu, akci vysílání a extra úkol ID
     companion object {
         const val CHANNEL_ID = "WheelOfMisfortune_id"
         const val COUNTDOWN_BR = "com.misfortuneapp.wheelofmisfortune.custom.countdown_br"
-        const val EXTRA_TASK_ID = "extra_wheel_id"
+        const val EXTRA_TIME_ID = "extra_wheel_id"
     }
 
     // Značka pro logování
@@ -38,7 +38,7 @@ class BroadcastService : Service() {
 
     // Kontext a ID úkolu
     private lateinit var context: Context
-    private var taskId: Int = -1
+    private var timeId: Int = -1
 
     // Metoda volaná při vytvoření služby
     override fun onCreate() {
@@ -65,11 +65,11 @@ class BroadcastService : Service() {
         super.onStartCommand(intent, flags, startId)
 
         // Získání ID úkolu z intentu
-        taskId = intent?.getIntExtra(EXTRA_TASK_ID, -1) ?: -1
+        timeId = intent?.getIntExtra(EXTRA_TIME_ID, -1) ?: -1
 
         // Pokud je poskytnuto platné ID úkolu, spusťte časovač; jinak zastavte službu
-        if (taskId != -1) {
-            startTimer(taskId)
+        if (timeId != -1) {
+            startTimer(timeId)
         } else {
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
@@ -80,9 +80,9 @@ class BroadcastService : Service() {
 
     // Funkce pro spuštění odpočítávání
     @OptIn(DelicateCoroutinesApi::class)
-    private fun startTimer(taskId: Int) {
+    private fun startTimer(timeId: Int) {
         // Přístup k databázi úkolů
-        val taskDatabase = TaskDatabase.getDatabase(context)
+        val timeDatabase = TimeDatabase.getDatabase(context)
 
         // Inicializace CountDownTimeru
         br = object : CountDownTimer(Long.MAX_VALUE, 1000) {
@@ -90,18 +90,22 @@ class BroadcastService : Service() {
                 GlobalScope.launch(Dispatchers.Main) {
                     // Získání zbývajícího času úkolu z databáze
                     val remainingTime = withContext(Dispatchers.IO) {
-                        taskDatabase.taskDao().getTaskById(taskId)?.endTime?.minus(System.currentTimeMillis())
+                        timeDatabase.timeRecordDao().getTimeById(timeId)?.endTime?.let {
+                            it - System.currentTimeMillis()
+                        }
                     }
 
                     // Pokud zbývá čas, odešlete vysílání s informacemi o odpočítávání
-                    if (remainingTime != null && remainingTime > 0) {
+                    if (remainingTime != null && remainingTime >= 1) {
                         bi.putExtra("countdown", remainingTime)
                         bi.putExtra("countdownTimerRunning", true)
                         bi.putExtra("countdownTimerFinished", false)
                         sendBroadcast(bi)
-                    } else {
+
+                    }
+                    else {
                         // Pokud zbývající čas je 0 nebo záporný, spusťte onFinish pro zastavení časovače
-                        onFinish()
+                            onFinish()
                     }
                 }
             }
@@ -112,6 +116,7 @@ class BroadcastService : Service() {
                     // Odešlete vysílání oznamující, že časovač skončil
                     bi.putExtra("countdownTimerFinished", true)
                     sendBroadcast(bi)
+
                     Log.d(tag, "Časovač skončil")
 
                     // Zastavte přední službu a samotnou službu

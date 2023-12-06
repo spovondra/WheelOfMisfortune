@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.misfortuneapp.wheelofmisfortune.R
@@ -45,6 +46,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private lateinit var notificationHandler: NotificationHandler
     private lateinit var statisticsController: StatisticsController
     private lateinit var dataRepository: DataRepository
+    private lateinit var taskDao: TaskDao
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @OptIn(DelicateCoroutinesApi::class)
@@ -54,6 +56,8 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
         // Initialize DataRepository
         dataRepository = DataRepository(DataDatabase.getInstance(this).dataDao())
+        taskDao = TaskDatabase.getDatabase(this).taskDao()
+
 
         circularProgressBar = findViewById(R.id.circularProgressBar)
         countdownTimerTextView = findViewById(R.id.countdownTimerTextView)
@@ -68,7 +72,10 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         controller.loadPointsFromDatabase()
 
         GlobalScope.launch {
-            controller.selectedTask()?.let { controller.startTimer(it.id) }
+            if(controller.getTime() == null) {
+                controller.setFirstTime()
+            }
+            controller.getTime()?.let { controller.startTimer(it.id) }
             showAllTasks()
         }
         showStatistics()
@@ -129,15 +136,34 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
     override suspend fun showAllTasks() {
         showNumberOfTasks()
-        val taskList = findViewById<RecyclerView>(R.id.taskList)
-        taskList.layoutManager = LinearLayoutManager(this)
 
-        val adapter = TaskAdapter(controller.getAllTasks()) { selectedTask ->
-            openTaskDetailsScreen(selectedTask)
+        // Launch a coroutine for the UI update
+        launch(Dispatchers.Main) {
+            val taskList = findViewById<RecyclerView>(R.id.taskList)
+            taskList.layoutManager = LinearLayoutManager(this@MainViewImp)
+
+            // Získejte aktuální seznam úkolů přímo z kontroléru
+            val tasks = controller.getAllTasks()
+
+            // Vytvořte nový adapter s aktuálním seznamem úkolů
+            val adapter = TaskAdapter(
+                tasks.toMutableList(),
+                { selectedTask -> openTaskDetailsScreen(selectedTask) },
+                { removedTask ->
+                    launch {
+                        controller.removeTask(removedTask)
+                    }
+                },
+                controller
+            )
+
+            val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
+            itemTouchHelper.attachToRecyclerView(taskList)
+
+            taskList.adapter = adapter
         }
-
-        taskList.adapter = adapter
     }
+
 
     private fun openTaskDetailsScreen(task: Task) {
         val intent = Intent(this, TaskDetailsActivity::class.java)
@@ -183,7 +209,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                     val selectedTimeInMillis = (hourOfDay * 60 + minute) * 60 * 1000L
 
                     GlobalScope.launch {
-                        controller.setTimeToTask(selectedTimeInMillis)
+                        controller.setTime(selectedTimeInMillis)
                     }
 
                     circularProgressBar.setProgress(100)
@@ -208,7 +234,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         wheel.setOnClickListener {
             if (!controller.getIsWheelSpinning()) {
                 GlobalScope.launch {
-                    if (controller.getAllTasks().isNotEmpty()) {
+                    if (controller.getAllTasks().isNotEmpty() && controller.getTasksInStates(TaskState.AVAILABLE).isNotEmpty()) {
                         controller.setIsWheelSpinning(true)
                         showWheelSpin()
                     }
@@ -227,7 +253,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
         launch {
             showAllTasks()
-            controller.selectedTask()
         }
     }
 }

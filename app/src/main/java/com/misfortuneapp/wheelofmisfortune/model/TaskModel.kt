@@ -20,12 +20,15 @@ interface TaskModel {
         endTime: Long
     )
     suspend fun getTasksByState(taskState: TaskState): List<Task>
+    suspend fun insertTimeRecord(startTime: Long, endTime: Long)
+    suspend fun getAllTimeRecords(): List<TimeRecord>
 }
 
 // Implementace rozhraní TaskModel
 class TaskModelImpl(context: Context) : TaskModel {
     // Získání přístupu k DAO pro úkoly
     private val taskDao = TaskDatabase.getDatabase(context).taskDao()
+    private val timeRecordDao = TimeDatabase.getDatabase(context).timeRecordDao()
 
     // Metoda pro získání všech úkolů (implementace z rozhraní TaskModel)
     override suspend fun getAllTasks(): List<Task> = withContext(Dispatchers.IO) {
@@ -79,5 +82,22 @@ class TaskModelImpl(context: Context) : TaskModel {
     }
     override suspend fun getTasksByState(taskState: TaskState): List<Task> {
         return taskDao.getTasksByState(taskState)
+    }
+
+    override suspend fun insertTimeRecord(startTime: Long, endTime: Long) {
+        withContext(Dispatchers.IO) {
+            // Smazání všech existujících záznamů
+            timeRecordDao.deleteAll()
+
+            // Vložení nového záznamu
+            val timeRecord = TimeRecord(startTime = startTime, endTime = endTime)
+            timeRecordDao.insert(timeRecord)
+        }
+    }
+
+    override suspend fun getAllTimeRecords(): List<TimeRecord> {
+        return withContext(Dispatchers.IO) {
+            timeRecordDao.getAllTimeRecords()
+        }
     }
 }
