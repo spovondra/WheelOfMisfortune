@@ -260,8 +260,5 @@ class MainControllerImpl(
         return selectedTask
     }
 
-    override fun onDestroy() {
-        unregisterReceiver(countdownReceiver)
-        super.onDestroy()
-    }
+
 }

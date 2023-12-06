@@ -1,8 +1,6 @@
 package com.misfortuneapp.wheelofmisfortune.model
 
 import android.content.Context
-import com.misfortuneapp.wheelofmisfortune.model.Task
-import com.misfortuneapp.wheelofmisfortune.model.TaskDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -25,7 +23,7 @@ interface TaskModel {
 }
 
 // Implementace rozhraní TaskModel
-class TaskModelImpl(private val context: Context) : TaskModel {
+class TaskModelImpl(context: Context) : TaskModel {
     // Získání přístupu k DAO pro úkoly
     private val taskDao = TaskDatabase.getDatabase(context).taskDao()
 

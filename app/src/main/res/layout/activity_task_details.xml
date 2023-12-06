@@ -33,7 +33,7 @@
                 android:id="@+id/taskDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_block_border"
+                android:background="@drawable/edittext_border"
                 android:gravity="top"
                 android:minLines="8"
                 android:maxLines="20"

@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -47,6 +48,7 @@
                 android:layout_gravity="end"
                 android:layout_marginVertical="5dp"
                 android:layout_marginEnd="5dp"
+                app:cardBackgroundColor="?android:attr/windowBackground"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="6dp">
 
@@ -55,12 +57,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/button_shape"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:drawableStart="@drawable/medail"
                     android:gravity="start|center"
-                    android:text="@string/zero_points"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textAppearance="?attr/textAppearanceBody2"
                     android:textSize="18sp" />
             </androidx.cardview.widget.CardView>
+
         </FrameLayout>
 
         <RelativeLayout
@@ -74,7 +77,8 @@
                 android:layout_centerInParent="true"
                 android:elevation="10dp"
                 android:text="@string/zero_time"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="36sp"
                 android:textStyle="bold" />
 
@@ -89,18 +93,18 @@
                 android:id="@+id/wheel_spin"
                 android:layout_width="315dp"
                 android:layout_height="315dp"
-                android:layout_gravity="center"
                 android:layout_centerInParent="true"
-                android:src="@drawable/wheel_spin"
-                android:contentDescription="@string/wheel_spin_description" />
+                android:layout_gravity="center"
+                android:contentDescription="@string/wheel_spin_description"
+                android:src="@drawable/wheel_spin" />
 
             <ImageView
                 android:id="@+id/wheel_static"
                 android:layout_width="400dp"
                 android:layout_height="400dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/wheel_static"
-                android:contentDescription="@string/wheel_static_description" />
+                android:contentDescription="@string/wheel_static_description"
+                android:src="@drawable/wheel_static" />
         </RelativeLayout>
 
 
@@ -114,20 +118,22 @@
                 android:layout_width="240dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
+                app:cardBackgroundColor="?android:attr/windowBackground"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="6dp">
 
                 <Button
                     android:id="@+id/buttonSetTime"
+                    android:layout_centerInParent="true"
+                    android:elevation="10dp"
+                    android:text="@string/button_change_time_of_notification"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/button_shape"
-                    android:text="@string/button_change_time_of_notification"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textAppearance="?attr/textAppearanceBody2"
                     android:textSize="18sp" />
             </androidx.cardview.widget.CardView>
-
-
         </FrameLayout>
 
         <TextView

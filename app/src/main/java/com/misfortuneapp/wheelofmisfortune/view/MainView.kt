@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.controller.*
 import com.misfortuneapp.wheelofmisfortune.custom.*
 import com.misfortuneapp.wheelofmisfortune.model.*
+import com.misfortuneapp.wheelofmisfortune.ui.theme.KoleckoNestestiTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -213,6 +215,11 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        unregisterReceiver(controller.countdownReceiver)
+        super.onDestroy()
     }
 
     override fun onResume() {

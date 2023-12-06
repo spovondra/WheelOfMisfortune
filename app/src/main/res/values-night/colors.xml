@@ -2,10 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="colorPrimary">#FAFAFA</color>
-    <color name="colorButton">#FFFFFFFF</color>
-    <color name="shadowButton">#80FFFFFF</color>
+    <color name="colorPrimary">#1E1F22</color>
+    <color name="colorButton">#1E1F22</color>
+    <color name="shadowButton">#80202020</color>
     <color name="selectedIconColor">#F9351B</color>
     <color name="iconColor">#F9661B</color>
-    <color name="border">#80000000</color>
+    <color name="border">#616161</color>
 </resources>
