@@ -4,13 +4,23 @@ import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-// Rozhraní reprezentující model úkolů
 interface TaskModel {
+    // Suspend funkce pro získání všech úkolů
     suspend fun getAllTasks(): List<Task>
+
+    // Suspend funkce pro získání úkolu podle ID
     suspend fun getTaskById(taskId: Int): Task?
+
+    // Suspend funkce pro odstranění úkolu
     suspend fun removeTask(task: Task)
+
+    // Suspend funkce pro vložení úkolu
     suspend fun insertTask(task: Task)
+
+    // Suspend funkce pro aktualizaci úkolu
     suspend fun updateTask(task: Task)
+
+    // Suspend funkce pro vložení nové úlohy s parametry názvu a popisu
     suspend fun addNewTask(
         title: String,
         description: String,
@@ -19,9 +29,15 @@ interface TaskModel {
         startTime: Long,
         endTime: Long
     )
+
+    // Suspend funkce pro získání úkolů podle stavu
     suspend fun getTasksByState(taskState: TaskState): List<Task>
+
+    // Suspend funkce pro vložení záznamu o čase (např. start a end čas)
     suspend fun insertTimeRecord(startTime: Long, endTime: Long)
-    suspend fun getAllTimeRecords(): List<TimeRecord>
+
+    // Suspend funkce pro získání posledního záznamu o čase
+    suspend fun getTimeRecord(): TimeRecord
 }
 
 // Implementace rozhraní TaskModel
@@ -30,32 +46,32 @@ class TaskModelImpl(context: Context) : TaskModel {
     private val taskDao = TaskDatabase.getDatabase(context).taskDao()
     private val timeRecordDao = TimeDatabase.getDatabase(context).timeRecordDao()
 
-    // Metoda pro získání všech úkolů (implementace z rozhraní TaskModel)
+    // Suspend funkce pro získání všech úkolů
     override suspend fun getAllTasks(): List<Task> = withContext(Dispatchers.IO) {
         return@withContext taskDao.getAllTasks()
     }
 
-    // Metoda pro získání úkolu podle ID (implementace z rozhraní TaskModel)
+    // Suspend funkce pro získání úkolu podle ID
     override suspend fun getTaskById(taskId: Int): Task? = withContext(Dispatchers.IO) {
         return@withContext taskDao.getTaskById(taskId)
     }
 
-    // Metoda pro odstranění úkolu (implementace z rozhraní TaskModel)
+    // Suspend funkce pro odstranění úkolu
     override suspend fun removeTask(task: Task) {
         taskDao.deleteTask(task)
     }
 
-    // Metoda pro vložení úkolu (implementace z rozhraní TaskModel)
+    // Suspend funkce pro vložení úkolu
     override suspend fun insertTask(task: Task) = withContext(Dispatchers.IO) {
         taskDao.insertTask(task)
     }
 
-    // Metoda pro aktualizaci úkolu (implementace z rozhraní TaskModel)
+    // Suspend funkce pro aktualizaci úkolu
     override suspend fun updateTask(task: Task) {
         taskDao.updateTask(task)
     }
 
-    // Nová metoda pro vložení nové úlohy s parametry názvu a popisu
+    // Nová suspend funkce pro vložení nové úlohy s parametry názvu a popisu
     override suspend fun addNewTask(
         title: String,
         description: String,
@@ -80,24 +96,25 @@ class TaskModelImpl(context: Context) : TaskModel {
 
         insertTask(newTask)
     }
+
+    // Suspend funkce pro získání úkolů podle stavu
     override suspend fun getTasksByState(taskState: TaskState): List<Task> {
         return taskDao.getTasksByState(taskState)
     }
 
+    // Suspend funkce pro vložení záznamu o čase (např. start a end čas) (imeRecord)
     override suspend fun insertTimeRecord(startTime: Long, endTime: Long) {
         withContext(Dispatchers.IO) {
-            // Smazání všech existujících záznamů
-            timeRecordDao.deleteAll()
-
             // Vložení nového záznamu
             val timeRecord = TimeRecord(startTime = startTime, endTime = endTime)
             timeRecordDao.insert(timeRecord)
         }
     }
 
-    override suspend fun getAllTimeRecords(): List<TimeRecord> {
+    // Suspend funkce pro získání posledního záznamu o čase (imeRecord)
+    override suspend fun getTimeRecord(): TimeRecord {
         return withContext(Dispatchers.IO) {
-            timeRecordDao.getAllTimeRecords()
+            timeRecordDao.getLastTimeRecord()!!
         }
     }
 }

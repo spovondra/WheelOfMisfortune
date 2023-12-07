@@ -10,7 +10,6 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.controller.*
@@ -131,16 +130,16 @@ class NewTaskActivity : AppCompatActivity() {
                 // Optionally, you can update the UI or perform other actions after adding a new task
 
                 finish()
-                showToast("Úloha přidána!", Toast.LENGTH_SHORT)
+                showToast("Úloha přidána!")
             }
         } else {
-            showToast("Prosím vyplňte všechna políčka!", Toast.LENGTH_SHORT)
+            showToast("Prosím vyplňte všechna políčka!")
         }
     }
 
-    private fun showToast(message: String, duration: Int) {
+    private fun showToast(message: String) {
         val context: Context = applicationContext
-        val toast = Toast.makeText(context, message, duration)
+        val toast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
         toast.show()
     }
 

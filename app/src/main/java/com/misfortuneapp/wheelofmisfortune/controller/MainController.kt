@@ -19,13 +19,14 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+// Rozhraní definující hlavní funkce řídící aplikaci
 interface MainController {
-    fun setIsWheelSpinning (isIt: Boolean) // Nechat
-    fun getIsWheelSpinning () : Boolean // Nechat
-    fun doWithTaskDialog() // Nechat
-    suspend fun getAllTasks(): List<Task> // Nechat
-    suspend fun removeTask(task: Task) // Nechat
-    fun loadPointsFromDatabase() // Nechat
+    fun setIsWheelSpinning(isIt: Boolean) // Nastaví příznak, zda se kolo otáčí
+    fun getIsWheelSpinning(): Boolean // Vrátí informaci, zda se kolo otáčí
+    fun doWithTaskDialog() // Provede akce související s dialogem úlohy
+    suspend fun getAllTasks(): List<Task> // Asynchronně získá všechny úlohy
+    suspend fun removeTask(task: Task) // Asynchronně odstraní úlohu
+    fun loadPointsFromDatabase() // Načte body z databáze
     suspend fun addNewTask(
         title: String,
         description: String,
@@ -33,15 +34,16 @@ interface MainController {
         iconResId: Int,
         startTime: Long,
         endTime: Long
-    ) // Nechat
-    fun startTimer(taskId: Int) // Nechat
-    fun stopTimer() // Není implementováno
-    suspend fun setTime (selectedTimeInMillis: Long) // Nechat
-    suspend fun setFirstTime () // Nechat
-    suspend fun getTime (): TimeRecord? // Nechat
-    suspend fun getTasksInStates(taskState: TaskState): List<Task> // Nechat
+    ) // Asynchronně přidá novou úlohu
+    fun startTimer(taskId: Int) // Spustí časovač pro úlohu
+    fun stopTimer() // Zastaví časovač (nepoužíváno)
+    suspend fun setTime(selectedTimeInMillis: Long) // Asynchronně nastaví čas úlohy
+    suspend fun setFirstTime() // Asynchronně nastaví první čas (při prvním spuštění)
+    suspend fun getTime(): TimeRecord // Asynchronně získá časový záznam
+    suspend fun getTasksInStates(taskState: TaskState): List<Task> // Asynchronně získá úlohy v daném stavu
 }
 
+// Implementace rozhraní MainController
 class MainControllerImpl(
     private val context: Context,
     private val view: MainView, // Instance pro interakci s uživatelským rozhraním
@@ -55,18 +57,22 @@ class MainControllerImpl(
     private var lastAddedDate: String = getCurrentDate() // Poslední datum přidání bodů
     private var countdownServiceIntent: Intent? = null
 
+    // Přijímač pro zachycení událostí z BroadcastService (např. časovač)
     @OptIn(DelicateCoroutinesApi::class)
     val countdownReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == BroadcastService.COUNTDOWN_BR) {
+                // Zpracování příchozích informací z BroadcastService
                 val remainingTime = intent.getLongExtra("countdown", 0)
                 val timerRunning = intent.getBooleanExtra("countdownTimerRunning", false)
                 val timerFinished = intent.getBooleanExtra("countdownTimerFinished", false)
 
                 var text = ""
 
+                // Logování přijatých informací
                 Log.d("MainControllerImpl", "Broadcast received. TimerRunning: $timerRunning, TimerFinished: $timerFinished, RemainingTime: $remainingTime")
 
+                // Zpracování běžícího časovače
                 if (timerRunning) {
                     val (hours, minutes, seconds) = calculateRemainingTime(remainingTime)
 
@@ -74,13 +80,15 @@ class MainControllerImpl(
                         calculatedProgress = ((getTimeSetByUser() - remainingTime) * 100 / getTimeSetByUser()).toInt()
                     }
 
-                    text = if(hours.toInt() == 0) {
+                    // Formátování zbývajícího času
+                    text = if (hours.toInt() == 0) {
                         String.format("%02d:%02d", minutes, seconds)
                     } else {
                         String.format("%02d:%02d", hours, minutes)
                     }
 
                 }
+                // Zpracování ukončeného časovače
                 if (timerFinished) {
                     Log.d("MainControllerImpl", "Timer finished. Text: $text, Calculated Progress: $calculatedProgress")
                     text = "Start"
@@ -88,10 +96,11 @@ class MainControllerImpl(
                     calculatedProgress = 100
                     isWheelSpinning = false
                 } else if (remainingTime.toInt() == 0) {
-                    // Handle the case where remainingTime is 0
+                    // Zpracování situace, kdy zbývající čas je 0
                     Log.d("MainControllerImpl", "Remaining time is 0. Handle this case as needed.")
                 }
 
+                // Aktualizace UI s informacemi o časovači
                 view.showBarAndTime(calculatedProgress, text)
             }
         }
@@ -111,21 +120,21 @@ class MainControllerImpl(
     private fun updatePoints() {
         lifecycleScope.launch(Dispatchers.Main) {
             if (!isWheelSpinning) {
-
+                // Získání dostupných úloh
                 val tasks = model.getTasksByState(TaskState.AVAILABLE)
 
                 if (tasks.isNotEmpty()) {
                     val selectedTask = tasks.random()
                     setTaskInProgress(selectedTask)
 
-                    // Zkontroluje, zda začal nový den
+                    // Kontrola, zda začal nový den
                     val currentDate = getCurrentDate()
                     if (currentDate != lastAddedDate) {
                         currentPoints = 0
                         lastAddedDate = currentDate
                     }
 
-                    // Zvýší body na základě výchozích bodů úlohy
+                    // Zvýšení bodů na základě výchozích bodů úlohy
                     currentPoints += selectedTask.points
 
                     // Text pro zobrazení v UI
@@ -140,15 +149,15 @@ class MainControllerImpl(
                     view.showUpdatedPoints(finalText)
                     setTaskDone(selectedTask)
 
-                    // Uloží body do databáze
+                    // Uložení bodů do databáze
                     val formattedDate =
                         SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
                     statisticsController.insertOrUpdateData(formattedDate, currentPoints.toDouble())
 
                     view.showTaskDialog(selectedTask)
 
-                    // Odebere vybranou úlohu z databáze
-                    //model.removeTask(selectedTask)
+                    // Odebrání vybrané úlohy z databáze
+                    // model.removeTask(selectedTask)
                 }
             }
             isWheelSpinning = true
@@ -160,11 +169,12 @@ class MainControllerImpl(
         lifecycleScope.launch(Dispatchers.Main) {
             delay(3000)
             updatePoints()
-            isWheelSpinning = false  // Nastavte na false po skončení dialogu úlohy
+            isWheelSpinning = false  // Nastavení na false po skončení dialogu úlohy
             setTime(getTimeSetByUser())
         }
     }
 
+    // Metoda pro spuštění časovače pro úlohu
     override fun startTimer(taskId: Int) {
         isWheelSpinning = true
 
@@ -183,6 +193,7 @@ class MainControllerImpl(
         return model.getAllTasks()
     }
 
+    // Metoda pro asynchronní odstranění úlohy
     override suspend fun removeTask(task: Task) {
         model.removeTask(task)
         view.showAllTasks()
@@ -191,15 +202,15 @@ class MainControllerImpl(
     // Metoda pro načtení bodů z databáze
     override fun loadPointsFromDatabase() {
         lifecycleScope.launch(Dispatchers.Main) {
-            // Získá data z databáze
+            // Získání dat z databáze
             val currentDate =
                 SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
             val dataEntity = statisticsController.getDataByDate(currentDate)
 
-            // Aktualizuje body v UI, pokud existují data
+            // Aktualizace bodů v UI, pokud existují data
             if (dataEntity != null) {
                 currentPoints = dataEntity.value.toInt()
-                // Aktualizuje zobrazené body v UI
+                // Aktualizace zobrazených bodů v UI
                 val text = if (currentPoints == 1) "bod" else "bodů"
                 view.showUpdatedPoints("$currentPoints $text")
             }
@@ -213,6 +224,7 @@ class MainControllerImpl(
         return dateFormat.format(calendar.time)
     }
 
+    // Metoda pro asynchronní přidání nové úlohy
     override suspend fun addNewTask(
         title: String,
         description: String,
@@ -223,16 +235,18 @@ class MainControllerImpl(
     ) {
         lifecycleScope.launch(Dispatchers.IO) {
             model.addNewTask(title, description, priority, iconResId, startTime, endTime)
-            view.showAllTasks()  // Aktualizujte UI po přidání nového úkolu
+            view.showAllTasks()  // Aktualizace UI po přidání nového úkolu
         }
     }
 
+    // Metoda pro zastavení časovače (nepoužíváno)
     override fun stopTimer() {
         if (countdownServiceIntent != null) {
             context.stopService(countdownServiceIntent)
         }
     }
 
+    // Metoda pro výpočet zbývajícího času z millis
     private fun calculateRemainingTime(remainingTimeMillis: Long): Triple<Long, Long, Long> {
         val remainingSeconds = remainingTimeMillis / 1000
         val remainingMinutes = remainingSeconds / 60
@@ -240,55 +254,51 @@ class MainControllerImpl(
         return Triple(remainingHours, remainingMinutes % 60, remainingSeconds % 60)
     }
 
+    // Metoda pro asynchronní nastavení úlohy do stavu "IN_PROGRESS"
     private suspend fun setTaskInProgress(task: Task) {
         task.taskState = TaskState.IN_PROGRESS
         model.updateTask(task)
     }
+
+    // Metoda pro asynchronní získání úloh v daném stavu
     override suspend fun getTasksInStates(taskState: TaskState): List<Task> {
         return model.getTasksByState(taskState)
     }
 
-    private suspend fun setTaskDone (selectedTask: Task) {
-        val timeRecords = model.getAllTimeRecords()
+    // Metoda pro asynchronní nastavení úlohy do stavu "DONE"
+    private suspend fun setTaskDone(selectedTask: Task) {
+        val timeRecord = model.getTimeRecord()
 
-        if (timeRecords.isNotEmpty()) {
-            val time = timeRecords[0]
+        selectedTask.startTime = timeRecord.startTime
+        selectedTask.endTime = timeRecord.endTime
+        selectedTask.taskState = TaskState.DONE
 
-            selectedTask.startTime = time.startTime
-            selectedTask.endTime = time.endTime
-            selectedTask.taskState = TaskState.DONE
-
-            model.updateTask(selectedTask)
-        }
-        else {
-            Log.d("setTaskDone", "Něco se posralo ${timeRecords.size}")
-        }
+        model.updateTask(selectedTask)
     }
 
-    override suspend fun setTime (selectedTimeInMillis: Long) {
+    // Metoda pro asynchronní nastavení času úlohy
+    override suspend fun setTime(selectedTimeInMillis: Long) {
         val startTime = System.currentTimeMillis()
         val endTime = System.currentTimeMillis() + selectedTimeInMillis
 
         model.insertTimeRecord(startTime, endTime)
-        val timeId = getTime()!!.id
+        val timeId = getTime().id
 
         startTimer(timeId)
     }
 
-    override suspend fun setFirstTime () {
+    // Metoda pro asynchronní nastavení prvního času (při prvním spuštění)
+    override suspend fun setFirstTime() {
         model.insertTimeRecord(0, 0)
     }
 
-    override suspend fun getTime(): TimeRecord? {
-        val timeRecords = model.getAllTimeRecords()
-        return if (timeRecords.isNotEmpty()) {
-            timeRecords[0]
-        } else {
-            null
-        }
+    // Metoda pro asynchronní získání časového záznamu
+    override suspend fun getTime(): TimeRecord {
+        return model.getTimeRecord()
     }
 
-    private suspend fun getTimeSetByUser (): Long {
-        return getTime()!!.endTime- getTime()!!.startTime
+    // Metoda pro asynchronní získání délky úlohy nastavené uživatelem
+    private suspend fun getTimeSetByUser(): Long {
+        return getTime().endTime - getTime().startTime
     }
 }

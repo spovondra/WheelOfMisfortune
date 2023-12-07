@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingRight="16dp"
@@ -9,11 +10,12 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"> <!-- Position content below the title -->
+        android:scrollbars="none"
+        tools:ignore="UselessParent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="8dp"> <!-- Center the content both vertically and horizontally -->
@@ -23,11 +25,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/edittext_border"
-                android:hint="Task Name (One Line)"
+                android:hint="@string/newTaskName"
                 android:inputType="text"
                 android:maxLength="50"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp" />
+                android:paddingRight="16dp"
+                android:importantForAutofill="no" />
 
             <View
                 android:layout_width="match_parent"
@@ -38,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext_border"
-                android:hint="Task Description (Block)"
+                android:hint="@string/newTaskDescription"
                 android:inputType="textMultiLine"
                 android:minLines="5"
                 android:maxLines="10"
@@ -46,12 +49,17 @@
                 android:paddingTop="8dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:gravity="top" />
+                android:gravity="top"
+                android:importantForAutofill="no" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="0dp"
                 android:layout_weight="1"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="48sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -76,12 +84,12 @@
                 android:text="@string/zero_priority" />
 
 
-            <View
+            <Space
                 android:layout_width="match_parent"
-                android:layout_height="40dp" />
+                android:layout_height="60sp" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
@@ -91,10 +99,10 @@
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="2"
-                    android:src="@drawable/ic_action_cart"
                     android:background="@drawable/icon_selection_background"
-                    android:contentDescription="Icon 1"
-                    android:onClick="onIconClick" />
+                    android:contentDescription="@string/icon_1"
+                    android:src="@drawable/ic_action_cart"
+                    tools:ignore="ImageContrastCheck" />
 
                 <Space
                     android:layout_width="0dp"
@@ -106,10 +114,10 @@
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="2"
-                    android:src="@drawable/ic_action_book"
                     android:background="@drawable/icon_selection_background"
-                    android:contentDescription="Icon 2"
-                    android:onClick="onIconClick" />
+                    android:contentDescription="@string/icon_2"
+                    android:src="@drawable/ic_action_book"
+                    tools:ignore="ImageContrastCheck" />
 
                 <Space
                     android:layout_width="0dp"
@@ -121,10 +129,10 @@
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="2"
-                    android:src="@drawable/ic_action_bell"
                     android:background="@drawable/icon_selection_background"
-                    android:contentDescription="Icon 3"
-                    android:onClick="onIconClick" />
+                    android:contentDescription="@string/icon_3"
+                    android:src="@drawable/ic_action_bell"
+                    tools:ignore="ImageContrastCheck" />
 
                 <Space
                     android:layout_width="0dp"
@@ -138,23 +146,23 @@
                     android:layout_weight="2"
                     android:src="@drawable/ic_action_box"
                     android:background="@drawable/icon_selection_background"
-                    android:contentDescription="Icon 4"
-                    android:onClick="onIconClick" />
+                    android:contentDescription="@string/icon_4" />
             </LinearLayout>
 
 
-            <View
+            <Space
                 android:layout_width="match_parent"
                 android:layout_height="80dp" />
 
             <Button
                 android:id="@+id/buttonAddTask"
-                android:layout_width="match_parent"
+                android:layout_width="240sp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_half_circle_button"
                 android:gravity="center"
-                android:text="Přidat úlohu"
-                android:textColor="#FFFFFF" />
+                android:text="@string/addTask"
+                android:textColor="#FFFFFF"
+                tools:ignore="TextContrastCheck" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

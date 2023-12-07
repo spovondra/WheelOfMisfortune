@@ -2,5 +2,6 @@
 <resources>
     <style name="Theme.KoleckoNestesti" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/iconColor</item>
     </style>
 </resources>

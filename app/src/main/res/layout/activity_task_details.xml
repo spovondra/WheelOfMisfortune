@@ -1,5 +1,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingRight="16dp"
@@ -8,11 +9,12 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="8dp">
@@ -48,21 +50,21 @@
 
             <Button
                 android:id="@+id/buttonAddTask"
-                android:layout_width="match_parent"
+                android:layout_width="240sp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_half_circle_button_done"
                 android:gravity="center"
-                android:text="Hotovo"
+                android:text="@string/doneBtn"
                 android:textColor="#FFFFFF" />
 
             <Button
                 android:id="@+id/buttonBack"
-                android:layout_width="match_parent"
+                android:layout_width="240sp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/rounded_half_circle_button_back"
                 android:gravity="center"
-                android:text="Zpět"
+                android:text="@string/backBtn"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
     </ScrollView>

@@ -10,8 +10,8 @@ import com.misfortuneapp.wheelofmisfortune.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import com.misfortuneapp.wheelofmisfortune.controller.*
 import com.misfortuneapp.wheelofmisfortune.model.TaskModelImpl
+import kotlinx.coroutines.DelicateCoroutinesApi
 
 class TaskDetailsActivity : AppCompatActivity() {
 
@@ -19,6 +19,7 @@ class TaskDetailsActivity : AppCompatActivity() {
     private lateinit var taskDescriptionTextView: TextView
     private lateinit var backButton: Button
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_details)

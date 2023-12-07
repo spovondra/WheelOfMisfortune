@@ -11,7 +11,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +19,6 @@ import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.controller.*
 import com.misfortuneapp.wheelofmisfortune.custom.*
 import com.misfortuneapp.wheelofmisfortune.model.*
-import com.misfortuneapp.wheelofmisfortune.ui.theme.KoleckoNestestiTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -28,6 +26,7 @@ import kotlin.random.Random
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.coroutineScope
 import java.util.Calendar
 
 interface MainView {
@@ -72,10 +71,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         controller.loadPointsFromDatabase()
 
         GlobalScope.launch {
-            if(controller.getTime() == null) {
-                controller.setFirstTime()
-            }
-            controller.getTime()?.let { controller.startTimer(it.id) }
+            controller.getTime().let { controller.startTimer(it.id) }
             showAllTasks()
         }
         showStatistics()
@@ -138,29 +134,33 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         showNumberOfTasks()
 
         // Launch a coroutine for the UI update
-        launch(Dispatchers.Main) {
-            val taskList = findViewById<RecyclerView>(R.id.taskList)
-            taskList.layoutManager = LinearLayoutManager(this@MainViewImp)
+        coroutineScope {
+            launch(Dispatchers.Main) {
+                val taskList = findViewById<RecyclerView>(R.id.taskList)
+                taskList.layoutManager = LinearLayoutManager(this@MainViewImp)
+                (taskList.layoutManager as LinearLayoutManager).reverseLayout = true
+                (taskList.layoutManager as LinearLayoutManager).stackFromEnd = true
 
-            // Získejte aktuální seznam úkolů přímo z kontroléru
-            val tasks = controller.getAllTasks()
+                // Získejte aktuální seznam úkolů přímo z kontroléru
+                val tasks = controller.getAllTasks()
 
-            // Vytvořte nový adapter s aktuálním seznamem úkolů
-            val adapter = TaskAdapter(
-                tasks.toMutableList(),
-                { selectedTask -> openTaskDetailsScreen(selectedTask) },
-                { removedTask ->
-                    launch {
-                        controller.removeTask(removedTask)
-                    }
-                },
-                controller
-            )
+                // Vytvořte nový adapter s aktuálním seznamem úkolů
+                val adapter = TaskAdapter(
+                    tasks.toMutableList(),
+                    { selectedTask -> openTaskDetailsScreen(selectedTask) },
+                    { removedTask ->
+                        launch {
+                            controller.removeTask(removedTask)
+                        }
+                    },
+                    controller
+                )
 
-            val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
-            itemTouchHelper.attachToRecyclerView(taskList)
+                val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
+                itemTouchHelper.attachToRecyclerView(taskList)
 
-            taskList.adapter = adapter
+                taskList.adapter = adapter
+            }
         }
     }
 
@@ -209,6 +209,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                     val selectedTimeInMillis = (hourOfDay * 60 + minute) * 60 * 1000L
 
                     GlobalScope.launch {
+                        controller.stopTimer()
                         controller.setTime(selectedTimeInMillis)
                     }
 

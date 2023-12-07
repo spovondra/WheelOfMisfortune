@@ -9,6 +9,18 @@
     <string name="button_add_description">Add Button</string>
     <string name="zero_priority">Selected Priority: 0</string>
     <string name="priority_static">Priority:</string>
-
-
+    <string name="addTask">Přidat úlohu</string>
+    <string name="newTaskDescription">Task Description (Block)</string>
+    <string name="newTaskName">Task Name (One Line)</string>
+    <string name="icon_1">Icon 1</string>
+    <string name="icon_2">Icon 2</string>
+    <string name="icon_3">Icon 3</string>
+    <string name="icon_4">Icon 4</string>
+    <string name="statsResetBtn">Resetovat</string>
+    <string name="graphText">Vaše úspěchy za posledních 5 dní</string>
+    <string name="doneBtn">Hotovo</string>
+    <string name="backBtn">Zpět</string>
+    <string name="taskDescription">Popis úlohy</string>
+    <string name="iconTassk">Ikonka úlohy</string>
+    <string name="nameTask">Název úlohy</string>
 </resources>
