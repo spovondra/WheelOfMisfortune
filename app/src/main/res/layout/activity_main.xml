@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -100,7 +99,6 @@
                 android:src="@drawable/wheel_spin" />
 
             <ImageView
-                android:id="@+id/wheel_static"
                 android:layout_width="400dp"
                 android:layout_height="400dp"
                 android:layout_centerInParent="true"
