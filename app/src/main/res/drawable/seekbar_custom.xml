@@ -4,7 +4,7 @@
     <item android:id="@android:id/background">
         <shape>
             <corners android:radius="8dp" /> <!-- Adjust the radius for rounded corners -->
-            <solid android:color="#C0C0C0" /> <!-- Set the background color of the bar -->
+            <solid android:color="@color/border" /> <!-- Set the background color of the bar -->
         </shape>
     </item>
     <!-- Progress track (set to red) -->
@@ -12,7 +12,7 @@
         <clip>
             <shape>
                 <corners android:radius="8dp" /> <!-- Adjust the radius for rounded corners -->
-                <solid android:color="#FF0000" /> <!-- Set the progress color to red -->
+                <solid android:color="@color/iconColor" /> <!-- Set the progress color to red -->
                 <size android:height="16dp" /> <!-- Adjust the height to match the SeekBar's height -->
             </shape>
         </clip>

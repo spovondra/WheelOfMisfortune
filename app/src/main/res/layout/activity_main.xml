@@ -57,6 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/button_shape"
+                    android:text="@string/zero_points"
                     android:textColor="?android:attr/textColorPrimary"
                     android:drawableStart="@drawable/medail"
                     android:gravity="start|center"

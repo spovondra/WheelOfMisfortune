@@ -7,6 +7,8 @@
     <string name="button_change_time_of_notification">Změnit čas notifikace</string>
     <string name="wheel_static_description">Statické okolí kolečka</string>
     <string name="button_add_description">Add Button</string>
+    <string name="zero_priority">Selected Priority: 0</string>
+    <string name="priority_static">Priority:</string>
 
 
 </resources>

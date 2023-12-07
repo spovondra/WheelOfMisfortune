@@ -96,7 +96,7 @@ class BroadcastService: Service() {
                     }
 
                     // Pokud zbývá čas, odešlete vysílání s informacemi o odpočítávání
-                    if (remainingTime != null && remainingTime >= 1) {
+                    if (remainingTime != null && remainingTime > 0) {
                         bi.putExtra("countdown", remainingTime)
                         bi.putExtra("countdownTimerRunning", true)
                         bi.putExtra("countdownTimerFinished", false)

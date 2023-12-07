@@ -1,11 +1,13 @@
 package com.misfortuneapp.wheelofmisfortune.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.SeekBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -23,6 +25,8 @@ class NewTaskActivity : AppCompatActivity() {
     private lateinit var statisticsController: StatisticsController
     private var selectedIconResId: Int = R.drawable.icon1 // Výchozí ikona
     private var selectedImageView: ImageView? = null
+    private lateinit var taskPriority: SeekBar
+    private lateinit var textViewProgress: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +51,10 @@ class NewTaskActivity : AppCompatActivity() {
             model = taskModel,
             statisticsController = statisticsController
         )
+
+        taskPriority = findViewById(R.id.seekBarPriority)
+        textViewProgress = findViewById(R.id.textViewProgress)
+
         // Nastavení posluchače tlačítka pro přidání úlohy
         val addTaskButton: Button = findViewById(R.id.buttonAddTask)
         addTaskButton.setOnClickListener {
@@ -64,33 +72,45 @@ class NewTaskActivity : AppCompatActivity() {
         icon2.setOnClickListener { onIconClick(icon2) }
         icon3.setOnClickListener { onIconClick(icon3) }
         icon4.setOnClickListener { onIconClick(icon4) }
+
+        taskPriority.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            @SuppressLint("SetTextI18n")
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                // Aktualizace textu v TextView při posunutí SeekBar
+                textViewProgress.text = "Selected Progress: $progress"
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                // Not implemented
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                // Not implemented
+            }
+        })
     }
 
     private fun onIconClick(imageView: ImageView) {
-        // Zrušení zvýraznění předchozí ikony
-        selectedImageView?.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
+        // Deselect the previously selected icon
+        selectedImageView?.isSelected = false
 
-        // Nastavení nové ikony
-        selectedIconResId = when (imageView.id) {
-            R.id.icon1 -> R.drawable.icon1
-            R.id.icon2 -> R.drawable.icon2
-            R.id.icon3 -> R.drawable.icon3
-            R.id.icon4 -> R.drawable.icon4
-            else -> R.drawable.icon1 // Výchozí ikona, můžete změnit podle potřeby
-        }
-
-        // Zvýraznění nové ikony změnou barvy pozadí pomocí ColorFilter
-        imageView.setBackgroundColor(ContextCompat.getColor(this, R.color.selectedIconColor))
-
-        // Uložení aktuální ImageView pro další použití
+        // Select the new icon
+        imageView.isSelected = true
         selectedImageView = imageView
-        selectedImageView?.setBackgroundResource(R.drawable.icon_shape)
+
+        // Update selectedIconResId based on the clicked icon
+        selectedIconResId = when (imageView.id) {
+            R.id.icon1 -> R.drawable.ic_action_cart
+            R.id.icon2 -> R.drawable.ic_action_book
+            R.id.icon3 -> R.drawable.ic_action_bell
+            R.id.icon4 -> R.drawable.ic_action_box
+            else -> R.drawable.ic_launcher_foreground
+        }
     }
 
     private fun addNewTask() {
         val taskNameEditText: EditText = findViewById(R.id.editTextTaskName)
         val taskDescriptionEditText: EditText = findViewById(R.id.editTextTaskDescription)
-        val taskPriority: SeekBar = findViewById(R.id.seekBarPriority)
 
         val taskName = taskNameEditText.text.toString()
         val taskDescription = taskDescriptionEditText.text.toString()

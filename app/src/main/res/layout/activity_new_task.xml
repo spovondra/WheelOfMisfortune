@@ -56,14 +56,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Priority:" />
+                android:textSize="15sp"
+                android:text="@string/priority_static" />
+
 
             <SeekBar
                 android:id="@+id/seekBarPriority"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:max="20"
+                android:max="10"
                 android:progressDrawable="@drawable/seekbar_custom" />
+
+            <TextView
+                android:id="@+id/textViewProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="13sp"
+                android:text="@string/zero_priority" />
+
 
             <View
                 android:layout_width="match_parent"
@@ -75,43 +86,58 @@
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/icon1"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/icon1"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_weight="2"
+                    android:src="@drawable/ic_action_cart"
+                    android:background="@drawable/icon_selection_background"
                     android:contentDescription="Icon 1"
                     android:onClick="onIconClick" />
 
-                <ImageButton
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
                     android:id="@+id/icon2"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/icon2"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_weight="2"
+                    android:src="@drawable/ic_action_book"
+                    android:background="@drawable/icon_selection_background"
                     android:contentDescription="Icon 2"
                     android:onClick="onIconClick" />
 
-                <ImageButton
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
                     android:id="@+id/icon3"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/icon3"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_weight="2"
+                    android:src="@drawable/ic_action_bell"
+                    android:background="@drawable/icon_selection_background"
                     android:contentDescription="Icon 3"
                     android:onClick="onIconClick" />
 
-                <ImageButton
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
                     android:id="@+id/icon4"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/icon4"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_weight="2"
+                    android:src="@drawable/ic_action_box"
+                    android:background="@drawable/icon_selection_background"
                     android:contentDescription="Icon 4"
                     android:onClick="onIconClick" />
             </LinearLayout>

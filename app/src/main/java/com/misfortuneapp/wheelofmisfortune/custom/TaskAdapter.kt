@@ -5,6 +5,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.misfortuneapp.wheelofmisfortune.R
@@ -25,6 +26,7 @@ class TaskAdapter(
     class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val taskTitle: TextView = view.findViewById(R.id.taskTitle)
         val taskDescription: TextView = view.findViewById(R.id.taskDescription)
+        val taskIcon: ImageView = view.findViewById(R.id.taskIcon)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -37,6 +39,9 @@ class TaskAdapter(
 
         holder.taskTitle.text = task.title
         holder.taskDescription.text = task.description
+
+        // Set the image resource for the ImageView
+        holder.taskIcon.setImageResource(task.iconResId)
 
         val spacingInPixels =
             holder.itemView.resources.getDimensionPixelSize(R.dimen.spacing_between_items)
@@ -53,6 +58,7 @@ class TaskAdapter(
             onItemClick.invoke(task)
         }
     }
+
 
     override fun getItemCount() = tasks.size
 

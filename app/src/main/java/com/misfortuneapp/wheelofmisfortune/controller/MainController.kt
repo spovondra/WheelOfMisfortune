@@ -64,7 +64,7 @@ class MainControllerImpl(
                 val timerFinished = intent.getBooleanExtra("countdownTimerFinished", false)
 
                 var text = ""
-                val (hours, minutes, seconds) = calculateRemainingTime(remainingTime)
+
                 Log.d("MainControllerImpl", "Broadcast received. TimerRunning: $timerRunning, TimerFinished: $timerFinished, RemainingTime: $remainingTime")
 
                 if (timerRunning) {
@@ -126,7 +126,7 @@ class MainControllerImpl(
                     }
 
                     // Zvýší body na základě výchozích bodů úlohy
-                    currentPoints += selectedTask!!.points
+                    currentPoints += selectedTask.points
 
                     // Text pro zobrazení v UI
                     var text = "bodů"
@@ -159,7 +159,6 @@ class MainControllerImpl(
     override fun doWithTaskDialog() {
         lifecycleScope.launch(Dispatchers.Main) {
             delay(3000)
-            //view.showAllTasks()
             updatePoints()
             isWheelSpinning = false  // Nastavte na false po skončení dialogu úlohy
             setTime(getTimeSetByUser())
@@ -255,11 +254,14 @@ class MainControllerImpl(
         if (timeRecords.isNotEmpty()) {
             val time = timeRecords[0]
 
-            selectedTask.startTime = time.endTime
+            selectedTask.startTime = time.startTime
             selectedTask.endTime = time.endTime
             selectedTask.taskState = TaskState.DONE
 
             model.updateTask(selectedTask)
+        }
+        else {
+            Log.d("setTaskDone", "Něco se posralo ${timeRecords.size}")
         }
     }
 
