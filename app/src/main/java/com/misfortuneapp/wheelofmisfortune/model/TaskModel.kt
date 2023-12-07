@@ -114,7 +114,7 @@ class TaskModelImpl(context: Context) : TaskModel {
     // Suspend funkce pro získání posledního záznamu o čase (imeRecord)
     override suspend fun getTimeRecord(): TimeRecord {
         return withContext(Dispatchers.IO) {
-            timeRecordDao.getLastTimeRecord()!!
+            timeRecordDao.getLastTimeRecord() ?: TimeRecord(startTime = 0, endTime = 0)
         }
     }
 }

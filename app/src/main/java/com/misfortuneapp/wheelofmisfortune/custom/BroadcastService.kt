@@ -1,5 +1,6 @@
 package com.misfortuneapp.wheelofmisfortune.custom
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_DEFAULT
@@ -41,6 +42,7 @@ class BroadcastService: Service() {
     private var timeId: Int = -1
 
     // Metoda volaná při vytvoření služby
+    @SuppressLint("ForegroundServiceType")
     override fun onCreate() {
         super.onCreate()
         Log.i(tag, "Vytvářím službu...")
@@ -122,6 +124,7 @@ class BroadcastService: Service() {
                     // Zastavte přední službu a samotnou službu
                     stopForeground(STOP_FOREGROUND_REMOVE)
                     stopSelf()
+                    onDestroy()
                 }
             }
         }

@@ -243,6 +243,7 @@ class MainControllerImpl(
     override fun stopTimer() {
         if (countdownServiceIntent != null) {
             context.stopService(countdownServiceIntent)
+            countdownServiceIntent = null
         }
     }
 

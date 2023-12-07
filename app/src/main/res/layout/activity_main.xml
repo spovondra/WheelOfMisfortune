@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:elevation="10dp"
+                android:elevation="10sp"
                 android:text="@string/zero_time"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorPrimary"
@@ -84,29 +84,27 @@
 
             <com.misfortuneapp.wheelofmisfortune.custom.CircularProgressBar
                 android:id="@+id/circularProgressBar"
-                android:layout_width="363dp"
-                android:layout_height="363dp"
+                android:layout_width="363sp"
+                android:layout_height="363sp"
                 android:layout_gravity="center"
                 android:layout_centerInParent="true" />
 
             <ImageView
                 android:id="@+id/wheel_spin"
-                android:layout_width="315dp"
-                android:layout_height="315dp"
+                android:layout_width="315sp"
+                android:layout_height="315sp"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:contentDescription="@string/wheel_spin_description"
                 android:src="@drawable/wheel_spin" />
 
             <ImageView
-                android:layout_width="400dp"
-                android:layout_height="400dp"
+                android:layout_width="400sp"
+                android:layout_height="400sp"
                 android:layout_centerInParent="true"
                 android:contentDescription="@string/wheel_static_description"
                 android:src="@drawable/wheel_static" />
         </RelativeLayout>
-
-
 
 
         <FrameLayout
