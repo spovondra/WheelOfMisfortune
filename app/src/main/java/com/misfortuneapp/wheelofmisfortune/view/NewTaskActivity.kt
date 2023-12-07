@@ -22,7 +22,7 @@ class NewTaskActivity : AppCompatActivity() {
     private lateinit var notification: Notification
     private lateinit var taskModel: TaskModel
     private lateinit var statisticsController: StatisticsController
-    private var selectedIconResId: Int = R.drawable.icon1 // Výchozí ikona
+    private var selectedIconResId: Int = R.drawable.icon // Výchozí ikona
     private var selectedImageView: ImageView? = null
     private lateinit var taskPriority: SeekBar
     private lateinit var textViewProgress: TextView
