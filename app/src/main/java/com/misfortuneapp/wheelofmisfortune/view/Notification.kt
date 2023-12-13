@@ -45,7 +45,7 @@ class NotificationHandler(private val context: Context) : Notification {
 
         // Vytvoření notifikace
         val notificationBuilder = NotificationCompat.Builder(context, "info_channel")
-            .setSmallIcon(R.drawable.medal_2441759)
+            .setSmallIcon(R.drawable.medal)
             .setContentTitle("Čas na zatočení si s kolečkem!")
             .setContentText("Kolo neštěstí na Tebe už čeká.")
             .setPriority(NotificationCompat.PRIORITY_HIGH)

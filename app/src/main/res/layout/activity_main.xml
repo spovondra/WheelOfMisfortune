@@ -32,17 +32,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
+                android:layout_gravity="center_vertical"
+                android:layout_marginVertical="5dp"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="sans-serif-black"
                 android:text="@string/main_name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="32sp"
-                android:textStyle="bold"
-                android:layout_marginVertical="5dp"/>
+                android:textSize="26sp"
+                android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
-                android:layout_width="110dp"
+                android:layout_width="70dp"
                 android:layout_height="48dp"
                 android:layout_gravity="end"
                 android:layout_marginVertical="5dp"
@@ -51,17 +51,35 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="6dp">
 
-                <Button
+                <LinearLayout
                     android:id="@+id/buttonUp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/button_shape"
-                    android:text="@string/zero_points"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:drawableStart="@drawable/medail"
-                    android:gravity="start|center"
-                    android:textAppearance="?attr/textAppearanceBody2"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/medal"
+                        android:contentDescription="@string/medal_icon_des"
+                        android:layout_gravity="center"/>
+
+                    <Space
+                        android:layout_width="2dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/zero_points"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
         </FrameLayout>
@@ -146,7 +164,6 @@
             android:id="@+id/taskList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="0dp"
             android:layout_marginVertical="14dp"
             android:nestedScrollingEnabled="false"
             app:layoutManager="LinearLayoutManager"

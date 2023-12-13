@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.controller.MainController
@@ -47,18 +48,33 @@ class TaskAdapter(
         // Nastavení zdroje obrázku pro ImageView
         holder.taskIcon.setImageResource(task.iconResId)
 
+        // Podmínka pro zaoblení horní části prvního úkolu
+        when (position) {
+            itemCount - 1 -> {
+                holder.itemView.background = ContextCompat.getDrawable(
+                    holder.itemView.context,
+                    R.drawable.top_rounded_corners
+                )
+            }
+            // Podmínka pro zaoblení spodní části posledního úkolu
+            0 -> {
+                holder.itemView.background = ContextCompat.getDrawable(
+                    holder.itemView.context,
+                    R.drawable.bottom_rounded_corners
+                )
+            }
+            else -> {
+                // Pro všechny ostatní položky nenastavujte zaoblení
+                holder.itemView.background = ContextCompat.getDrawable(
+                    holder.itemView.context,
+                    R.drawable.task_shape
+                )
+            }
+        }
+
         // Nastavení okraje mezi položkami
-        val spacingBetween =
-            holder.itemView.resources.getDimensionPixelSize(R.dimen.spacing_between)
-        val spacingLeftRight =
-        holder.itemView.resources.getDimensionPixelSize(R.dimen.spacing_between_left_right)
         val layoutParams = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.setMargins(
-            spacingLeftRight,
-            spacingBetween,
-            spacingLeftRight,
-            spacingBetween
-        )
+        layoutParams.setMargins(14, 2,14,2)
         holder.itemView.layoutParams = layoutParams
 
         // Nastavení akce při kliknutí na položku

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import java.util.LinkedList
 import java.util.Queue
 
+@SuppressLint("ClickableViewAccessibility")
 abstract class SwipeHelper(
     context: Context?,
     private val recyclerView: RecyclerView,
@@ -140,10 +141,8 @@ abstract class SwipeHelper(
     }
 
     class UnderlayButton(
-        private val text: String,
         private val imageResId: Drawable?,
         private val buttonBackgroundColor: Int,
-        private val textColor: Int,
         private val clickListener: UnderlayButtonClickListener
     ) {
         private var pos = 0
@@ -158,29 +157,17 @@ abstract class SwipeHelper(
         fun onDraw(canvas: Canvas, rect: RectF, pos: Int) {
             val p = Paint()
 
-            // Draw background
+            // Draw rounded background
             p.color = buttonBackgroundColor
-            canvas.drawRect(rect, p)
-
-            // Draw Text
-            p.color = textColor
-            p.textSize = 40f
-            val r = Rect()
-            val cHeight = rect.height()
-            val cWidth = rect.width()
-            p.textAlign = Paint.Align.LEFT
-            p.getTextBounds(text, 0, text.length, r)
-            val x = cWidth / 2f - r.width() / 2f - r.left
-            val y = cHeight / 2f + r.height() / 2f - r.bottom - 40
-            canvas.drawText(text, rect.left + x, rect.top + y, p)
+            canvas.drawRoundRect(rect, 10f, 10f, p)
 
             // Draw Image
             if (imageResId != null) {
                 imageResId.setBounds(
-                    (rect.left + 50).toInt(),
-                    (rect.top + cHeight / 2f).toInt(),
-                    (rect.right - 50).toInt(),
-                    (rect.bottom - cHeight / 10f).toInt()
+                    (rect.left + 30).toInt(),
+                    (rect.top + 40).toInt(),
+                    (rect.right - 30).toInt(),
+                    (rect.bottom - 40).toInt()
                 )
                 imageResId.draw(canvas)
             }
@@ -222,7 +209,7 @@ abstract class SwipeHelper(
     }
 
     companion object {
-        const val BUTTON_WIDTH = 200
+        const val BUTTON_WIDTH = 150
         private var animate: Boolean? = null
     }
 }

@@ -12,7 +12,10 @@
         android:layout_height="55dp"
         android:contentDescription="@string/iconTassk"
         android:background="@drawable/icon_shape"
-        android:src="@drawable/ic_launcher_foreground"/>
+        android:src="@drawable/ic_launcher_foreground"
+        android:padding="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"/>
 
     <LinearLayout
         android:paddingStart="16dp"
@@ -28,7 +31,8 @@
             android:text="@string/nameTask"
             android:textColor="?android:attr/textColorPrimary"
             android:textAppearance="?attr/textAppearanceSubtitle1"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:layout_marginTop="-2dp" />
 
         <TextView
             android:id="@+id/taskDescription"
@@ -40,4 +44,3 @@
             android:textSize="20sp" />
     </LinearLayout>
 </LinearLayout>
-

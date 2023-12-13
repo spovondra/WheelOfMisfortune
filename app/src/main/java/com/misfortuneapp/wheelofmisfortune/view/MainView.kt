@@ -13,6 +13,8 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
 import android.graphics.Color
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import com.misfortuneapp.wheelofmisfortune.custom.SwipeHelper
@@ -116,12 +118,14 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     @OptIn(DelicateCoroutinesApi::class)
     override fun showUpdatedPoints(text: String) {
         GlobalScope.launch(Dispatchers.Main) {
-            val buttonUp: Button = findViewById(R.id.buttonUp)
-            buttonUp.text = text
+            val linearLayoutButtonUp: LinearLayout = findViewById(R.id.buttonUp)
+            val textView: TextView = linearLayoutButtonUp.findViewById(R.id.score) // Replace 'textView' with the actual ID of your TextView
+            textView.text = text
             showAllTasks()
             updateStatistics()
         }
     }
+
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun updateStatistics() {
@@ -177,13 +181,16 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 underlayButtons: MutableList<UnderlayButton>?
             ) {
                 // Delete Button
+                if (underlayButtons != null) {
+                    Log.d("SIZE1", underlayButtons.size.toString())
+                }
+                findViewById<Button>(R.id.floatingActionButton).visibility = View.GONE
                 underlayButtons?.add(UnderlayButton(
-                    "Delete",
                     AppCompatResources.getDrawable(
                         this@MainViewImp,
-                        R.drawable.ic_action_bell
+                        R.drawable.ic_action_trash
                     ),
-                    Color.parseColor("#FF0000"), Color.parseColor("#ffffff"),
+                    Color.parseColor("#FF0000"),
                     object : UnderlayButtonClickListener {
                         @SuppressLint("ClickableViewAccessibility")
                         override fun onClick(pos: Int) {
@@ -209,12 +216,13 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     }
 
     override fun showStatistics() {
-        val buttonShowStatistics = findViewById<Button>(R.id.buttonUp)
-        buttonShowStatistics.setOnClickListener {
+        val linearLayoutButtonUp = findViewById<LinearLayout>(R.id.buttonUp)
+        linearLayoutButtonUp.setOnClickListener {
             val intent = Intent(this, StatisticsViewImp::class.java)
             startActivity(intent)
         }
     }
+
 
     override fun showTaskDialog(task: Task) {
         runOnUiThread {

@@ -143,11 +143,11 @@ class MainControllerImpl(
                     currentPoints += selectedTask.points
 
                     // Text pro zobrazení v UI
-                    var text = "bodů"
+                    var text = ""
                     if (currentPoints == 1) {
-                        text = "bod"
+                        text = ""
                     } else if (currentPoints in 2..4) {
-                        text = "body"
+                        text = ""
                     }
 
                     val finalText = "$currentPoints $text"
