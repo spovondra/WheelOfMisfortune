@@ -12,7 +12,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.ItemTouchHelper
+import android.graphics.Color
+import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import com.misfortuneapp.wheelofmisfortune.custom.SwipeHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.misfortuneapp.wheelofmisfortune.R
@@ -53,10 +56,12 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val taskList = findViewById<RecyclerView>(R.id.taskList)
+        taskList.layoutManager = LinearLayoutManager(this@MainViewImp)
+
         // Initialize DataRepository
         dataRepository = DataRepository(DataDatabase.getInstance(this).dataDao())
         taskDao = TaskDatabase.getDatabase(this).taskDao()
-
 
         circularProgressBar = findViewById(R.id.circularProgressBar)
         countdownTimerTextView = findViewById(R.id.countdownTimerTextView)
@@ -77,6 +82,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         showStatistics()
         showSetTime()
         wheelAbleToTouch()
+        swipeToDeleteButton()
 
         val newTaskButton: Button = findViewById(R.id.floatingActionButton)
         newTaskButton.setOnClickListener {
@@ -156,14 +162,44 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                     controller
                 )
 
-                val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
-                itemTouchHelper.attachToRecyclerView(taskList)
-
                 taskList.adapter = adapter
             }
         }
     }
 
+    private fun swipeToDeleteButton () {
+        val taskList = findViewById<RecyclerView>(R.id.taskList)
+        taskList.layoutManager = LinearLayoutManager(this@MainViewImp)
+
+        object : SwipeHelper(this@MainViewImp, taskList, false) {
+            override fun instantiateUnderlayButton(
+                viewHolder: RecyclerView.ViewHolder?,
+                underlayButtons: MutableList<UnderlayButton>?
+            ) {
+                // Delete Button
+                underlayButtons?.add(UnderlayButton(
+                    "Delete",
+                    AppCompatResources.getDrawable(
+                        this@MainViewImp,
+                        R.drawable.ic_action_bell
+                    ),
+                    Color.parseColor("#FF0000"), Color.parseColor("#ffffff"),
+                    object : UnderlayButtonClickListener {
+                        @SuppressLint("ClickableViewAccessibility")
+                        override fun onClick(pos: Int) {
+                            Toast.makeText(
+                                this@MainViewImp,
+                                "Delete clicked at position $pos",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            (taskList.adapter as? TaskAdapter)?.onItemDismiss(pos)
+                            taskList.adapter?.notifyItemRemoved(pos)
+                        }
+                    }
+                ))
+            }
+        }
+    }
 
     private fun openTaskDetailsScreen(task: Task) {
         val intent = Intent(this, TaskDetailsActivity::class.java)

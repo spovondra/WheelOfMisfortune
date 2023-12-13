@@ -48,14 +48,16 @@ class TaskAdapter(
         holder.taskIcon.setImageResource(task.iconResId)
 
         // Nastavení okraje mezi položkami
-        val spacingInPixels =
-            holder.itemView.resources.getDimensionPixelSize(R.dimen.spacing_between_items)
+        val spacingBetween =
+            holder.itemView.resources.getDimensionPixelSize(R.dimen.spacing_between)
+        val spacingLeftRight =
+        holder.itemView.resources.getDimensionPixelSize(R.dimen.spacing_between_left_right)
         val layoutParams = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.setMargins(
-            spacingInPixels,
-            spacingInPixels,
-            spacingInPixels,
-            spacingInPixels
+            spacingLeftRight,
+            spacingBetween,
+            spacingLeftRight,
+            spacingBetween
         )
         holder.itemView.layoutParams = layoutParams
 

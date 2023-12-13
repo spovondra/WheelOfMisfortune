@@ -77,10 +77,15 @@ class MainControllerImpl(
                     val (hours, minutes, seconds) = calculateRemainingTime(remainingTime)
 
                     GlobalScope.launch {
-                        calculatedProgress = ((getTimeSetByUser() - remainingTime) * 100 / getTimeSetByUser()).toInt()
+                        val timeSetByUser = getTimeSetByUser()
+                        calculatedProgress = if (timeSetByUser != 0L) {
+                            ((timeSetByUser - remainingTime) * 100 / timeSetByUser).toInt()
+                        } else {
+                            0
+                        }
                     }
 
-                    // Formátování zbývajícího času
+                        // Formátování zbývajícího času
                     text = if (hours.toInt() == 0) {
                         String.format("%02d:%02d", minutes, seconds)
                     } else {
