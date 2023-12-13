@@ -31,6 +31,24 @@
                 android:paddingTop="14dp"
                 android:text="@string/graphText"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="28sp" />
+
+            <TextView
+                android:id="@+id/dailyStatisticsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/overallStatisticsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginBottom="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="18sp" />
 
             <com.jjoe64.graphview.GraphView
@@ -39,6 +57,8 @@
                 android:layout_height="220dp"
                 android:layout_gravity="center"
                 android:layout_margin="14dp" />
+
+
 
             <androidx.cardview.widget.CardView
                 android:layout_width="140dp"

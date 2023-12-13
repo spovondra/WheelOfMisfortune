@@ -17,6 +17,9 @@ interface DataDao {
     @Query("SELECT * FROM data_table ORDER BY day ASC")
     suspend fun getAllData(): List<DataEntity>
 
+    @Query("SELECT value FROM data_table")
+    suspend fun getAllValues(): List<Double>
+
     // Metoda pro získání dat z databáze podle zadaného data
     @Query("SELECT * FROM data_table WHERE day = :date LIMIT 1")
     suspend fun getDataByDate(date: Int): DataEntity?

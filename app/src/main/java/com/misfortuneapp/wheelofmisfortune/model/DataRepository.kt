@@ -1,20 +1,36 @@
 package com.misfortuneapp.wheelofmisfortune.model
 
-// Repozitář pro přístup k datům prostřednictvím DataDao
-class DataRepository(private val dataDao: DataDao) {
+interface DataRepository {
+    suspend fun insertData(dataEntity: DataEntity)
+    suspend fun getDataByDate(date: Int): DataEntity?
+    suspend fun getAllData(): List<DataEntity>
+    suspend fun deleteAllData()
+    suspend fun getFormattedDates(): Array<String>
+    suspend fun getAllValues(): List<Double>
+}
 
-    // Vložení nových dat do databáze
-    suspend fun insertData(dataEntity: DataEntity) {
+class DataRepositoryImpl(private val dataDao: DataDao) : DataRepository {
+    override suspend fun insertData(dataEntity: DataEntity) {
         dataDao.insertData(dataEntity)
     }
 
-    // Získání dat podle specifického data
-    suspend fun getDataByDate(date: Int): DataEntity? {
+    override suspend fun getDataByDate(date: Int): DataEntity? {
         return dataDao.getDataByDate(date)
     }
 
-    // Získání všech dat uložených v databázi
-    suspend fun getAllData(): List<DataEntity> {
+    override suspend fun getAllData(): List<DataEntity> {
         return dataDao.getAllData()
+    }
+
+    override suspend fun deleteAllData() {
+        return dataDao.deleteAllData()
+    }
+
+    override suspend fun getFormattedDates(): Array<String> {
+        return dataDao.getFormattedDates()
+    }
+
+    override suspend fun getAllValues(): List<Double> {
+        return dataDao.getAllValues()
     }
 }

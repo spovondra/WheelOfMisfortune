@@ -24,4 +24,7 @@
     <string name="iconTassk">Task Icon</string>
     <string name="nameTask">Task Name</string>
     <string name="medal_icon_des">Medal Icon</string>
+    <string name="daily_statistics">Daily Statistics: %.0f points</string>
+    <string name="overall_statistics">Overall Statistics: %.0f points</string>
+    <string name="statistics_view">Statistics</string>
 </resources>

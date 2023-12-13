@@ -40,7 +40,7 @@ class NewTaskActivity : AppCompatActivity() {
         mainView = MainViewImp()
         notification = NotificationHandler(this)
         taskModel = TaskModelImpl(this)
-        statisticsController = StatisticsControllerImp(DataRepository(DataDatabase.getInstance(this).dataDao()))
+        statisticsController = StatisticsControllerImp(DataRepositoryImpl(DataDatabase.getInstance(this).dataDao()), StatisticsViewImp())
 
         // Inicializace instance TaskController
         taskController = MainControllerImpl(

@@ -142,15 +142,7 @@ class MainControllerImpl(
                     // Zvýšení bodů na základě výchozích bodů úlohy
                     currentPoints += selectedTask.points
 
-                    // Text pro zobrazení v UI
-                    var text = ""
-                    if (currentPoints == 1) {
-                        text = ""
-                    } else if (currentPoints in 2..4) {
-                        text = ""
-                    }
-
-                    val finalText = "$currentPoints $text"
+                    val finalText = "$currentPoints"
                     view.showUpdatedPoints(finalText)
                     setTaskDone(selectedTask)
 
@@ -216,8 +208,7 @@ class MainControllerImpl(
             if (dataEntity != null) {
                 currentPoints = dataEntity.value.toInt()
                 // Aktualizace zobrazených bodů v UI
-                val text = if (currentPoints == 1) "bod" else "bodů"
-                view.showUpdatedPoints("$currentPoints $text")
+                view.showUpdatedPoints("$currentPoints")
             }
         }
     }

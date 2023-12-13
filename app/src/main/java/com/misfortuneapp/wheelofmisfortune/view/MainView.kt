@@ -62,7 +62,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         taskList.layoutManager = LinearLayoutManager(this@MainViewImp)
 
         // Initialize DataRepository
-        dataRepository = DataRepository(DataDatabase.getInstance(this).dataDao())
+        dataRepository = DataRepositoryImpl(DataDatabase.getInstance(this).dataDao())
         taskDao = TaskDatabase.getDatabase(this).taskDao()
 
         circularProgressBar = findViewById(R.id.circularProgressBar)
@@ -70,7 +70,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
         val taskRepository: TaskModel = TaskModelImpl(this)
         notificationHandler = NotificationHandler(this)
-        statisticsController = StatisticsControllerImp(dataRepository)
+        statisticsController = StatisticsControllerImp(dataRepository, StatisticsViewImp())
 
         controller = MainControllerImpl(this,this, notificationHandler, taskRepository, statisticsController)
 
@@ -184,7 +184,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 if (underlayButtons != null) {
                     Log.d("SIZE1", underlayButtons.size.toString())
                 }
-                findViewById<Button>(R.id.floatingActionButton).visibility = View.GONE
+                //findViewById<Button>(R.id.floatingActionButton).visibility = View.GONE
                 underlayButtons?.add(UnderlayButton(
                     AppCompatResources.getDrawable(
                         this@MainViewImp,
@@ -222,7 +222,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             startActivity(intent)
         }
     }
-
 
     override fun showTaskDialog(task: Task) {
         runOnUiThread {
