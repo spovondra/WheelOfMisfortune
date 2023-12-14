@@ -12,6 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import java.util.LinkedList
 import java.util.Queue
 
+/**
+ * // Abstraktní třída SwipeHelper poskytuje základní funkcionalitu pro ovládání swipe operací v RecyclerView.
+ * // Potomci této třídy implementují metody pro vytvoření tlačítek pod řádkem a posluchač kliknutí na ně.
+ */
 @SuppressLint("ClickableViewAccessibility")
 abstract class SwipeHelper(
     context: Context?,
@@ -19,6 +23,7 @@ abstract class SwipeHelper(
     animate: Boolean?
 ) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
+    // Odkaz na instance GestureDetector, Mapu tlačítek pod řádkem a frontu pro obnovení stržených položek
     private val gestureDetector: GestureDetector
     private val buttonsBuffer: MutableMap<Int, MutableList<UnderlayButton>?> = HashMap()
     private val recoverQueue: Queue<Int> = LinkedList()
@@ -34,6 +39,10 @@ abstract class SwipeHelper(
         attachSwipe()
     }
 
+    /**
+     * // Metoda volaná při pohybu položky v seznamu. Tato implementace vrací false,
+     * // což znamená, že položky nelze přesouvat.
+     */
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
@@ -42,6 +51,10 @@ abstract class SwipeHelper(
         return false
     }
 
+    /**
+     * // Metoda volaná po stržení položky. Ukládá informace o stržené položce,
+     * // tlačítkách pod řádkem a spouští obnovení stržených položek.
+     */
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val pos = viewHolder.adapterPosition
         if (swipedPos != pos) recoverQueue.add(swipedPos)
@@ -52,18 +65,30 @@ abstract class SwipeHelper(
         recoverSwipedItem()
     }
 
+    /**
+     * // Vrací poměrnou hodnotu šířky potřebnou k dosažení práhu pro aktivaci akce.
+     */
     override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
         return swipeThreshold
     }
 
+    /**
+     * // Nastavuje únikovou rychlost pro akci.
+     */
     override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
         return 0.1f * defaultValue
     }
 
+    /**
+     * // Nastavuje prah rychlosti, který musí být dosažen pro spuštění akce.
+     */
     override fun getSwipeVelocityThreshold(defaultValue: Float): Float {
         return 5.0f * defaultValue
     }
 
+    /**
+     * // Kreslí tlačítka pod řádkem a volá nadřazenou metodu pro kreslení položky.
+     */
     override fun onChildDraw(
         c: Canvas,
         recyclerView: RecyclerView,
@@ -93,6 +118,9 @@ abstract class SwipeHelper(
         super.onChildDraw(c, recyclerView, viewHolder, translationX, dY, actionState, isCurrentlyActive)
     }
 
+    /**
+     * // Obnovuje stržené položky z fronty.
+     */
     private fun recoverSwipedItem() {
         while (recoverQueue.isNotEmpty()) {
             val pos = recoverQueue.poll()
@@ -102,6 +130,9 @@ abstract class SwipeHelper(
         }
     }
 
+    /**
+     * // Kreslí tlačítka pod řádkem.
+     */
     private fun drawButtons(
         c: Canvas,
         itemView: View,
@@ -127,19 +158,31 @@ abstract class SwipeHelper(
         }
     }
 
+    /**
+     * // Připojí helper pro swipe k RecyclerView.
+     */
     private fun attachSwipe() {
         ItemTouchHelper(this).attachToRecyclerView(recyclerView)
     }
 
+    /**
+     * // Abstraktní metoda, která je implementována v potomcích pro vytvoření tlačítek pod řádky.
+     */
     abstract fun instantiateUnderlayButton(
         viewHolder: RecyclerView.ViewHolder?,
         underlayButtons: MutableList<UnderlayButton>?
     )
 
+    /**
+     * // Rozhraní pro posluchač kliknutí na tlačítko pod řádkem.
+     */
     interface UnderlayButtonClickListener {
         fun onClick(pos: Int)
     }
 
+    /**
+     * // Třída reprezentující tlačítko pod řádkem.
+     */
     class UnderlayButton(
         private val imageResId: Drawable?,
         private val buttonBackgroundColor: Int,
@@ -148,20 +191,26 @@ abstract class SwipeHelper(
         private var pos = 0
         private var clickRegion: RectF? = null
 
+        /**
+         * // Metoda volaná při kliknutí na tlačítko.
+         */
         fun onClick(x: Float, y: Float): Boolean {
             return clickRegion != null && clickRegion!!.contains(x, y).also {
                 if (it) clickListener.onClick(pos)
             }
         }
 
+        /**
+         * // Kreslí tlačítko pod řádkem.
+         */
         fun onDraw(canvas: Canvas, rect: RectF, pos: Int) {
             val p = Paint()
 
-            // Draw rounded background
+            // Kreslí obdélník pro tlačítko
             p.color = buttonBackgroundColor
             canvas.drawRoundRect(rect, 10f, 10f, p)
 
-            // Draw Image
+            // Kreslí ikonu
             if (imageResId != null) {
                 imageResId.setBounds(
                     (rect.left + 30).toInt(),
@@ -177,6 +226,9 @@ abstract class SwipeHelper(
         }
     }
 
+    /**
+     * // Vnitřní třída pro zachytávání gest.
+     */
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
             for (button in buttons as ArrayList<UnderlayButton>) {
@@ -186,6 +238,9 @@ abstract class SwipeHelper(
         }
     }
 
+    /**
+     * // Vnitřní třída pro zachytávání dotyků.
+     */
     private inner class TouchListener : View.OnTouchListener {
         @SuppressLint("ClickableViewAccessibility")
         override fun onTouch(v: View?, e: MotionEvent?): Boolean {
@@ -209,7 +264,7 @@ abstract class SwipeHelper(
     }
 
     companion object {
-        const val BUTTON_WIDTH = 150
+        const val BUTTON_WIDTH = 150 // Šířka tlačítka
         private var animate: Boolean? = null
     }
 }
