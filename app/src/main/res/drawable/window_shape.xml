@@ -1,16 +1,22 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:bottom="0dp">
+    <!-- Shadow -->
+    <item android:bottom="6dp">
         <shape android:shape="rectangle">
+            <corners android:radius="20dp" />
+            <solid android:color="@color/border" />
+        </shape>
+    </item>
+    <!-- Button background -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="20dp" />
             <solid android:color="@color/colorButton" />
-            <corners android:topLeftRadius="6dp" android:topRightRadius="6dp"
-                     android:bottomLeftRadius="20dp" android:bottomRightRadius="20dp" />
         </shape>
     </item>
     <!-- Light shadow on top -->
     <item android:bottom="1dp">
         <shape android:shape="rectangle">
-            <corners android:topLeftRadius="6dp" android:topRightRadius="6dp"
-                     android:bottomLeftRadius="20dp" android:bottomRightRadius="20dp" />
+            <corners android:radius="20dp" />
             <solid android:color="@color/shadowButton" />
         </shape>
     </item>

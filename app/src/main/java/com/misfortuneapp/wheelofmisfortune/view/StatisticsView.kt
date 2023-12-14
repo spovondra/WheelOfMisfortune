@@ -21,9 +21,7 @@ import com.misfortuneapp.wheelofmisfortune.controller.*
 import com.misfortuneapp.wheelofmisfortune.model.*
 
 // Rozhraní pro pohled (view) statistik
-// Rozhraní pro pohled (view) statistik
 interface StatisticsView {
-    fun clearAllData()
     fun createGraph(series: BarGraphSeries<DataPoint>, formattedDateStrings: Array<String>)
     fun updateStatistics(dailyStatistics: Double, overallStatistics: Double)
 }
@@ -35,7 +33,6 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
     private lateinit var clearGraphButton: Button
     private lateinit var controller: StatisticsController
     private lateinit var database: DataDatabase
-    private var pointCounter: Int = 0
     private lateinit var lastAddedDate: String
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -59,22 +56,13 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
 
         // Načtení aktuálních dat
         GlobalScope.launch {
-            val currentDate = controller.getCurrentDate()
-            val dataEntity = controller.getDataByDate(currentDate)
-
-            // Pokud jsou data pro aktuální den k dispozici, použijte je pro inicializaci čítače bodů
-            if (dataEntity != null) {
-                pointCounter = dataEntity.value.toInt()
-            }
-
-            // Aktualizace grafu
             controller.updateGraph()
         }
 
         // Nastavení posluchače pro tlačítko vymazání grafu
         clearGraphButton.setOnClickListener {
             // Volání metody pro smazání všech dat
-            clearAllData()
+            controller.clearAllData()
 
             // Aktualizace grafu
             GlobalScope.launch {
@@ -138,15 +126,6 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
 
         dailyStatisticsText.text = getString(R.string.daily_statistics, dailyStatistics)
         overallStatisticsText.text = getString(R.string.overall_statistics, overallStatistics)
-    }
-
-    @OptIn(DelicateCoroutinesApi::class)
-    override fun clearAllData() {
-        GlobalScope.launch {
-            controller.deleteAllData()  // Smazání všech dat v databázi
-            pointCounter = 0                    // Nastavení čítače bodů na 0
-            controller.updateGraph()                       // Aktualizace grafu
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

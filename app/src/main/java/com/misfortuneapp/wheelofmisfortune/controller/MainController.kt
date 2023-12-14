@@ -37,6 +37,7 @@ interface MainController {
     ) // Asynchronně přidá novou úlohu
     fun startTimer(taskId: Int) // Spustí časovač pro úlohu
     fun stopTimer() // Zastaví časovač (nepoužíváno)
+    fun clearAllData()
     suspend fun setTime(selectedTimeInMillis: Long) // Asynchronně nastaví čas úlohy
     suspend fun setFirstTime() // Asynchronně nastaví první čas (při prvním spuštění)
     suspend fun getTime(): TimeRecord // Asynchronně získá časový záznam
@@ -52,8 +53,8 @@ class MainControllerImpl(
     private val statisticsController: StatisticsController // Instance pro správu statistik
 ) : ComponentActivity(), MainController {
     private var isWheelSpinning = false // Příznak, zda se kolo otáčí
-    private var currentPoints = 0 // Aktuální počet bodů
     private var calculatedProgress = 0 // Vypočtený postup odpočtu
+    private var currentPoints = 0
     private var lastAddedDate: String = getCurrentDate() // Poslední datum přidání bodů
     private var countdownServiceIntent: Intent? = null
 
@@ -140,9 +141,12 @@ class MainControllerImpl(
                     }
 
                     // Zvýšení bodů na základě výchozích bodů úlohy
+                    Log.d("MainControllerImpl", "CurrentPoints before: $currentPoints")
                     currentPoints += selectedTask.points
+                    Log.d("MainControllerImpl", "CurrentPoints after: ${currentPoints}")
 
-                    val finalText = "$currentPoints"
+
+                    val finalText = "${currentPoints}"
                     view.showUpdatedPoints(finalText)
                     setTaskDone(selectedTask)
 
@@ -199,18 +203,23 @@ class MainControllerImpl(
     // Metoda pro načtení bodů z databáze
     override fun loadPointsFromDatabase() {
         lifecycleScope.launch(Dispatchers.Main) {
+            currentPoints = 0
             // Získání dat z databáze
             val currentDate =
                 SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
             val dataEntity = statisticsController.getDataByDate(currentDate)
 
-            // Aktualizace bodů v UI, pokud existují data
             if (dataEntity != null) {
                 currentPoints = dataEntity.value.toInt()
-                // Aktualizace zobrazených bodů v UI
-                view.showUpdatedPoints("$currentPoints")
             }
+            // Aktualizace zobrazených bodů v UI
+            view.showUpdatedPoints("$currentPoints")
+
         }
+    }
+
+    override fun clearAllData() {
+        currentPoints = 0
     }
 
     // Metoda pro vrácení aktuálního data

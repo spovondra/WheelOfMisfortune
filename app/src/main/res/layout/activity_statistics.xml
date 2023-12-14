@@ -13,14 +13,14 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:paddingLeft="14dp"
-        android:paddingTop="14dp"
+        android:paddingTop="8dp"
         android:paddingRight="14dp"
         tools:ignore="UselessParent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/task_shape"
+            android:background="@drawable/window_shape"
             android:orientation="vertical"
             android:paddingBottom="14dp">
 

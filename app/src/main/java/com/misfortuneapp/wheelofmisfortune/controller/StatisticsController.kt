@@ -18,15 +18,14 @@ import java.util.Locale
 
 // Rozhraní pro presenter (kontroler) statistik
 interface StatisticsController {
-    suspend fun insertOrUpdateData(date: String, value: Double)
+    suspend fun insertOrUpdateData(date: String, currentPoints: Double)
     suspend fun getDataByDate(date: String): DataEntity?
-    suspend fun calculateAndUpdateOverallStatistics(): Double
     suspend fun getAllData(): List<DataEntity>
-    suspend fun deleteAllData()
-    suspend fun getFormattedDates(): Array<String>
     fun getCurrentDate(): String
     suspend fun updateGraph()
+    fun clearAllData()
 }
+
 
 // Kontroler pro statistiky, který zpracovává vkládání a aktualizaci dat
 class StatisticsControllerImp(
@@ -34,8 +33,8 @@ class StatisticsControllerImp(
     private val view: StatisticsView
 ): StatisticsController {
 
-    // Metoda pro vložení nebo aktualizaci dat na základě data a hodnoty
-    override suspend fun insertOrUpdateData(date: String, value: Double) {
+        // Metoda pro vložení nebo aktualizaci dat na základě data a hodnoty
+    override suspend fun insertOrUpdateData(date: String, currentPoints: Double) {
         // Převod data na hash pro použití jako klíč v databázi
         val day = date.hashCode()
         // Formátování data pro zobrazení ve formátu "dd.MM"
@@ -46,11 +45,11 @@ class StatisticsControllerImp(
 
         if (existingData != null) {
             // Aktualizace existujících dat, pokud existují
-            val updatedData = existingData.copy(value = value, formattedDate = formattedDate)
+            val updatedData = existingData.copy(value =  currentPoints, formattedDate = formattedDate)
             repository.insertData(updatedData)
         } else {
             // Vložení nových dat, pokud pro daný den neexistují žádná data
-            val newData = DataEntity(day = day, value = value, formattedDate = formattedDate)
+            val newData = DataEntity(day = day, value =  currentPoints, formattedDate = formattedDate)
             repository.insertData(newData)
         }
     }
@@ -61,7 +60,7 @@ class StatisticsControllerImp(
         return repository.getDataByDate(day)
     }
 
-    override suspend fun calculateAndUpdateOverallStatistics(): Double {
+    private suspend fun calculateAndUpdateOverallStatistics(): Double {
         val allValues = repository.getAllValues()
         return allValues.sum()
     }
@@ -70,11 +69,11 @@ class StatisticsControllerImp(
         return repository.getAllData()
     }
 
-    override suspend fun deleteAllData() {
+    private suspend fun deleteAllData() {
         return repository.deleteAllData()
     }
 
-    override suspend fun getFormattedDates(): Array<String> {
+    private suspend fun getFormattedDates(): Array<String> {
         return repository.getFormattedDates()
     }
 
@@ -106,6 +105,14 @@ class StatisticsControllerImp(
                 // Aktualizace statistiky v UI
                 view.updateStatistics(dailyStatistics, overallStatistics)
             }
+        }
+    }
+    @OptIn(DelicateCoroutinesApi::class)
+    override fun clearAllData() {
+        GlobalScope.launch {
+            deleteAllData()  // Smazání všech dat v databázi
+            updateGraph()      // Aktualizace grafu
+            //MainControllerHolder.mainController.clearAllData()
         }
     }
 }

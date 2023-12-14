@@ -40,16 +40,6 @@ class NewTaskActivity : AppCompatActivity() {
         mainView = MainViewImp()
         notification = NotificationHandler(this)
         taskModel = TaskModelImpl(this)
-        statisticsController = StatisticsControllerImp(DataRepositoryImpl(DataDatabase.getInstance(this).dataDao()), StatisticsViewImp())
-
-        // Inicializace instance TaskController
-        taskController = MainControllerImpl(
-            context = mainView as MainViewImp,
-            view = mainView,
-            notification = notification,
-            model = taskModel,
-            statisticsController = statisticsController
-        )
 
         taskPriority = findViewById(R.id.seekBarPriority)
         textViewProgress = findViewById(R.id.textViewProgress)

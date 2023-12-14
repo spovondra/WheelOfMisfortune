@@ -13,10 +13,10 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
 import android.graphics.Color
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.lifecycle.lifecycleScope
 import com.misfortuneapp.wheelofmisfortune.custom.SwipeHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -79,7 +79,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
         GlobalScope.launch {
             controller.getTime().let { controller.startTimer(it.id) }
-            showAllTasks()
         }
         showStatistics()
         showSetTime()
@@ -115,9 +114,8 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         controller.doWithTaskDialog()
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun showUpdatedPoints(text: String) {
-        GlobalScope.launch(Dispatchers.Main) {
+        lifecycleScope.launch(Dispatchers.Main) {
             val linearLayoutButtonUp: LinearLayout = findViewById(R.id.buttonUp)
             val textView: TextView = linearLayoutButtonUp.findViewById(R.id.score) // Replace 'textView' with the actual ID of your TextView
             textView.text = text
@@ -286,7 +284,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             }
         }
     }
-
     override fun onDestroy() {
         unregisterReceiver(controller.countdownReceiver)
         super.onDestroy()
@@ -297,6 +294,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
         launch {
             showAllTasks()
+            controller.loadPointsFromDatabase()
         }
     }
 }
