@@ -135,7 +135,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     @SuppressLint("SetTextI18n")
     private suspend fun showNumberOfTasks() {
         val textNum: TextView = findViewById(R.id.textNum)
-        textNum.text = "Your tasks (${controller.getAllTasks().size})"
+        textNum.text = getString(R.string.your_tasks, controller.getAllTasks().size)
     }
 
     override suspend fun showAllTasks() {

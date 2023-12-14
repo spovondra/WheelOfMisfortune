@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Koło Nieszczęścia</string>
+    <string name="main_name">Koło Nieszczęścia</string>
+    <string name="zero_points">0</string>
+    <string name="zero_time">00:00</string>
+    <string name="wheel_spin_description">Koło do obrócenia</string>
+    <string name="button_change_time_of_notification">Zmień czas powiadomienia</string>
+    <string name="wheel_static_description">Statyczne otoczenie koła</string>
+    <string name="button_add_description">Dodaj przycisk</string>
+    <string name="zero_priority">Wybrany priorytet: 0</string>
+    <string name="priority_static">Priorytet:</string>
+    <string name="addTask">Dodaj zadanie</string>
+    <string name="newTaskDescription">Opis zadania</string>
+    <string name="newTaskName">Nazwa zadania</string>
+    <string name="icon_1">Ikona 1</string>
+    <string name="icon_2">Ikona 2</string>
+    <string name="icon_3">Ikona 3</string>
+    <string name="icon_4">Ikona 4</string>
+    <string name="statsResetBtn">Resetuj</string>
+    <string name="graphText">Twoje osiągnięcia</string>
+    <string name="doneBtn">Gotowe</string>
+    <string name="backBtn">Wstecz</string>
+    <string name="taskDescription">Opis zadania</string>
+    <string name="iconTassk">Ikona zadania</string>
+    <string name="nameTask">Nazwa zadania</string>
+    <string name="medal_icon_des">Ikona medalu</string>
+    <string name="daily_statistics">Dziennie: %.0f punktów</string>
+    <string name="overall_statistics">Ogólne: %.0f punktów</string>
+    <string name="statistics_view">Statystyki</string>
+    <string name="your_tasks">Twoje zadania (%1$s)</string>
+</resources>

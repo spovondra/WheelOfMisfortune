@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WheelOfMisfortune</string>
+    <string name="app_name">Wheel Of Misfortune</string>
     <string name="main_name">Wheel of Misfortune</string>
     <string name="zero_points">0</string>
     <string name="zero_time">00:00</string>
@@ -10,8 +10,8 @@
     <string name="zero_priority">Selected Priority: 0</string>
     <string name="priority_static">Priority:</string>
     <string name="addTask">Add Task</string>
-    <string name="newTaskDescription">Task Description (Block)</string>
-    <string name="newTaskName">Task Name (One Line)</string>
+    <string name="newTaskDescription">Task Description</string>
+    <string name="newTaskName">Task Name</string>
     <string name="icon_1">Icon 1</string>
     <string name="icon_2">Icon 2</string>
     <string name="icon_3">Icon 3</string>
@@ -24,7 +24,8 @@
     <string name="iconTassk">Task Icon</string>
     <string name="nameTask">Task Name</string>
     <string name="medal_icon_des">Medal Icon</string>
-    <string name="daily_statistics">Daily Statistics: %.0f points</string>
-    <string name="overall_statistics">Overall Statistics: %.0f points</string>
+    <string name="daily_statistics">Daily: %.0f points</string>
+    <string name="overall_statistics">Overall: %.0f points</string>
     <string name="statistics_view">Statistics</string>
+    <string name="your_tasks">Your tasks (%1$s)</string>
 </resources>
