@@ -141,12 +141,10 @@ class MainControllerImpl(
                     }
 
                     // Zvýšení bodů na základě výchozích bodů úlohy
-                    Log.d("MainControllerImpl", "CurrentPoints before: $currentPoints")
                     currentPoints += selectedTask.points
-                    Log.d("MainControllerImpl", "CurrentPoints after: ${currentPoints}")
 
 
-                    val finalText = "${currentPoints}"
+                    val finalText = "$currentPoints"
                     view.showUpdatedPoints(finalText)
                     setTaskDone(selectedTask)
 

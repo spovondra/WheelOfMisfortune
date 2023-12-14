@@ -3,9 +3,7 @@ package com.misfortuneapp.wheelofmisfortune.controller
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 import com.misfortuneapp.wheelofmisfortune.model.*
-import com.misfortuneapp.wheelofmisfortune.view.MainView
 import com.misfortuneapp.wheelofmisfortune.view.StatisticsView
-import com.misfortuneapp.wheelofmisfortune.view.StatisticsViewImp
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
