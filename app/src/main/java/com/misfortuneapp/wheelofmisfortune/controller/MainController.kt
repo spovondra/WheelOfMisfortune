@@ -134,25 +134,9 @@ class MainControllerImpl(
                     val selectedTask = tasks.random()
                     setTaskInProgress(selectedTask)
 
-                    // Kontrola, zda začal nový den
-                    val currentDate = getCurrentDate()
-                    if (currentDate != lastAddedDate) {
-                        currentPoints = 0
-                        lastAddedDate = currentDate
-                    }
-
-                    // Zvýšení bodů na základě výchozích bodů úlohy
-                    currentPoints += selectedTask.points
-
-
                     val finalText = "$currentPoints"
                     view.showUpdatedPoints(finalText)
                     //setTaskDone(selectedTask)
-
-                    // Uložení bodů do databáze
-                    val formattedDate =
-                        SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
-                    statisticsController.insertOrUpdateData(formattedDate, currentPoints.toDouble())
 
                     //view.showDrawnTasks()
 
@@ -261,7 +245,12 @@ class MainControllerImpl(
 
     // Metoda pro asynchronní nastavení úlohy do stavu "IN_PROGRESS"
     private suspend fun setTaskInProgress(task: Task) {
+        val timeRecord = model.getTimeRecord()
+
+        task.startTime = timeRecord.startTime
+        task.endTime = timeRecord.endTime
         task.taskState = TaskState.IN_PROGRESS
+
         model.updateTask(task)
     }
 
@@ -279,6 +268,25 @@ class MainControllerImpl(
         selectedTask.taskState = TaskState.DONE
 
         model.updateTask(selectedTask)
+
+        // Kontrola, zda začal nový den
+        val currentDate = getCurrentDate()
+        if (currentDate != lastAddedDate) {
+            currentPoints = 0
+            lastAddedDate = currentDate
+        }
+
+        // Zvýšení bodů na základě výchozích bodů úlohy
+        currentPoints += selectedTask.points
+
+
+        val finalText = "$currentPoints"
+        view.showUpdatedPoints(finalText)
+
+        // Uložení bodů do databáze
+        val formattedDate =
+            SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
+        statisticsController.insertOrUpdateData(formattedDate, currentPoints.toDouble())
     }
 
     // Metoda pro asynchronní nastavení času úlohy

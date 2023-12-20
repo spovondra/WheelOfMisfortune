@@ -39,6 +39,6 @@ data class Task(
 
     // Společné hodnoty pro všechny instance třídy Task
     companion object {
-        const val DEFAULT_POINTS = 5 // Výchozí hodnota pro počet bodů
+        const val DEFAULT_POINTS = 1 // Výchozí hodnota pro počet bodů
     }
 }

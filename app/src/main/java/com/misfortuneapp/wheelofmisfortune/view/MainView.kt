@@ -234,16 +234,9 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     }
 
     private fun openTaskDetailsScreen(task: Task) {
-        // Call NewTaskActivity with the task details
-        val intent = Intent(this, NewTaskActivity::class.java)
+        val intent = Intent(this, TaskDetailsActivity::class.java)
         intent.putExtra("taskId", task.id)
-        intent.putExtra("taskTitle", task.title)
-        intent.putExtra("taskDescription", task.description)
-        intent.putExtra("taskPriority", task.priority)
-        intent.putExtra("taskIconResId", task.iconResId)
-        intent.putExtra("taskStartTime", task.startTime)
-        intent.putExtra("taskEndTime", task.endTime)
-
+        Log.d("TaskDetailsActivity", "Task ID: $taskId")
         startActivity(intent)
     }
 
