@@ -176,7 +176,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         swipeHelperToDeleteAndEdit(drawnList,true)
     }
 
-    private fun swipeHelperToDeleteAndEdit(recyclerView: RecyclerView, enableEdit: Boolean) {
+    private fun swipeHelperToDeleteAndEdit(recyclerView: RecyclerView, enableDone: Boolean) {
         recyclerView.layoutManager = LinearLayoutManager(this@MainViewImp)
 
         object : SwipeHelper(this@MainViewImp, recyclerView, true) {
@@ -199,18 +199,18 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                                 "Delete clicked at position $pos",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            (recyclerView.adapter as? TaskAdapter)?.onItemDismiss(pos)
+                            (recyclerView.adapter as? TaskAdapter)?.removeItem(pos)
                             recyclerView.adapter?.notifyItemRemoved(pos)
                         }
                     }
                 ))
 
-                // Edit Button (if enabled)
-                if (enableEdit) {
+                // Done Button (if enabled)
+                if (enableDone) {
                     underlayButtons?.add(UnderlayButton(
                         AppCompatResources.getDrawable(
                             this@MainViewImp,
-                            R.drawable.ic_launcher_foreground
+                            R.drawable.ic_action_tick
                         ),
                         Color.parseColor("#00FF00"),
                         object : UnderlayButtonClickListener {
@@ -218,10 +218,13 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                             override fun onClick(pos: Int) {
                                 Toast.makeText(
                                     this@MainViewImp,
-                                    "Edit clicked at position $pos",
+                                    "Done clicked at position $pos",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                // Implement your edit action here
+                                (recyclerView.adapter as? TaskAdapter)?.itemDone(pos)
+                                lifecycleScope.launch {
+                                    showDrawnTasks()
+                                }
                             }
                         }
                     ))

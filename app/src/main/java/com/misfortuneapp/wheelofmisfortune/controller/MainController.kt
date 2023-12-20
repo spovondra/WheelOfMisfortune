@@ -38,6 +38,7 @@ interface MainController {
     fun startTimer(taskId: Int) // Spustí časovač pro úlohu
     fun stopTimer() // Zastaví časovač (nepoužíváno)
     fun clearAllData()
+    suspend fun setTaskDone(selectedTask: Task)
     suspend fun setTime(selectedTimeInMillis: Long) // Asynchronně nastaví čas úlohy
     suspend fun setFirstTime() // Asynchronně nastaví první čas (při prvním spuštění)
     suspend fun getTime(): TimeRecord // Asynchronně získá časový záznam
@@ -270,7 +271,7 @@ class MainControllerImpl(
     }
 
     // Metoda pro asynchronní nastavení úlohy do stavu "DONE"
-    private suspend fun setTaskDone(selectedTask: Task) {
+    override suspend fun setTaskDone(selectedTask: Task) {
         val timeRecord = model.getTimeRecord()
 
         selectedTask.startTime = timeRecord.startTime

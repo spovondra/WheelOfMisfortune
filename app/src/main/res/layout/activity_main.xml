@@ -66,9 +66,10 @@
                             android:contentDescription="@string/medal_icon_des"
                             android:layout_gravity="center"/>
 
-                        <Space
+                        <View
                             android:layout_width="2dp"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent" />
 
                         <TextView
                             android:id="@+id/score"
@@ -139,7 +140,7 @@
                     android:layout_height="315sp"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:contentDescription="Popis kolečka"
+                    android:contentDescription="@string/wheel_spin_description"
                     android:src="@drawable/wheel_spin"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -153,50 +154,63 @@
                     android:src="@drawable/wheel_static" />
             </RelativeLayout>
 
-            <TextView
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:id="@+id/textNumDrawn"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/drawnList"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textSize="16sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/drawnList"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginVertical="14dp"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="LinearLayoutManager"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/textNum"
-                android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/textNumDrawn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@+id/drawnList" />
 
-            <TextView
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:id="@+id/textNum"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/drawnList"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textSize="16sp" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/drawnList"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginVertical="14dp"
+                    android:layout_weight="1"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="LinearLayoutManager"
+                    app:layout_constraintBottom_toTopOf="@+id/textNum"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/taskList"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="14dp"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@+id/drawnList" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/taskList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="14dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="LinearLayoutManager"
+                    app:layout_constraintBottom_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>

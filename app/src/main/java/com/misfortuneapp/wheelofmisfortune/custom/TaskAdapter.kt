@@ -49,15 +49,21 @@ class TaskAdapter(
         holder.taskIcon.setImageResource(task.iconResId)
 
         // Podmínka pro zaoblení horní části prvního úkolu
-        when (position) {
-            itemCount - 1 -> {
+        when {
+            itemCount == 1 -> {
+                holder.itemView.background = ContextCompat.getDrawable(
+                    holder.itemView.context,
+                    R.drawable.rounded_corners
+                )
+            }
+            position == itemCount - 1 -> {
                 holder.itemView.background = ContextCompat.getDrawable(
                     holder.itemView.context,
                     R.drawable.top_rounded_corners
                 )
             }
             // Podmínka pro zaoblení spodní části posledního úkolu
-            0 -> {
+            position == 0 -> {
                 holder.itemView.background = ContextCompat.getDrawable(
                     holder.itemView.context,
                     R.drawable.bottom_rounded_corners
@@ -104,8 +110,17 @@ class TaskAdapter(
         }
     }
 
-    // Metoda pro odstranění položky při swipu
-    fun onItemDismiss(position: Int) {
-        removeItem(position)
+    // Metoda pro nastavení položky DONE
+    @OptIn(DelicateCoroutinesApi::class)
+    fun itemDone (position: Int) {
+        if (position >= 0 && position < tasks.size) {
+            val taskDone = tasks[position]
+            tasks.removeAt(position)
+
+            GlobalScope.launch {
+                mainController.setTaskDone(taskDone)
+            }
+            onItemDelete.invoke(taskDone)
+        }
     }
 }
