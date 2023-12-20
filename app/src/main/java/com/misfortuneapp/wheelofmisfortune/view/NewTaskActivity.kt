@@ -3,6 +3,8 @@ package com.misfortuneapp.wheelofmisfortune.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -20,16 +22,19 @@ class NewTaskActivity : AppCompatActivity() {
     private lateinit var mainView: MainView
     private lateinit var notification: Notification
     private lateinit var taskModel: TaskModel
-    private var selectedIconResId: Int = R.drawable.icon // Výchozí ikona
+    private var selectedIconResId: Int = R.drawable.ic_launcher_foreground // Default icon
     private var selectedImageView: ImageView? = null
     private lateinit var taskPriority: SeekBar
     private lateinit var textViewProgress: TextView
+    private lateinit var taskNameEditText: EditText
+    private lateinit var taskDescriptionEditText: EditText
+    private var isNewTask: Boolean = true // Flag to track whether it's a new task
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_task)
 
-        // Nastavení zpětného tlačítka v akčním baru
+        // Set up the action bar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.elevation = 0f
         supportActionBar?.title = "Nová úloha"
@@ -41,29 +46,31 @@ class NewTaskActivity : AppCompatActivity() {
 
         taskPriority = findViewById(R.id.seekBarPriority)
         textViewProgress = findViewById(R.id.textViewProgress)
+        taskNameEditText = findViewById(R.id.editTextTaskName)
+        taskDescriptionEditText = findViewById(R.id.editTextTaskDescription)
 
-        // Nastavení posluchače tlačítka pro přidání úlohy
+        // Set up the click listener for the button to add a task
         val addTaskButton: Button = findViewById(R.id.buttonAddTask)
         addTaskButton.setOnClickListener {
-            addNewTask()
+            saveTaskAutomatically()
         }
 
-        // Předpokládáme, že máte ImageButton pro ikony s ID icon1, icon2, icon3, icon4
+        // Assume you have ImageButtons for icons with IDs icon1, icon2, icon3, icon4
         val icon1: ImageView = findViewById(R.id.icon1)
         val icon2: ImageView = findViewById(R.id.icon2)
         val icon3: ImageView = findViewById(R.id.icon3)
         val icon4: ImageView = findViewById(R.id.icon4)
 
-        // Nastavení posluchačů kliknutí pro ikony
+        // Set up click listeners for icons
         icon1.setOnClickListener { onIconClick(icon1) }
         icon2.setOnClickListener { onIconClick(icon2) }
         icon3.setOnClickListener { onIconClick(icon3) }
         icon4.setOnClickListener { onIconClick(icon4) }
 
+        // Set up a SeekBar change listener
         taskPriority.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             @SuppressLint("SetTextI18n")
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                // Aktualizace textu v TextView při posunutí SeekBar
                 textViewProgress.text = "Selected Progress: $progress"
             }
 
@@ -73,6 +80,35 @@ class NewTaskActivity : AppCompatActivity() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 // Not implemented
+            }
+        })
+
+        // Set up TextWatchers for automatic saving when text changes
+        taskNameEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
+                // Not implemented
+            }
+
+            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+                // Not implemented
+            }
+
+            override fun afterTextChanged(editable: Editable?) {
+                saveTaskAutomatically()
+            }
+        })
+
+        taskDescriptionEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {
+                // Not implemented
+            }
+
+            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+                // Not implemented
+            }
+
+            override fun afterTextChanged(editable: Editable?) {
+                saveTaskAutomatically()
             }
         })
     }
@@ -95,33 +131,32 @@ class NewTaskActivity : AppCompatActivity() {
         }
     }
 
-    private fun addNewTask() {
-        val taskNameEditText: EditText = findViewById(R.id.editTextTaskName)
-        val taskDescriptionEditText: EditText = findViewById(R.id.editTextTaskDescription)
-
+    private fun saveTaskAutomatically() {
         val taskName = taskNameEditText.text.toString()
         val taskDescription = taskDescriptionEditText.text.toString()
         val priority = taskPriority.progress
 
-        if (taskName.isNotBlank() && taskDescription.isNotBlank()) {
+        if (taskName.isNotBlank()) {
             lifecycleScope.launch {
-                // Use TaskModel methods to add a new task
-                taskModel.addNewTask(
-                    title = taskName,
-                    description = taskDescription,
-                    priority = priority,
-                    iconResId = selectedIconResId,
-                    startTime = 0, // Docasne
-                    endTime = 0 // Docasne
-                )
-
-                // Optionally, you can update the UI or perform other actions after adding a new task
-
-                finish()
-                showToast("Úloha přidána!")
+                if (isNewTask) {
+                    // Create a new task only if it's a new task
+                    taskModel.addNewTask(
+                        title = taskName,
+                        description = taskDescription,
+                        priority = priority,
+                        iconResId = selectedIconResId,
+                        startTime = 0, // Temporary
+                        endTime = 0 // Temporary
+                    )
+                    showToast("Nová úloha vytvořena!")
+                    isNewTask = false // Set the flag to false after creating a new task
+                } else {
+                    // Update an existing task
+                    // You need to implement the logic to update the existing task based on your requirements
+                    // taskModel.updateTask(taskId, updatedTitle, updatedDescription, updatedPriority, updatedIconResId, updatedStartTime, updatedEndTime)
+                    showToast("Úloha aktualizována!")
+                }
             }
-        } else {
-            showToast("Prosím vyplňte všechna políčka!")
         }
     }
 
