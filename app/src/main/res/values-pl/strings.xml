@@ -27,6 +27,6 @@
     <string name="daily_statistics">Dziennie: %.0f punktów</string>
     <string name="overall_statistics">Ogólne: %.0f punktów</string>
     <string name="statistics_view">Statystyki</string>
-    <string name="your_tasks">Twoje zadania (%1$s)</string>
-    <string name="your_drawn_tasks">Zadania w trakcie (%1$s)</string>
+    <string name="your_tasks">Wszystkie zadania (%1$s):</string>
+    <string name="your_drawn_tasks">Zadania w trakcie (%1$s):</string>
 </resources>

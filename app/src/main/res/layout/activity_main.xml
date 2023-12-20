@@ -25,7 +25,7 @@
             <FrameLayout
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:paddingTop="16dp"
+                android:paddingTop="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -85,32 +85,6 @@
 
             </FrameLayout>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="96dp">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="240dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    app:cardBackgroundColor="?android:attr/windowBackground"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="6dp">
-
-                    <Button
-                        android:id="@+id/buttonSetTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        android:background="@drawable/button_shape"
-                        android:elevation="10dp"
-                        android:text="@string/button_change_time_of_notification"
-                        android:textAppearance="?attr/textAppearanceBody2"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textSize="18sp" />
-                </androidx.cardview.widget.CardView>
-            </FrameLayout>
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -154,6 +128,32 @@
                     android:src="@drawable/wheel_static" />
             </RelativeLayout>
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="240dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_horizontal"
+                    app:cardBackgroundColor="?android:attr/windowBackground"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="6dp">
+
+                    <Button
+                        android:id="@+id/buttonSetTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/button_shape"
+                        android:elevation="10dp"
+                        android:text="@string/button_change_time_of_notification"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textSize="18sp" />
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -181,6 +181,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:background="@android:color/transparent" />
             </LinearLayout>
 
             <LinearLayout

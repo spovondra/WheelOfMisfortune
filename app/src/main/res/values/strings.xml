@@ -27,6 +27,6 @@
     <string name="daily_statistics">Daily: %.0f points</string>
     <string name="overall_statistics">Overall: %.0f points</string>
     <string name="statistics_view">Statistics</string>
-    <string name="your_tasks">Your tasks (%1$s)</string>
-    <string name="your_drawn_tasks">Tasks in Progress (%1$s)</string>
+    <string name="your_tasks">All tasks (%1$s):</string>
+    <string name="your_drawn_tasks">Tasks in Progress (%1$s):</string>
 </resources>

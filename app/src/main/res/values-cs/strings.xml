@@ -27,6 +27,6 @@
     <string name="daily_statistics">Denní: %.0f bodů</string>
     <string name="overall_statistics">Celkové: %.0f bodů</string>
     <string name="statistics_view">Statistiky</string>
-    <string name="your_tasks">Vaše úlohy (%1$s)</string>
-    <string name="your_drawn_tasks">Úlohy v průběhu (%1$s)</string>
+    <string name="your_tasks">Všechny úlohy (%1$s):</string>
+    <string name="your_drawn_tasks">Úlohy v průběhu (%1$s):</string>
 </resources>
