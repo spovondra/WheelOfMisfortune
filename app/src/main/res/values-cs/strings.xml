@@ -24,8 +24,8 @@
     <string name="iconTassk">Ikona úkolu</string>
     <string name="nameTask">Název úkolu</string>
     <string name="medal_icon_des">Ikona medaile</string>
-    <string name="daily_statistics">Denní: %.0f bodů</string>
-    <string name="overall_statistics">Celkové: %.0f bodů</string>
+    <string name="daily_statistics">Dnešní splněné úlohy: %.0f</string>
+    <string name="overall_statistics">Celkem splněných úkolů: %.0f</string>
     <string name="statistics_view">Statistiky</string>
     <string name="your_tasks">Všechny úlohy (%1$s):</string>
     <string name="your_drawn_tasks">Úlohy v průběhu (%1$s):</string>

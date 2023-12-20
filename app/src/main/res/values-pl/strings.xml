@@ -24,8 +24,8 @@
     <string name="iconTassk">Ikona zadania</string>
     <string name="nameTask">Nazwa zadania</string>
     <string name="medal_icon_des">Ikona medalu</string>
-    <string name="daily_statistics">Dziennie: %.0f punktów</string>
-    <string name="overall_statistics">Ogólne: %.0f punktów</string>
+    <string name="daily_statistics">"Zadania ukończone dzisiaj: %.0f "</string>
+    <string name="overall_statistics">Całkowita liczba wykonanych zadań: %.0f</string>
     <string name="statistics_view">Statystyki</string>
     <string name="your_tasks">Wszystkie zadania (%1$s):</string>
     <string name="your_drawn_tasks">Zadania w trakcie (%1$s):</string>

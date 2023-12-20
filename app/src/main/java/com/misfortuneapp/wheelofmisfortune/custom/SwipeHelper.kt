@@ -245,18 +245,20 @@ abstract class SwipeHelper(
         @SuppressLint("ClickableViewAccessibility")
         override fun onTouch(v: View?, e: MotionEvent?): Boolean {
             if (swipedPos < 0) return false
-            val point = Point(e!!.rawX.toInt(), e.rawY.toInt())
-            val swipedViewHolder = recyclerView.findViewHolderForAdapterPosition(swipedPos)!!
-            val swipedItem = swipedViewHolder.itemView
-            val rect = Rect()
-            swipedItem.getGlobalVisibleRect(rect)
-            if (e.action == MotionEvent.ACTION_DOWN || e.action == MotionEvent.ACTION_UP || e.action == MotionEvent.ACTION_MOVE) {
-                if (rect.top < point.y && rect.bottom > point.y) {
-                    gestureDetector.onTouchEvent(e)
-                } else {
-                    recoverQueue.add(swipedPos)
-                    swipedPos = -1
-                    recoverSwipedItem()
+            val swipedViewHolder = recyclerView.findViewHolderForAdapterPosition(swipedPos)
+            if (swipedViewHolder != null) {
+                val point = Point(e!!.rawX.toInt(), e.rawY.toInt())
+                val swipedItem = swipedViewHolder.itemView
+                val rect = Rect()
+                swipedItem.getGlobalVisibleRect(rect)
+                if (e.action == MotionEvent.ACTION_DOWN || e.action == MotionEvent.ACTION_UP || e.action == MotionEvent.ACTION_MOVE) {
+                    if (rect.top < point.y && rect.bottom > point.y) {
+                        gestureDetector.onTouchEvent(e)
+                    } else {
+                        recoverQueue.add(swipedPos)
+                        swipedPos = -1
+                        recoverSwipedItem()
+                    }
                 }
             }
             return false

@@ -154,67 +154,51 @@
                 </androidx.cardview.widget.CardView>
             </FrameLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/textNumDrawn"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/textNumDrawn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    android:textSize="16sp"
-                    app:layout_constraintTop_toBottomOf="@+id/drawnList" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/drawnList"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginVertical="14dp"
-                    android:layout_weight="1"
                     android:nestedScrollingEnabled="false"
-                    app:layoutManager="LinearLayoutManager"
-                    app:layout_constraintBottom_toTopOf="@+id/textNum"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layoutManager="LinearLayoutManager" />
 
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="16dp"
-                    android:background="@android:color/transparent" />
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:background="@android:color/transparent" />
+
+            <TextView
+                android:id="@+id/textNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="16sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/taskList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textNum"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    android:textSize="16sp"
-                    app:layout_constraintTop_toBottomOf="@+id/drawnList" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/taskList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginVertical="14dp"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="LinearLayoutManager"
-                    app:layout_constraintBottom_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </LinearLayout>
+                android:layout_marginVertical="14dp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="LinearLayoutManager" />
 
 
         </LinearLayout>
