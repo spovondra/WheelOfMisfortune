@@ -146,14 +146,14 @@ class MainControllerImpl(
 
                     val finalText = "$currentPoints"
                     view.showUpdatedPoints(finalText)
-                    setTaskDone(selectedTask)
+                    //setTaskDone(selectedTask)
 
                     // Uložení bodů do databáze
                     val formattedDate =
                         SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
                     statisticsController.insertOrUpdateData(formattedDate, currentPoints.toDouble())
 
-                    view.showTaskDialog(selectedTask)
+                    //view.showDrawnTasks()
 
                     // Odebrání vybrané úlohy z databáze
                     // model.removeTask(selectedTask)

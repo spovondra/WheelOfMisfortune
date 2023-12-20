@@ -21,7 +21,7 @@ abstract class SwipeHelper(
     context: Context?,
     private val recyclerView: RecyclerView,
     animate: Boolean?
-) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
     // Odkaz na instance GestureDetector, Mapu tlačítek pod řádkem a frontu pro obnovení stržených položek
     private val gestureDetector: GestureDetector
@@ -105,15 +105,26 @@ abstract class SwipeHelper(
             swipedPos = pos
             return
         }
-        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && dX < 0) {
-            var buffer: MutableList<UnderlayButton>? = buttonsBuffer[pos]
-            if (buffer == null) {
-                buffer = ArrayList()
-                instantiateUnderlayButton(viewHolder, buffer)
-                buttonsBuffer[pos] = buffer
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            if (dX < 0) { // Swipe to the left (delete)
+                var deleteBuffer: MutableList<UnderlayButton>? = buttonsBuffer[pos]
+                if (deleteBuffer == null) {
+                    deleteBuffer = ArrayList()
+                    instantiateUnderlayButton(viewHolder, deleteBuffer)
+                    buttonsBuffer[pos] = deleteBuffer
+                }
+                translationX = dX * deleteBuffer.size * BUTTON_WIDTH / itemView.width
+                drawButtons(c, itemView, deleteBuffer, pos, translationX)
+            } else if (dX > 0) { // Swipe to the right (edit)
+                var editBuffer: MutableList<UnderlayButton>? = buttonsBuffer[pos]
+                if (editBuffer == null) {
+                    editBuffer = ArrayList()
+                    instantiateUnderlayButton(viewHolder, editBuffer)
+                    buttonsBuffer[pos] = editBuffer
+                }
+                translationX = dX * editBuffer.size * BUTTON_WIDTH / itemView.width
+                drawButtons(c, itemView, editBuffer, pos, translationX)
             }
-            translationX = dX * buffer.size * BUTTON_WIDTH / itemView.width
-            drawButtons(c, itemView, buffer, pos, translationX)
         }
         super.onChildDraw(c, recyclerView, viewHolder, translationX, dY, actionState, isCurrentlyActive)
     }

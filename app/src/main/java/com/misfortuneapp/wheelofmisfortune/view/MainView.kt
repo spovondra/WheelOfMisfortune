@@ -11,7 +11,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AlertDialog
 import android.graphics.Color
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -38,7 +37,7 @@ interface MainView {
     fun showUpdatedPoints(text: String)
     suspend fun showAllTasks()
     fun showStatistics()
-    fun showTaskDialog(task: Task)
+    suspend fun showDrawnTasks()
     fun showBarAndTime(progress: Int, currentCountdownTime: String)
     fun wheelAbleToTouch()
 }
@@ -133,13 +132,14 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     }
 
     @SuppressLint("SetTextI18n", "StringFormatMatches")
-    private suspend fun showNumberOfTasks() {
+    private suspend fun showNumberOfAllTasks() {
         val textNum: TextView = findViewById(R.id.textNum)
         textNum.text = getString(R.string.your_tasks, controller.getAllTasks().size)
     }
 
     override suspend fun showAllTasks() {
-        showNumberOfTasks()
+        showNumberOfAllTasks()
+        showDrawnTasks()
 
         // Launch a coroutine for the UI update
         coroutineScope {
@@ -171,18 +171,20 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
     private fun swipeToDeleteButton () {
         val taskList = findViewById<RecyclerView>(R.id.taskList)
-        taskList.layoutManager = LinearLayoutManager(this@MainViewImp)
+        val drawnList = findViewById<RecyclerView>(R.id.drawnList)
+        swipeHelperToDeleteAndEdit(taskList,false)
+        swipeHelperToDeleteAndEdit(drawnList,true)
+    }
 
-        object : SwipeHelper(this@MainViewImp, taskList, false) {
+    private fun swipeHelperToDeleteAndEdit(recyclerView: RecyclerView, enableEdit: Boolean) {
+        recyclerView.layoutManager = LinearLayoutManager(this@MainViewImp)
+
+        object : SwipeHelper(this@MainViewImp, recyclerView, true) {
             override fun instantiateUnderlayButton(
                 viewHolder: RecyclerView.ViewHolder?,
                 underlayButtons: MutableList<UnderlayButton>?
             ) {
                 // Delete Button
-                if (underlayButtons != null) {
-                    Log.d("SIZE1", underlayButtons.size.toString())
-                }
-                //findViewById<Button>(R.id.floatingActionButton).visibility = View.GONE
                 underlayButtons?.add(UnderlayButton(
                     AppCompatResources.getDrawable(
                         this@MainViewImp,
@@ -197,11 +199,33 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                                 "Delete clicked at position $pos",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            (taskList.adapter as? TaskAdapter)?.onItemDismiss(pos)
-                            taskList.adapter?.notifyItemRemoved(pos)
+                            (recyclerView.adapter as? TaskAdapter)?.onItemDismiss(pos)
+                            recyclerView.adapter?.notifyItemRemoved(pos)
                         }
                     }
                 ))
+
+                // Edit Button (if enabled)
+                if (enableEdit) {
+                    underlayButtons?.add(UnderlayButton(
+                        AppCompatResources.getDrawable(
+                            this@MainViewImp,
+                            R.drawable.ic_launcher_foreground
+                        ),
+                        Color.parseColor("#00FF00"),
+                        object : UnderlayButtonClickListener {
+                            @SuppressLint("ClickableViewAccessibility")
+                            override fun onClick(pos: Int) {
+                                Toast.makeText(
+                                    this@MainViewImp,
+                                    "Edit clicked at position $pos",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                // Implement your edit action here
+                            }
+                        }
+                    ))
+                }
             }
         }
     }
@@ -221,20 +245,38 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
-    override fun showTaskDialog(task: Task) {
+    @SuppressLint("StringFormatMatches")
+    override suspend fun showDrawnTasks() {
         runOnUiThread {
-            launch {
-                showAllTasks()
+            lifecycleScope.launch {
+                val taskList = findViewById<RecyclerView>(R.id.drawnList)
+                val textNumDrawn: TextView = findViewById(R.id.textNumDrawn)
+                taskList.layoutManager = LinearLayoutManager(this@MainViewImp)
+                (taskList.layoutManager as LinearLayoutManager).reverseLayout = true
+                (taskList.layoutManager as LinearLayoutManager).stackFromEnd = true
+
+                // Získejte aktuální seznam úkolů přímo z kontroléru
+                val allTasks = controller.getAllTasks()
+
+                // Vytvořte nový seznam obsahující pouze úkoly ve stavu IN_PROGRESS
+                val inProgressTasks = allTasks.filter { it.taskState == TaskState.IN_PROGRESS }
+                textNumDrawn.text = getString(R.string.your_drawn_tasks, inProgressTasks.size)
+
+                // Vytvořte nový adaptér s aktuálním seznamem úkolů ve stavu IN_PROGRESS
+                val adapter = TaskAdapter(
+                    inProgressTasks.toMutableList(),
+                    { selectedTask -> openTaskDetailsScreen(selectedTask) },
+                    { removedTask ->
+                        launch {
+                            controller.removeTask(removedTask)
+                        }
+                    },
+                    controller
+                )
+
+                taskList.adapter = adapter
             }
         }
-        val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setTitle("Vaše vylosovaná úloha")
-        dialogBuilder.setMessage("${task.title} - ${task.description}")
-        dialogBuilder.setPositiveButton("Dokončit") { dialog, _ ->
-            dialog.dismiss()
-        }
-        val dialog = dialogBuilder.create()
-        dialog.show()
     }
 
     @OptIn(DelicateCoroutinesApi::class)
