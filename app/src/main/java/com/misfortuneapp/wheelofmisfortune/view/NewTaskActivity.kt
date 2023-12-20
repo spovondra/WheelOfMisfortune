@@ -34,6 +34,15 @@ class NewTaskActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_task)
 
+        // Retrieve task details from the intent
+        val taskId = intent.getIntExtra("taskId", -1)
+        val taskTitle = intent.getStringExtra("taskTitle")
+        val taskDescription = intent.getStringExtra("taskDescription")
+
+        val taskIconResId = intent.getIntExtra("taskIconResId", 0)
+        val taskStartTime = intent.getLongExtra("taskStartTime", 0)
+        val taskEndTime = intent.getLongExtra("taskEndTime", 0)
+
         // Set up the action bar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.elevation = 0f
@@ -44,10 +53,7 @@ class NewTaskActivity : AppCompatActivity() {
         notification = NotificationHandler(this)
         taskModel = TaskModelImpl(this)
 
-        taskPriority = findViewById(R.id.seekBarPriority)
-        textViewProgress = findViewById(R.id.textViewProgress)
-        taskNameEditText = findViewById(R.id.editTextTaskName)
-        taskDescriptionEditText = findViewById(R.id.editTextTaskDescription)
+
 
         // Set up the click listener for the button to add a task
         val addTaskButton: Button = findViewById(R.id.buttonAddTask)
@@ -152,9 +158,32 @@ class NewTaskActivity : AppCompatActivity() {
                     isNewTask = false // Set the flag to false after creating a new task
                 } else {
                     // Update an existing task
-                    // You need to implement the logic to update the existing task based on your requirements
-                    // taskModel.updateTask(taskId, updatedTitle, updatedDescription, updatedPriority, updatedIconResId, updatedStartTime, updatedEndTime)
-                    showToast("Úloha aktualizována!")
+                    val taskIdToUpdate = // Get the ID of the task you want to update, e.g., from your data model
+
+                        if (taskId != null) {
+                            var existingTask = taskModel.getTaskById(taskId)
+
+                            if (existingTask != null) {
+                                // Task with the given ID exists, update it
+                                existingTask.title = taskName
+                                existingTask.description = taskDescription
+                                existingTask.priority = priority
+                                existingTask.iconResId = selectedIconResId
+                                existingTask.startTime = 0; // Set the new start time
+                                    existingTask.endTime = 12; // Set the new end time
+
+                                        // Update the task in the model
+                                    taskModel.updateTask(existingTask)
+
+                                showToast("Úloha aktualizována!")
+                            } else {
+                                // No existing task found with the given ID, show an error message or handle it as needed
+                                showToast("Úloha s ID: $taskId nenalezena")
+                            }
+                        } else {
+                            // Handle the case where taskIdToUpdate is null (e.g., error in getting the ID)
+                            showToast("Chyba při získávání ID úlohy pro aktualizaci")
+                        }
                 }
             }
         }
