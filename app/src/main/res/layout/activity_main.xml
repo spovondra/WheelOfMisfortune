@@ -192,14 +192,18 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="16sp" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/taskList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginVertical="14dp"
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="LinearLayoutManager" />
-
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>

@@ -61,7 +61,7 @@ abstract class SwipeHelper(
         swipedPos = pos
         buttons = buttonsBuffer[pos] ?: mutableListOf()
         buttonsBuffer.clear()
-        swipeThreshold = 0.5f * buttons!!.size * BUTTON_WIDTH
+        swipeThreshold = 0.5f * buttons!!.size * getButtonWidth(recyclerView.context)
         recoverSwipedItem()
     }
 
@@ -112,7 +112,7 @@ abstract class SwipeHelper(
                 instantiateUnderlayButton(viewHolder, buffer)
                 buttonsBuffer[pos] = buffer
             }
-            translationX = dX * buffer.size * BUTTON_WIDTH / itemView.width
+            translationX = dX * buffer.size * getButtonWidth(itemView.context) / itemView.width
             drawButtons(c, itemView, buffer, pos, translationX)
         }
         super.onChildDraw(c, recyclerView, viewHolder, translationX, dY, actionState, isCurrentlyActive)
@@ -266,7 +266,21 @@ abstract class SwipeHelper(
     }
 
     companion object {
-        const val BUTTON_WIDTH = 150 // Šířka tlačítka
+        // Šířka tlačítka
+        private var buttonWidth: Int = 0
+
+        private fun calculateButtonWidth(context: Context): Int {
+            // Zde můžete použít jiný způsob pro výpočet šířky, například 1/5 šířky obrazovky
+            val displayMetrics = context.resources.displayMetrics
+            return (displayMetrics.widthPixels * 0.2).toInt()
+        }
+
+        // Metoda pro získání hodnoty BUTTON_WIDTH
+        private fun getButtonWidth(context: Context): Int {
+            return calculateButtonWidth(context)
+        }
+
+
         private var animate: Boolean? = null
     }
 }

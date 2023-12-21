@@ -16,11 +16,11 @@ data class Task(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,             // Identifikační číslo úkolu v databázi
     val displayId: Int = 0,          // Identifikační číslo úkolu pro zobrazení uživateli
-    val title: String,           // Název úkolu
-    val description: String,     // Popis úkolu
+    var title: String,           // Název úkolu
+    var description: String,     // Popis úkolu
     val points: Int = DEFAULT_POINTS, // Počet bodů při splnění úkolu, defaultně nastaven na 5
-    val priority: Int = 0,       // Priorita úkolu
-    val iconResId: Int = 0,      // ID ikonky úkolu
+    var priority: Int = 0,       // Priorita úkolu
+    var iconResId: Int = 0,      // ID ikonky úkolu
     var startTime: Long = 0,     // Čas spuštění úlohy
     var taskState: TaskState = TaskState.AVAILABLE, // Stav úkolu (dostupný, probíhá, hotovo)
     var endTime: Long = 0        // Čas do konce úlohy (systémový čas + uživatelem zvolený)
