@@ -32,7 +32,7 @@ class NewTaskActivity : AppCompatActivity() {
         // Nastavení zpětného tlačítka v akčním baru
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.elevation = 0f
-        supportActionBar?.title = "Nová úloha"
+        supportActionBar?.title = getString(R.string.new_task_activity)
 
         // Initialize instances
         mainView = MainViewImp()

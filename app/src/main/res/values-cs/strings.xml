@@ -29,4 +29,5 @@
     <string name="statistics_view">Statistiky</string>
     <string name="your_tasks">Všechny úlohy (%1$s):</string>
     <string name="your_drawn_tasks">Úlohy v průběhu (%1$s):</string>
+    <string name="new_task_activity">Nová úloha</string>
 </resources>
