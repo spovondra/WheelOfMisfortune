@@ -30,4 +30,6 @@
     <string name="new_task_activity">Task %d</string>
     <string name="your_tasks">All tasks (%1$s):</string>
     <string name="your_drawn_tasks">Tasks in Progress (%1$s):</string>
+    <string name="no_drawn_tasks_text">"Currently, you don't have any tasks.\nSpin the wheel! "</string>
+    <string name="no_tasks_text">1) Add a new task\n2) Set a reminder time\n3) Spin your misfortune!</string>
 </resources>

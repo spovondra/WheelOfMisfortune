@@ -13,9 +13,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import android.graphics.Color
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import com.misfortuneapp.wheelofmisfortune.custom.SwipeHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -155,6 +157,8 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 // Získejte aktuální seznam úkolů přímo z kontroléru
                 val tasks = controller.getAllTasks()
 
+                updateUIVisibility()
+
                 // Vytvořte nový adapter s aktuálním seznamem úkolů
                 val adapter = TaskAdapter(
                     tasks.toMutableList(),
@@ -281,6 +285,52 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 )
 
                 taskList.adapter = adapter
+            }
+        }
+    }
+
+    @SuppressLint("StringFormatMatches")
+    suspend fun updateUIVisibility() {
+        runOnUiThread {
+            lifecycleScope.launch {
+                val taskList = findViewById<RecyclerView>(R.id.taskList)
+                val textNum: TextView = findViewById(R.id.textNum)
+                val noTasksTextView = findViewById<LinearLayout>(R.id.noTasksTextView)
+                val drawnList = findViewById<RecyclerView>(R.id.drawnList)
+                val textNumDrawn: TextView = findViewById(R.id.textNumDrawn)
+                val drawnTasksTextView = findViewById<LinearLayout>(R.id.noDrawnTasksTextView)
+
+                // Získejte aktuální seznam úkolů přímo z kontroléru
+                val tasks = controller.getAllTasks()
+                val allTasks = controller.getAllTasks()
+
+                // Vytvořte nový seznam obsahující pouze úkoly ve stavu IN_PROGRESS
+                val inDrawnTasks = allTasks.filter { it.taskState == TaskState.IN_PROGRESS }
+
+                if (tasks.isEmpty() && inDrawnTasks.isEmpty()) {
+                    // Skrýt taskList, textNum a tocteTextView
+                    taskList.visibility = View.GONE
+                    textNum.visibility = View.GONE
+                    noTasksTextView.visibility = View.VISIBLE
+                    // Skrýt drawnList, textNumDrawn a drawnTasksTextView
+                    drawnList.visibility = View.GONE
+                    textNumDrawn.visibility = View.GONE
+                    drawnTasksTextView.visibility = View.GONE
+                } else {
+                    taskList.visibility = View.VISIBLE
+                    textNum.visibility = View.VISIBLE
+                    noTasksTextView.visibility = View.GONE
+
+                    if (inDrawnTasks.isEmpty()) {
+                        drawnList.visibility = View.GONE
+                        textNumDrawn.visibility = View.GONE
+                        drawnTasksTextView.visibility = View.VISIBLE
+                    } else {
+                        drawnList.visibility = View.VISIBLE
+                        textNumDrawn.visibility = View.VISIBLE
+                        drawnTasksTextView.visibility = View.GONE
+                    }
+                }
             }
         }
     }

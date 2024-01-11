@@ -168,6 +168,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/noDrawnTasksTextView"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/nothing_text_shape">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/no_drawn_tasks_text"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/noTasksTextView"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/nothing_text_shape">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/no_tasks_text"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/drawnList"
                     android:layout_width="match_parent"
@@ -205,6 +248,11 @@
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="LinearLayoutManager" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@android:color/transparent" />
 
         </LinearLayout>
     </ScrollView>

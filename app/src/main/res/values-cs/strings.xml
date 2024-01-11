@@ -30,4 +30,6 @@
     <string name="your_tasks">Všechny úlohy (%1$s):</string>
     <string name="your_drawn_tasks">Úlohy v průběhu (%1$s):</string>
     <string name="new_task_activity">Úloha %d</string>
+    <string name="no_drawn_tasks_text">Momentálně neplníte žádnou úlohu.\nZatočte si kolečkem!</string>
+    <string name="no_tasks_text">1) Přidejte si novou úlohu\n2) Nastavte si čas upozornění\n3) Vytočte si svoje neštěstí!</string>
 </resources>
