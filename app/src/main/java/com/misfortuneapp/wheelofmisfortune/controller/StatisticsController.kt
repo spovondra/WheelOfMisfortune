@@ -30,6 +30,7 @@ class StatisticsControllerImp(
     private val repository: DataRepository,
     private val view: StatisticsView
 ): StatisticsController {
+    private var dailyStatistics: Double = 0.0
 
         // Metoda pro vložení nebo aktualizaci dat na základě data a hodnoty
     override suspend fun insertOrUpdateData(date: String, currentPoints: Double) {
@@ -97,7 +98,15 @@ class StatisticsControllerImp(
                 // Vytvoření grafu s daty a popisky
                 view.createGraph(series, formattedDateStrings)
 
-                val dailyStatistics = dataEntities.lastOrNull()?.value ?: 0.0
+                // Získání dat z databáze
+                val currentDate =
+                    SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
+                val dataEntity = getDataByDate(currentDate)
+
+                if (dataEntity != null) {
+                    dailyStatistics = dataEntity.value
+                }
+
                 val overallStatistics = calculateAndUpdateOverallStatistics()
 
                 // Aktualizace statistiky v UI

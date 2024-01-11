@@ -197,7 +197,6 @@ class MainControllerImpl(
             }
             // Aktualizace zobrazených bodů v UI
             view.showUpdatedPoints("$currentPoints")
-
         }
     }
 

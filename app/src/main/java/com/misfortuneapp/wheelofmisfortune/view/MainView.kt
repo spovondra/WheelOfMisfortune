@@ -116,7 +116,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     override fun showUpdatedPoints(text: String) {
         lifecycleScope.launch(Dispatchers.Main) {
             val linearLayoutButtonUp: LinearLayout = findViewById(R.id.buttonUp)
-            val textView: TextView = linearLayoutButtonUp.findViewById(R.id.score) // Replace 'textView' with the actual ID of your TextView
+            val textView: TextView = linearLayoutButtonUp.findViewById(R.id.score)
             textView.text = text
             showAllTasks()
             updateStatistics()
