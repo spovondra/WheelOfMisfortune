@@ -27,6 +27,7 @@ class NewTaskActivity : AppCompatActivity() {
     private lateinit var taskPriority: SeekBar
     private lateinit var textViewProgress: TextView
 
+    @SuppressLint("InflateParams")
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

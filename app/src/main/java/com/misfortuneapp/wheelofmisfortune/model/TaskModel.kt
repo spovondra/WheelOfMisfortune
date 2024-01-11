@@ -81,10 +81,8 @@ class TaskModelImpl(context: Context) : TaskModel {
         endTime: Long
     ) {
         val lastTask = taskDao.getLastTask()
-        val newDisplayId = lastTask?.displayId?.plus(1) ?: 1
 
         val newTask = Task(
-            displayId = newDisplayId,
             title = title,
             description = description,
             priority = priority,
