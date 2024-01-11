@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="8dp"> <!-- Center the content both vertically and horizontally -->
+            android:padding="8dp">
 
             <EditText
                 android:id="@+id/editTextTaskName"
@@ -158,15 +158,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp" />
 
-            <Button
-                android:id="@+id/buttonAddTask"
-                android:layout_width="240sp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_half_circle_button"
-                android:gravity="center"
-                android:text="@string/addTask"
-                android:textColor="#FFFFFF"
-                tools:ignore="TextContrastCheck" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

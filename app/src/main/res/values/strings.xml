@@ -27,7 +27,7 @@
     <string name="daily_statistics">Tasks completed today: %.0f</string>
     <string name="overall_statistics">"Total number of completed tasks: %.0f "</string>
     <string name="statistics_view">Statistics</string>
-    <string name="new_task_activity">New task</string>
+    <string name="new_task_activity">Task %d</string>
     <string name="your_tasks">All tasks (%1$s):</string>
     <string name="your_drawn_tasks">Tasks in Progress (%1$s):</string>
 </resources>

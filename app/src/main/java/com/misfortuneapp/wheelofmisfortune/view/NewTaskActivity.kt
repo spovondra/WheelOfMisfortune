@@ -14,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.controller.*
 import com.misfortuneapp.wheelofmisfortune.model.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class NewTaskActivity : AppCompatActivity() {
@@ -25,6 +27,7 @@ class NewTaskActivity : AppCompatActivity() {
     private lateinit var taskPriority: SeekBar
     private lateinit var textViewProgress: TextView
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_task)
@@ -32,7 +35,6 @@ class NewTaskActivity : AppCompatActivity() {
         // Nastavení zpětného tlačítka v akčním baru
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.elevation = 0f
-        supportActionBar?.title = getString(R.string.new_task_activity)
 
         // Initialize instances
         mainView = MainViewImp()
@@ -42,10 +44,17 @@ class NewTaskActivity : AppCompatActivity() {
         taskPriority = findViewById(R.id.seekBarPriority)
         textViewProgress = findViewById(R.id.textViewProgress)
 
-        // Nastavení posluchače tlačítka pro přidání úlohy
-        val addTaskButton: Button = findViewById(R.id.buttonAddTask)
-        addTaskButton.setOnClickListener {
+        val customActionBarButton = layoutInflater.inflate(R.layout.custom_action_bar_button,null)
+        supportActionBar?.customView = customActionBarButton
+        supportActionBar?.setDisplayShowCustomEnabled(true)
+
+        // Set click listener for the custom action bar button
+        customActionBarButton.findViewById<Button>(R.id.action_add_task).setOnClickListener {
             addNewTask()
+        }
+
+        GlobalScope.launch {
+            updateActivityTitle(taskModel.getAllTasks().size.toLong()+1)
         }
 
         // Předpokládáme, že máte ImageButton pro ikony s ID icon1, icon2, icon3, icon4
@@ -75,6 +84,11 @@ class NewTaskActivity : AppCompatActivity() {
                 // Not implemented
             }
         })
+    }
+
+    private fun updateActivityTitle(newTaskId: Long) {
+        val activityTitleTextView: TextView = findViewById(R.id.activityTitleTextView)
+        activityTitleTextView.text = getString(R.string.new_task_activity, newTaskId)
     }
 
     private fun onIconClick(imageView: ImageView) {

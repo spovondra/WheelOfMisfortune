@@ -1,0 +1,26 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/activityTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="@string/new_task_activity"
+        android:textColor="@color/inverted"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/action_add_task"
+        android:layout_width="100dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_half_circle_button"
+        android:gravity="center"
+        android:layout_alignParentEnd="true"
+        android:text="@string/addTask"
+        android:textColor="#FFFFFF"/>
+</RelativeLayout>

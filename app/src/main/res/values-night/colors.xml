@@ -7,4 +7,5 @@
     <color name="iconColor">#F9661B</color>
     <color name="iconInactiveColor">#80F9661B</color>
     <color name="border">#434748</color>
+    <color name="inverted">#FFFFFF</color>
 </resources>
