@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.animation.DecelerateInterpolator
@@ -79,6 +80,8 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         GlobalScope.launch {
             controller.getTime().let { controller.startTimer(it.id) }
         }
+
+        setViewSizesBasedOnScreen()
         showStatistics()
         showSetTime()
         wheelAbleToTouch()
@@ -329,6 +332,36 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             }
         }
     }
+
+    private fun setViewSizesBasedOnScreen() {
+        val displayMetrics = Resources.getSystem().displayMetrics
+
+        val scalingFactor = 1.2f // Increase sizes by 20%
+
+        // Calculate dimensions based on the ratios and apply the scaling factor
+        val circularProgressBarSize = (displayMetrics.widthPixels * 0.8 * scalingFactor).toInt()
+        val wheelSpinSize = (displayMetrics.widthPixels * 0.7 * scalingFactor).toInt()
+        val wheelStaticSize = (displayMetrics.widthPixels * 0.9 * scalingFactor).toInt()
+        val countdownTimerTextSize = (displayMetrics.widthPixels * 0.04 * scalingFactor).toInt()
+
+        // Set the calculated dimensions to the views
+        val circularProgressBar = findViewById<CircularProgressBar>(R.id.circularProgressBar)
+        val wheelSpin = findViewById<ImageView>(R.id.wheel_spin)
+        val wheelStatic = findViewById<ImageView>(R.id.wheel_static)
+        val countdownTimerTextView = findViewById<TextView>(R.id.countdownTimerTextView)
+
+        circularProgressBar.layoutParams.width = circularProgressBarSize
+        circularProgressBar.layoutParams.height = circularProgressBarSize
+
+        wheelSpin.layoutParams.width = wheelSpinSize
+        wheelSpin.layoutParams.height = wheelSpinSize
+
+        wheelStatic.layoutParams.width = wheelStaticSize
+        wheelStatic.layoutParams.height = wheelStaticSize
+
+        countdownTimerTextView.textSize = countdownTimerTextSize.toFloat()
+    }
+
     override fun onDestroy() {
         unregisterReceiver(controller.countdownReceiver)
         super.onDestroy()

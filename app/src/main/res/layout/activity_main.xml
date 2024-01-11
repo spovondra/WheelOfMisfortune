@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:elevation="10sp"
+                    android:elevation="10dp"
                     android:text="@string/zero_time"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorPrimary"
@@ -103,15 +103,15 @@
 
                 <com.misfortuneapp.wheelofmisfortune.custom.CircularProgressBar
                     android:id="@+id/circularProgressBar"
-                    android:layout_width="363sp"
-                    android:layout_height="363sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_centerInParent="true" />
 
                 <ImageView
                     android:id="@+id/wheel_spin"
-                    android:layout_width="315sp"
-                    android:layout_height="315sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:contentDescription="@string/wheel_spin_description"
@@ -121,8 +121,9 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <ImageView
-                    android:layout_width="400sp"
-                    android:layout_height="400sp"
+                    android:id="@+id/wheel_static"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:contentDescription="@string/wheel_static_description"
                     android:src="@drawable/wheel_static" />
