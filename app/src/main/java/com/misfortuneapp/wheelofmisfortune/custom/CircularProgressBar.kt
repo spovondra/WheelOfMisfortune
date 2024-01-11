@@ -16,6 +16,10 @@ class CircularProgressBar(context: Context, attrs: AttributeSet) : View(context,
     private var progress = 0            // Výchozí hodnota postupu (v procentech)
 
     init {
+        initializePaints()
+    }
+
+    private fun initializePaints() {
         // Nastavení vlastností pro kreslení okraje kruhu
         circlePaint.isAntiAlias = true
         circlePaint.color = ContextCompat.getColor(context, android.R.color.darker_gray) // Barva okraje (opravena deprecated metoda)
@@ -26,11 +30,7 @@ class CircularProgressBar(context: Context, attrs: AttributeSet) : View(context,
         arcPaint.color = ContextCompat.getColor(context, android.R.color.holo_green_light) // Barva průběhu (opravena deprecated metoda)
         arcPaint.style = Paint.Style.STROKE  // Styl kreslení (průběhu)
         arcPaint.strokeCap = Paint.Cap.ROUND  // Zakončení průběhu zaoblením
-
-        // Nastavení vlastností pro kreslení průběhu
-        arcPaint.strokeWidth = 22f  // Šířka průběhu
     }
-
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -41,10 +41,11 @@ class CircularProgressBar(context: Context, attrs: AttributeSet) : View(context,
 
         // Určení velikosti view
         val size = if (width < height) width else height
-        val strokeWidth = size * 0.1f // Šířka okrajů, můžete upravit podle svých potřeb
-        val radius = (size - strokeWidth) / 2
+        adjustStrokeWidth(size)
 
-        // Nastavení obdélníku pro kreslení průběhu
+        // Výpočet poloměru a obdélníku pro kreslení průběhu
+        val strokeWidth = size * 0.1f
+        val radius = (size - strokeWidth) / 2
         rectF.set(width / 2 - radius, height / 2 - radius, width / 2 + radius, height / 2 + radius)
 
         // Kreslení kruhu (okraje)
@@ -59,5 +60,10 @@ class CircularProgressBar(context: Context, attrs: AttributeSet) : View(context,
     fun setProgress(progress: Int) {
         this.progress = progress
         invalidate()  // Znovu vykreslit view po změně hodnoty
+    }
+
+    // Metoda pro nastavení dynamické šířky pruhu na základě rozměrů obrazovky
+    private fun adjustStrokeWidth(size: Float) {
+        arcPaint.strokeWidth = size * 0.02f  // Upravte podle potřeby
     }
 }

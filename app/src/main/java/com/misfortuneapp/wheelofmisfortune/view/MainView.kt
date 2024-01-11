@@ -334,33 +334,40 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     }
 
     private fun setViewSizesBasedOnScreen() {
+        // Získání informací o displeji
         val displayMetrics = Resources.getSystem().displayMetrics
 
-        val scalingFactor = 1.2f // Increase sizes by 20%
+        // Faktor pro zvětšení velikostí o 20%
+        val scalingFactor = 1.2f
 
-        // Calculate dimensions based on the ratios and apply the scaling factor
-        val circularProgressBarSize = (displayMetrics.widthPixels * 0.8 * scalingFactor).toInt()
-        val wheelSpinSize = (displayMetrics.widthPixels * 0.7 * scalingFactor).toInt()
+        // Výpočet rozměrů na základě poměrů a aplikace faktoru zvětšení
+        val circularProgressBarSize = (displayMetrics.widthPixels * 0.8166 * scalingFactor).toInt()
+        val wheelSpinSize = (displayMetrics.widthPixels * 0.7083 * scalingFactor).toInt()
         val wheelStaticSize = (displayMetrics.widthPixels * 0.9 * scalingFactor).toInt()
-        val countdownTimerTextSize = (displayMetrics.widthPixels * 0.04 * scalingFactor).toInt()
+        val countdownTimerTextSize = (displayMetrics.widthPixels * 0.045).toInt()
 
-        // Set the calculated dimensions to the views
+        // Nastavení vypočítaných rozměrů pro jednotlivé pohledy
         val circularProgressBar = findViewById<CircularProgressBar>(R.id.circularProgressBar)
         val wheelSpin = findViewById<ImageView>(R.id.wheel_spin)
         val wheelStatic = findViewById<ImageView>(R.id.wheel_static)
         val countdownTimerTextView = findViewById<TextView>(R.id.countdownTimerTextView)
 
+        // Nastavení rozměrů pro kruhový průběh
         circularProgressBar.layoutParams.width = circularProgressBarSize
         circularProgressBar.layoutParams.height = circularProgressBarSize
 
+        // Nastavení rozměrů pro otáčivý obrázek
         wheelSpin.layoutParams.width = wheelSpinSize
         wheelSpin.layoutParams.height = wheelSpinSize
 
+        // Nastavení rozměrů pro statický obrázek
         wheelStatic.layoutParams.width = wheelStaticSize
         wheelStatic.layoutParams.height = wheelStaticSize
 
+        // Nastavení velikosti textu pro odpočítávací časovač
         countdownTimerTextView.textSize = countdownTimerTextSize.toFloat()
     }
+
 
     override fun onDestroy() {
         unregisterReceiver(controller.countdownReceiver)
