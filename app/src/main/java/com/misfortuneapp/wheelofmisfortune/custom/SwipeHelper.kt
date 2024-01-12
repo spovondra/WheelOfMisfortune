@@ -266,9 +266,6 @@ abstract class SwipeHelper(
     }
 
     companion object {
-        // Šířka tlačítka
-        private var buttonWidth: Int = 0
-
         private fun calculateButtonWidth(context: Context): Int {
             // Zde můžete použít jiný způsob pro výpočet šířky, například 1/5 šířky obrazovky
             val displayMetrics = context.resources.displayMetrics

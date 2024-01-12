@@ -80,8 +80,6 @@ class TaskModelImpl(context: Context) : TaskModel {
         startTime: Long,
         endTime: Long
     ) {
-        val lastTask = taskDao.getLastTask()
-
         val newTask = Task(
             title = title,
             description = description,
