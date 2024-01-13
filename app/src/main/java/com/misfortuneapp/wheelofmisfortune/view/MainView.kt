@@ -17,7 +17,6 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import com.misfortuneapp.wheelofmisfortune.custom.SwipeHelper
 import androidx.recyclerview.widget.LinearLayoutManager
