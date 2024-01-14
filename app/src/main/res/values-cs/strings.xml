@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Kolo neštěstí</string>
-    <string name="main_name">Kolo neštěstí</string>
+    <string name="app_name">Kolečko neštěstí</string>
     <string name="zero_points">0</string>
     <string name="zero_time">00:00</string>
     <string name="wheel_spin_description">Kolo k otočení</string>
@@ -32,4 +31,7 @@
     <string name="new_task_activity">Úloha %d</string>
     <string name="no_drawn_tasks_text">Momentálně neplníte žádnou úlohu.\nZatočte si kolečkem!</string>
     <string name="no_tasks_text">1) Přidejte si novou úlohu\n2) Nastavte si čas upozornění\n3) Vytočte si svoje neštěstí!</string>
+    <string name="countdown_start">Odpočet spuštěn.</string>
+    <string name="time_to_spin">Čas na zatočení si s kolečkem!</string>
+    <string name="wheel_is_waiting">Kolo neštěstí na Tebe už čeká.</string>
 </resources>

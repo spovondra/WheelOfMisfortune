@@ -51,8 +51,8 @@ class BroadcastService: Service() {
 
         // Vytvoření a spuštění předního oznámení
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Wheel of Misfortune")
-            .setContentText("Odpočet spuštěn.")
+            .setContentTitle(getString(R.string.app_name))
+            .setContentText(getString(R.string.countdown_start))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .build()
 

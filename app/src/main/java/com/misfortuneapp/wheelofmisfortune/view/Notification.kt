@@ -46,8 +46,8 @@ class NotificationHandler(private val context: Context) : Notification {
         // Vytvoření notifikace
         val notificationBuilder = NotificationCompat.Builder(context, "info_channel")
             .setSmallIcon(R.drawable.medal)
-            .setContentTitle("Čas na zatočení si s kolečkem!")
-            .setContentText("Kolo neštěstí na Tebe už čeká.")
+            .setContentTitle(context.getString(R.string.time_to_spin))
+            .setContentText(context.getString(R.string.wheel_is_waiting))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
 
@@ -62,7 +62,7 @@ class NotificationHandler(private val context: Context) : Notification {
             // Vytvoření notifikačního kanálu
             val channel = NotificationChannel(
                 "info_channel",
-                "Upozornit na zatočení si kolečkem",
+                "Wheel Spin",
                 NotificationManager.IMPORTANCE_HIGH
             )
             // Přidání kanálu do systému

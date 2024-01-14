@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Wheel Of Misfortune</string>
-    <string name="main_name">Wheel of Misfortune</string>
     <string name="zero_points">0</string>
     <string name="zero_time">00:00</string>
     <string name="wheel_spin_description">Wheel To Spin</string>
@@ -32,4 +31,7 @@
     <string name="your_drawn_tasks">Tasks in Progress (%1$s):</string>
     <string name="no_drawn_tasks_text">"Currently, you don't have any tasks.\nSpin the wheel! "</string>
     <string name="no_tasks_text">1) Add a new task\n2) Set a reminder time\n3) Spin your misfortune!</string>
+    <string name="countdown_start">Countdown started.</string>
+    <string name="time_to_spin">Time to spin the wheel</string>
+    <string name="wheel_is_waiting">The wheel of misfortune is waiting for you.</string>
 </resources>
