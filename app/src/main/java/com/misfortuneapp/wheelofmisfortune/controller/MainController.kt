@@ -3,7 +3,6 @@ package com.misfortuneapp.wheelofmisfortune.controller
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import com.misfortuneapp.wheelofmisfortune.custom.BroadcastService
@@ -70,9 +69,6 @@ class MainControllerImpl(
 
                 var text = ""
 
-                // Logování přijatých informací
-                Log.d("MainControllerImpl", "Broadcast received. TimerRunning: $timerRunning, TimerFinished: $timerFinished, RemainingTime: $remainingTime")
-
                 // Zpracování běžícího časovače
                 if (timerRunning) {
                     val (hours, minutes, seconds) = calculateRemainingTime(remainingTime)
@@ -96,13 +92,9 @@ class MainControllerImpl(
                 }
                 // Zpracování ukončeného časovače
                 if (timerFinished) {
-                    Log.d("MainControllerImpl", "Timer finished. Text: $text, Calculated Progress: $calculatedProgress")
                     text = "Start"
                     calculatedProgress = 100
                     isWheelSpinning = false
-                } else if (remainingTime.toInt() == 0) {
-                    // Zpracování situace, kdy zbývající čas je 0
-                    Log.d("MainControllerImpl", "Remaining time is 0. Handle this case as needed.")
                 }
 
                 // Aktualizace UI s informacemi o časovači

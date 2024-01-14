@@ -20,9 +20,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Calendar
 
 // Třída reprezentující službu pro odpočet času
-class BroadcastService: Service() {
+class BroadcastService : Service() {
 
     // Konstanty pro ID kanálu, akci vysílání a extra úkol ID
     companion object {
@@ -38,6 +39,9 @@ class BroadcastService: Service() {
     // Kontext a ID úkolu
     private lateinit var context: Context
     private var timeId: Int = -1
+
+    // Variable to track the currently running timer ID
+    private var currentRunningTimerId: Int? = null
 
     // Metoda volaná při vytvoření služby
     @SuppressLint("ForegroundServiceType")
@@ -66,9 +70,17 @@ class BroadcastService: Service() {
         // Získání ID úkolu z intentu
         timeId = intent?.getIntExtra(EXTRA_TIME_ID, -1) ?: -1
 
+        // Check if a timer is already running
+        if (currentRunningTimerId != null) {
+            // Stop the existing timer
+            stopTimer(currentRunningTimerId!!)
+        }
+
         // Pokud je poskytnuto platné ID úkolu, spusťte časovač; jinak zastavte službu
         if (timeId != -1) {
             startTimer(timeId)
+            // Set the currently running timer ID
+            currentRunningTimerId = timeId
         } else {
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
@@ -100,10 +112,9 @@ class BroadcastService: Service() {
                         bi.putExtra("countdownTimerRunning", true)
                         bi.putExtra("countdownTimerFinished", false)
                         sendBroadcast(bi)
-                    }
-                    else {
+                    } else {
                         // Pokud zbývající čas je 0 nebo záporný, spusťte onFinish pro zastavení časovače
-                            onFinish()
+                        onFinish()
                     }
                 }
             }
@@ -116,7 +127,7 @@ class BroadcastService: Service() {
                     sendBroadcast(bi)
 
                     // Zavolejte notifikaci pomocí NotificationHandler
-                    if(!isAppOnForeground(context)) {
+                    if (!isAppOnForeground(context)) {
                         val notificationHandler = NotificationHandler(context)
                         notificationHandler.showNotification()
                     }
@@ -133,12 +144,26 @@ class BroadcastService: Service() {
         br.start()
     }
 
-    // Voláno při zrušení služby
-    override fun onDestroy() {
-        // Pokud je časovač inicializován, zrušte jej
+    // Funkce na zastavení časovače
+    private fun stopTimer(timerId: Int) {
         if (::br.isInitialized) {
             br.cancel()
         }
+
+        // Clear the currently running timer ID if it matches the stopped timer
+        if (currentRunningTimerId == timerId) {
+            currentRunningTimerId = null
+        }
+    }
+
+    // Voláno pro zrušení služby
+    override fun onDestroy() {
+        // Pokud je časovač inicializován, zruší se
+        if (::br.isInitialized) {
+            br.cancel()
+        }
+        // Clear the currently running timer ID
+        currentRunningTimerId = null
         // Zastavte přední službu a volání nadřazené onDestroy
         stopForeground(STOP_FOREGROUND_REMOVE)
         super.onDestroy()
@@ -156,14 +181,16 @@ class BroadcastService: Service() {
             }
 
             // Získání správce oznámení a vytvoření kanálu
-            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager =
+                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
 
     // Kontrola, za aplikace běží na popředí (aby se nevyhazovaly zbytečně notifikace)
     private fun isAppOnForeground(context: Context): Boolean {
-        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val activityManager =
+            context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val appProcesses = activityManager.runningAppProcesses ?: return false
         val packageName = context.packageName
         for (appProcess in appProcesses) {
@@ -177,7 +204,8 @@ class BroadcastService: Service() {
 
     // Funkce na smazání starých oznámení
     private fun cancelAllNotifications() {
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
     }
 
