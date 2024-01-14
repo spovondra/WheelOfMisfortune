@@ -49,7 +49,6 @@ interface MainController {
 class MainControllerImpl(
     private val context: Context,
     private val view: MainView, // Instance pro interakci s uživatelským rozhraním
-    private val notification: Notification, // Instance pro zobrazení oznámení
     private val model: TaskModel, // Instance pro práci s úlohami
     private val statisticsController: StatisticsController // Instance pro správu statistik
 ) : ComponentActivity(), MainController {
@@ -99,7 +98,6 @@ class MainControllerImpl(
                 if (timerFinished) {
                     Log.d("MainControllerImpl", "Timer finished. Text: $text, Calculated Progress: $calculatedProgress")
                     text = "Start"
-                    notification.showNotification()
                     calculatedProgress = 100
                     isWheelSpinning = false
                 } else if (remainingTime.toInt() == 0) {

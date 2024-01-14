@@ -48,7 +48,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private lateinit var controller: MainControllerImpl
     private lateinit var circularProgressBar: CircularProgressBar
     private lateinit var countdownTimerTextView: TextView
-    private lateinit var notificationHandler: NotificationHandler
     private lateinit var statisticsController: StatisticsController
     private lateinit var dataRepository: DataRepository
     private lateinit var taskDao: TaskDao
@@ -70,10 +69,9 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         countdownTimerTextView = findViewById(R.id.countdownTimerTextView)
 
         val taskRepository: TaskModel = TaskModelImpl(this)
-        notificationHandler = NotificationHandler(this)
         statisticsController = StatisticsControllerImp(dataRepository, StatisticsViewImp())
 
-        controller = MainControllerImpl(this,this, notificationHandler, taskRepository, statisticsController)
+        controller = MainControllerImpl(this,this, taskRepository, statisticsController)
 
         //controller.startCountdownTime(10)
         controller.loadPointsFromDatabase()
@@ -126,7 +124,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             updateStatistics()
         }
     }
-
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun updateStatistics() {

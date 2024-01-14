@@ -1,6 +1,7 @@
 package com.misfortuneapp.wheelofmisfortune.custom
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_DEFAULT
@@ -10,10 +11,10 @@ import android.content.Intent
 import android.os.Build
 import android.os.CountDownTimer
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.model.TimeDatabase
+import com.misfortuneapp.wheelofmisfortune.view.NotificationHandler
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -30,9 +31,6 @@ class BroadcastService: Service() {
         const val EXTRA_TIME_ID = "extra_wheel_id"
     }
 
-    // Značka pro logování
-    private val tag = "BroadcastService"
-
     // Proměnné pro CountDownTimer a Intent
     private lateinit var br: CountDownTimer
     private lateinit var bi: Intent
@@ -45,7 +43,6 @@ class BroadcastService: Service() {
     @SuppressLint("ForegroundServiceType")
     override fun onCreate() {
         super.onCreate()
-        Log.i(tag, "Vytvářím službu...")
 
         // Inicializace Intentu, kontextu a vytvoření kanálu oznámení
         bi = Intent(COUNTDOWN_BR)
@@ -103,7 +100,6 @@ class BroadcastService: Service() {
                         bi.putExtra("countdownTimerRunning", true)
                         bi.putExtra("countdownTimerFinished", false)
                         sendBroadcast(bi)
-
                     }
                     else {
                         // Pokud zbývající čas je 0 nebo záporný, spusťte onFinish pro zastavení časovače
@@ -119,7 +115,11 @@ class BroadcastService: Service() {
                     bi.putExtra("countdownTimerFinished", true)
                     sendBroadcast(bi)
 
-                    Log.d(tag, "Časovač skončil")
+                    // Zavolejte notifikaci pomocí NotificationHandler
+                    if(!isAppOnForeground(context)) {
+                        val notificationHandler = NotificationHandler(context)
+                        notificationHandler.showNotification()
+                    }
 
                     // Zastavte přední službu a samotnou službu
                     stopForeground(STOP_FOREGROUND_REMOVE)
@@ -138,7 +138,6 @@ class BroadcastService: Service() {
         // Pokud je časovač inicializován, zrušte jej
         if (::br.isInitialized) {
             br.cancel()
-            Log.i(tag, "Časovač zrušen")
         }
         // Zastavte přední službu a volání nadřazené onDestroy
         stopForeground(STOP_FOREGROUND_REMOVE)
@@ -160,6 +159,26 @@ class BroadcastService: Service() {
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    // Kontrola, za aplikace běží na popředí (aby se nevyhazovaly zbytečně notifikace)
+    private fun isAppOnForeground(context: Context): Boolean {
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val appProcesses = activityManager.runningAppProcesses ?: return false
+        val packageName = context.packageName
+        for (appProcess in appProcesses) {
+            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName == packageName) {
+                cancelAllNotifications()
+                return true
+            }
+        }
+        return false
+    }
+
+    // Funkce na smazání starých oznámení
+    private fun cancelAllNotifications() {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancelAll()
     }
 
     // Voláno při propojění služby s aktivitou
