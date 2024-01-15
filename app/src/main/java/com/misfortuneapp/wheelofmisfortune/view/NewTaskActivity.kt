@@ -15,7 +15,6 @@ import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.controller.NewTakController
 import com.misfortuneapp.wheelofmisfortune.controller.NewTaskControllerImpl
 import com.misfortuneapp.wheelofmisfortune.model.Task
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -34,7 +33,6 @@ class NewTaskActivity : AppCompatActivity() {
     private var currentTask: Task? = null
 
     @SuppressLint("InflateParams")
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_task)
@@ -150,7 +148,9 @@ class NewTaskActivity : AppCompatActivity() {
 
                 lifecycleScope.launch {
                     val existingTasks = newTaskController.getAllTasks()
-                    val existingTask = existingTasks.find { it.title == taskName }
+
+                    // Find the existing task using a unique identifier or ID
+                    val existingTask = existingTasks.find { it.id == currentTask?.id }
 
                     if (existingTask != null) {
                         existingTask.description = taskDescription
