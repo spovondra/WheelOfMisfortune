@@ -4,10 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <Button
+        android:id="@+id/action_back"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/arrow_back"
+        android:gravity="center"
+        android:text=""
+        android:textColor="#FFFFFF" />
+
     <TextView
         android:id="@+id/activityTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/action_back"
         android:layout_centerVertical="true"
         android:text="@string/new_task_activity"
         android:textColor="@color/inverted"
@@ -23,6 +33,6 @@
         android:background="@drawable/rounded_half_circle_button"
         android:gravity="center"
         android:layout_alignParentEnd="true"
-        android:text="@string/deleteTask"
+        android:text="@string/button_delete"
         android:textColor="#FFFFFF"/>
 </RelativeLayout>

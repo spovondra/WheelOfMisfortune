@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingRight="16dp"
     android:paddingLeft="16dp">
 
@@ -86,7 +86,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="60sp" />
+                android:layout_height="50sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -156,7 +156,34 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="80dp" />
+                android:layout_height="50dp" />
+
+            <FrameLayout
+                android:id="@+id/finishLayout"
+                android:layout_width="match_parent"
+                android:layout_height="70dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="180dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_horizontal"
+                    app:cardBackgroundColor="?android:attr/windowBackground"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="6dp">
+
+                    <Button
+                        android:id="@+id/finishButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/button_shape"
+                        android:elevation="10dp"
+                        android:text="@string/button_finish"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textSize="18sp" />
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
 
         </LinearLayout>
     </ScrollView>

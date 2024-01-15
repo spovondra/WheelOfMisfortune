@@ -64,6 +64,6 @@ class CircularProgressBar(context: Context, attrs: AttributeSet) : View(context,
 
     // Metoda pro nastavení dynamické šířky pruhu na základě rozměrů obrazovky
     private fun adjustStrokeWidth(size: Float) {
-        arcPaint.strokeWidth = size * 0.02f  // Upravte podle potřeby
+        arcPaint.strokeWidth = size * 0.025f
     }
 }

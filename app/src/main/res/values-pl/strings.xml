@@ -8,7 +8,7 @@
     <string name="button_add_description">Dodaj przycisk</string>
     <string name="zero_priority">Wybrany priorytet: 0</string>
     <string name="priority_static">Priorytet:</string>
-    <string name="deleteTask">Usuń zadanie</string>
+    <string name="button_delete">Usuń zadanie</string>
     <string name="newTaskDescription">Opis zadania</string>
     <string name="newTaskName">Nazwa zadania</string>
     <string name="icon_1">Ikona 1</string>
@@ -28,10 +28,12 @@
     <string name="statistics_view">Statystyki</string>
     <string name="your_tasks">Wszystkie zadania (%1$s):</string>
     <string name="your_drawn_tasks">Zadania w trakcie (%1$s):</string>
-    <string name="new_task_activity">Zadanie %d</string>
+    <string name="new_task_activity">Zadanie %d%2$s</string>
     <string name="no_drawn_tasks_text">"Aktualnie nie masz żadnych zadań.\nObróć kołem! "</string>
     <string name="no_tasks_text">1) Dodaj nowe zadanie\n2) Ustaw czas powiadomienia\n3) Zakręć swoim niepowodzeniem!</string>
     <string name="countdown_start">Rozpoczęto odliczanie.</string>
     <string name="time_to_spin">Czas na obrót kołem!</string>
     <string name="wheel_is_waiting">Koło nieszczęścia już na Ciebie czeka.</string>
+    <string name="button_finish">Zakończyć</string>
+    <string name="button_cancel">anulować</string>
 </resources>

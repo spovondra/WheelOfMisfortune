@@ -8,7 +8,7 @@
     <string name="button_add_description">Přidat tlačítko</string>
     <string name="zero_priority">Vybraná priorita: 0</string>
     <string name="priority_static">Priorita:</string>
-    <string name="deleteTask">Smazat úkol</string>
+    <string name="button_delete">Smazat úkol</string>
     <string name="newTaskDescription">Popis úkolu</string>
     <string name="newTaskName">Název úkolu</string>
     <string name="icon_1">Ikona 1</string>
@@ -28,10 +28,12 @@
     <string name="statistics_view">Statistiky</string>
     <string name="your_tasks">Všechny úlohy (%1$s):</string>
     <string name="your_drawn_tasks">Úlohy v průběhu (%1$s):</string>
-    <string name="new_task_activity">Úloha %d</string>
+    <string name="new_task_activity">Úloha %d%2$s</string>
     <string name="no_drawn_tasks_text">Momentálně neplníte žádnou úlohu.\nZatočte si kolečkem!</string>
     <string name="no_tasks_text">1) Přidejte si novou úlohu\n2) Nastavte si čas upozornění\n3) Vytočte si svoje neštěstí!</string>
     <string name="countdown_start">Odpočet spuštěn.</string>
     <string name="time_to_spin">Čas na zatočení si s kolečkem!</string>
     <string name="wheel_is_waiting">Kolo neštěstí na Tebe už čeká.</string>
+    <string name="button_finish">Dokončit</string>
+    <string name="button_cancel">Zrušit</string>
 </resources>

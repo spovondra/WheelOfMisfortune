@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
@@ -31,6 +33,8 @@ class NewTaskActivity : AppCompatActivity() {
     private lateinit var taskNameEditText: EditText
     private lateinit var taskDescriptionEditText: EditText
     private var currentTask: Task? = null
+    private var taskName: String? = null
+    private var newTaskId: Int = 0
 
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +46,16 @@ class NewTaskActivity : AppCompatActivity() {
         notification = NotificationHandler(this)
         newTaskController = NewTaskControllerImpl(this)
 
+        lifecycleScope.launch {
+            val allTasks = newTaskController.getAllTasks()
+            newTaskId = if (allTasks.isNotEmpty()) {
+                allTasks.last().id + 1
+            } else {
+                1
+            }
+            updateActivityTitle()
+        }
+
         taskPriority = findViewById(R.id.seekBarPriority)
         textViewProgress = findViewById(R.id.textViewProgress)
         taskNameEditText = findViewById(R.id.editTextTaskName)
@@ -51,7 +65,12 @@ class NewTaskActivity : AppCompatActivity() {
         taskNameEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                lifecycleScope.launch {
+                    delay(500)
+                    updateActivityTitle()
+                }
+            }
 
             override fun afterTextChanged(s: Editable?) {
                 // Delay the saving by 500 milliseconds to capture continuous changes
@@ -90,6 +109,11 @@ class NewTaskActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
+        val finishButton: Button = findViewById(R.id.finishButton)
+        finishButton.setOnClickListener {
+            finish()
+        }
+
         // Set up click listeners for icons
         val icon1: ImageView = findViewById(R.id.icon1)
         val icon2: ImageView = findViewById(R.id.icon2)
@@ -105,21 +129,42 @@ class NewTaskActivity : AppCompatActivity() {
         val customActionBarButton = layoutInflater.inflate(R.layout.custom_action_bar_button, null)
         supportActionBar?.customView = customActionBarButton
         supportActionBar?.setDisplayShowCustomEnabled(true)
+        supportActionBar?.elevation = 0f
 
         customActionBarButton.findViewById<Button>(R.id.action_delete_task).setOnClickListener {
-            lifecycleScope.launch {
-                currentTask?.let { deleteTask(it) }
+            if (currentTask != null) {
+                lifecycleScope.launch {
+                    currentTask?.let { deleteTask(it) }
+                }
+            }
+            else {
+                finish()
             }
         }
 
+        // Set up back button click listener
+        customActionBarButton.findViewById<Button>(R.id.action_back).setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
         lifecycleScope.launch {
-            updateActivityTitle(newTaskController.getAllTasks().size + 1)
+            updateActivityTitle()
         }
     }
 
-    private fun updateActivityTitle(newTaskId: Int) {
+    private fun updateActivityTitle() {
         val activityTitleTextView: TextView = findViewById(R.id.activityTitleTextView)
-        activityTitleTextView.text = getString(R.string.new_task_activity, newTaskId)
+        val deleteButton: Button = findViewById(R.id.action_delete_task)
+        val finishLayout: FrameLayout = findViewById(R.id.finishLayout)
+        if (taskName.isNullOrBlank()) {
+            activityTitleTextView.text = getString(R.string.new_task_activity, newTaskId, "")
+            deleteButton.text = getString(R.string.button_cancel)
+            finishLayout.visibility = View.GONE
+        } else {
+            activityTitleTextView.text  = getString(R.string.new_task_activity, newTaskId, ": $taskName")
+            deleteButton.text = getString(R.string.button_delete)
+            finishLayout.visibility = View.VISIBLE
+        }
     }
 
     private fun onIconClick(imageView: ImageView) {
@@ -140,28 +185,28 @@ class NewTaskActivity : AppCompatActivity() {
 
     private fun saveTask() {
         if (!isTaskCreated) {
-            val taskName = taskNameEditText.text.toString()
+            taskName = taskNameEditText.text.toString()
             val taskDescription = taskDescriptionEditText.text.toString()
 
-            if (taskName.isNotBlank() && taskDescription.isNotBlank()) {
+            if (taskName!!.isNotBlank() && taskDescription.isNotBlank()) {
                 isTaskCreated = true
 
                 lifecycleScope.launch {
                     val existingTask = currentTask?.let { newTaskController.getTaskByDisplayId(it.displayId) }
 
                     if (existingTask != null) {
-                        existingTask.title = taskName  // Update the task name
+                        existingTask.title = taskName as String
                         existingTask.description = taskDescription
                         existingTask.priority = taskPriority.progress
                         existingTask.iconResId = selectedIconResId
                         newTaskController.updateTask(existingTask)
                     } else {
-                        val newDisplayId = newTaskController.getAllTasks().size + 1
-                        updateActivityTitle(newDisplayId)
+                        newTaskId = newTaskController.getAllTasks().size + 1
+                        updateActivityTitle()
 
                         newTaskController.addNewTask(
-                            displayId = newDisplayId,
-                            title = taskName,
+                            displayId = newTaskId,
+                            title = taskName!!,
                             description = taskDescription,
                             priority = taskPriority.progress,
                             iconResId = selectedIconResId,
@@ -170,7 +215,7 @@ class NewTaskActivity : AppCompatActivity() {
                         )
 
                         // Nastav aktuální úkol
-                        currentTask = newTaskController.getTaskByDisplayId(newDisplayId)
+                        currentTask = newTaskController.getTaskByDisplayId(newTaskId)
                     }
 
                     isTaskCreated = false
