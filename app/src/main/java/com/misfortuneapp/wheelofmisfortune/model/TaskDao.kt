@@ -25,7 +25,7 @@ interface TaskDao {
     @Query("SELECT * FROM Task WHERE id = :taskId")
     suspend fun getTaskById(taskId: Int): Task?
 
-    // Metoda pro získání úkolu podle jména
+    // Metoda pro získání úkolu podle displayId
     @Query("SELECT * FROM Task WHERE displayId = :displayId")
     suspend fun displayId(displayId: Int): Task?
 
