@@ -38,6 +38,7 @@ interface TaskModel {
 
     // Suspend funkce pro získání posledního záznamu o čase
     suspend fun getTimeRecord(): TimeRecord
+    suspend fun getTaskByName(taskName: String): Task?
 }
 
 // Implementace rozhraní TaskModel
@@ -54,6 +55,10 @@ class TaskModelImpl(context: Context) : TaskModel {
     // Suspend funkce pro získání úkolu podle ID
     override suspend fun getTaskById(taskId: Int): Task? = withContext(Dispatchers.IO) {
         return@withContext taskDao.getTaskById(taskId)
+    }
+
+    override suspend fun getTaskByName(taskName: String): Task? = withContext(Dispatchers.IO) {
+        return@withContext taskDao.getTaskByName(taskName)
     }
 
     // Suspend funkce pro odstranění úkolu

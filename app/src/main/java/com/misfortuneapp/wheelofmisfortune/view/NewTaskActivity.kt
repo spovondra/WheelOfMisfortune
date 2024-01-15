@@ -35,6 +35,7 @@ class NewTaskActivity : AppCompatActivity() {
     private lateinit var textViewProgress: TextView
     private lateinit var taskNameEditText: EditText
     private lateinit var taskDescriptionEditText: EditText
+    private var currentTask: Task? = null
 
     @SuppressLint("InflateParams")
     @OptIn(DelicateCoroutinesApi::class)
@@ -112,7 +113,9 @@ class NewTaskActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowCustomEnabled(true)
 
         customActionBarButton.findViewById<Button>(R.id.action_delete_task).setOnClickListener {
-
+            lifecycleScope.launch {
+                currentTask?.let { deleteTask(it) }
+            }
         }
 
         lifecycleScope.launch {
@@ -170,6 +173,8 @@ class NewTaskActivity : AppCompatActivity() {
                             startTime = 0,
                             endTime = 0
                         )
+                        // Nastav aktuální úkol
+                        currentTask = taskModel.getTaskByName(taskName)
                     }
 
                     isTaskCreated = false
@@ -181,9 +186,7 @@ class NewTaskActivity : AppCompatActivity() {
     private fun deleteTask(task: Task) {
         lifecycleScope.launch {
             taskModel.removeTask(task)
-            finish() // lub nawiguj do innej strony, według potrzeb
+            finish() // nebo naviguj na jinou obrazovku podle potřeby
         }
     }
-
-
 }
