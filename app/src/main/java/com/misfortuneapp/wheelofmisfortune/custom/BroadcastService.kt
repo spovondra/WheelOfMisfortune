@@ -5,6 +5,7 @@ import android.app.ActivityManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_DEFAULT
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -52,11 +53,19 @@ class BroadcastService : Service() {
         context = this
         createNotificationChannel()
 
-        // Vytvoření a spuštění předního oznámení
+        // Intent pro spuštění aplikace po kliknutí na notifikaci
+        val notificationIntent = packageManager.getLaunchIntentForPackage(packageName)
+        val contentIntent = PendingIntent.getActivity(
+            this, 0,
+            notificationIntent, PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // Vytvoření a spuštění předního oznámení s PendingIntent
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.countdown_start))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentIntent(contentIntent)  // Přidání PendingIntent pro akci kliknutí
             .build()
 
         startForeground(321, notification)

@@ -1,7 +1,6 @@
 package com.misfortuneapp.wheelofmisfortune.view
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,15 +9,13 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.misfortuneapp.wheelofmisfortune.R
+import com.misfortuneapp.wheelofmisfortune.controller.NewTakController
+import com.misfortuneapp.wheelofmisfortune.controller.NewTaskControllerImpl
 import com.misfortuneapp.wheelofmisfortune.model.Task
-import com.misfortuneapp.wheelofmisfortune.model.TaskModel
-import com.misfortuneapp.wheelofmisfortune.model.TaskModelImpl
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -26,10 +23,9 @@ class NewTaskActivity : AppCompatActivity() {
 
     private lateinit var mainView: MainView
     private lateinit var notification: Notification
-    private lateinit var taskModel: TaskModel
+    private lateinit var newTaskController: NewTakController
     private var selectedIconResId: Int = R.drawable.icon
     private var selectedImageView: ImageView? = null
-    private var addTaskJob: Job? = null
     private var isTaskCreated: Boolean = false
     private lateinit var taskPriority: SeekBar
     private lateinit var textViewProgress: TextView
@@ -46,7 +42,7 @@ class NewTaskActivity : AppCompatActivity() {
         // Initialize instances
         mainView = MainViewImp()
         notification = NotificationHandler(this)
-        taskModel = TaskModelImpl(this)
+        newTaskController = NewTaskControllerImpl(this)
 
         taskPriority = findViewById(R.id.seekBarPriority)
         textViewProgress = findViewById(R.id.textViewProgress)
@@ -119,7 +115,7 @@ class NewTaskActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            updateActivityTitle(taskModel.getAllTasks().size.toLong() + 1)
+            updateActivityTitle(newTaskController.getAllTasks().size.toLong() + 1)
         }
     }
 
@@ -153,19 +149,19 @@ class NewTaskActivity : AppCompatActivity() {
                 isTaskCreated = true
 
                 lifecycleScope.launch {
-                    val existingTasks = taskModel.getAllTasks()
+                    val existingTasks = newTaskController.getAllTasks()
                     val existingTask = existingTasks.find { it.title == taskName }
 
                     if (existingTask != null) {
                         existingTask.description = taskDescription
                         existingTask.priority = taskPriority.progress
                         existingTask.iconResId = selectedIconResId
-                        taskModel.updateTask(existingTask)
+                        newTaskController.updateTask(existingTask)
                     } else {
                         val newTaskId = existingTasks.size.toLong() + 1
                         updateActivityTitle(newTaskId)
 
-                        taskModel.addNewTask(
+                        newTaskController.addNewTask(
                             title = taskName,
                             description = taskDescription,
                             priority = taskPriority.progress,
@@ -174,7 +170,7 @@ class NewTaskActivity : AppCompatActivity() {
                             endTime = 0
                         )
                         // Nastav aktuální úkol
-                        currentTask = taskModel.getTaskByName(taskName)
+                        currentTask = newTaskController.getTaskByName(taskName)
                     }
 
                     isTaskCreated = false
@@ -185,7 +181,7 @@ class NewTaskActivity : AppCompatActivity() {
 
     private fun deleteTask(task: Task) {
         lifecycleScope.launch {
-            taskModel.removeTask(task)
+            newTaskController.removeTask(task)
             finish() // nebo naviguj na jinou obrazovku podle potřeby
         }
     }

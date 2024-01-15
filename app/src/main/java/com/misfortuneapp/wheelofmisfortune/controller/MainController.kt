@@ -26,14 +26,6 @@ interface MainController {
     suspend fun getAllTasks(): List<Task> // Asynchronně získá všechny úlohy
     suspend fun removeTask(task: Task) // Asynchronně odstraní úlohu
     fun loadPointsFromDatabase() // Načte body z databáze
-    suspend fun addNewTask(
-        title: String,
-        description: String,
-        priority: Int,
-        iconResId: Int,
-        startTime: Long,
-        endTime: Long
-    ) // Asynchronně přidá novou úlohu
     fun startTimer(taskId: Int) // Spustí časovač pro úlohu
     fun stopTimer() // Zastaví časovač (nepoužíváno)
     fun clearAllData()
@@ -199,21 +191,6 @@ class MainControllerImpl(
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         return dateFormat.format(calendar.time)
-    }
-
-    // Metoda pro asynchronní přidání nové úlohy
-    override suspend fun addNewTask(
-        title: String,
-        description: String,
-        priority: Int,
-        iconResId: Int,
-        startTime: Long,
-        endTime: Long
-    ) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            model.addNewTask(title, description, priority, iconResId, startTime, endTime)
-            view.showAllTasks()  // Aktualizace UI po přidání nového úkolu
-        }
     }
 
     // Metoda pro zastavení časovače (nepoužíváno)
