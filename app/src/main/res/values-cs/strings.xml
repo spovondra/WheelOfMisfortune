@@ -8,7 +8,7 @@
     <string name="button_add_description">Přidat tlačítko</string>
     <string name="zero_priority">Vybraná priorita: 0</string>
     <string name="priority_static">Priorita:</string>
-    <string name="addTask">Přidat úkol</string>
+    <string name="deleteTask">Smazat úkol</string>
     <string name="newTaskDescription">Popis úkolu</string>
     <string name="newTaskName">Název úkolu</string>
     <string name="icon_1">Ikona 1</string>

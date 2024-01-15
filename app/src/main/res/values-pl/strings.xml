@@ -8,7 +8,7 @@
     <string name="button_add_description">Dodaj przycisk</string>
     <string name="zero_priority">Wybrany priorytet: 0</string>
     <string name="priority_static">Priorytet:</string>
-    <string name="addTask">Dodaj zadanie</string>
+    <string name="deleteTask">Usuń zadanie</string>
     <string name="newTaskDescription">Opis zadania</string>
     <string name="newTaskName">Nazwa zadania</string>
     <string name="icon_1">Ikona 1</string>
