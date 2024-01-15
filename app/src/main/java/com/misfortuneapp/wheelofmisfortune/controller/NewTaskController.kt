@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 
 interface NewTakController {
     suspend fun addNewTask(
+        displayId: Int,
         title: String,
         description: String,
         priority: Int,
@@ -17,7 +18,7 @@ interface NewTakController {
         endTime: Long
     )
     suspend fun getAllTasks(): List<Task>
-    suspend fun getTaskByName(taskName: String): Task?
+    suspend fun getTaskByDisplayId(id: Int): Task?
     suspend fun updateTask(task: Task)
     suspend fun removeTask(task: Task)
 }
@@ -28,8 +29,8 @@ class NewTaskControllerImpl(newTaskActivity: NewTaskActivity) : NewTakController
         taskModel.getAllTasks()
     }
 
-    override suspend fun getTaskByName(taskName: String): Task? = withContext(Dispatchers.IO) {
-        taskModel.getTaskByName(taskName)
+    override suspend fun getTaskByDisplayId(id: Int): Task? = withContext(Dispatchers.IO) {
+        taskModel.getTaskByDisplayId(id)
     }
 
     override suspend fun updateTask(task: Task) {
@@ -41,6 +42,7 @@ class NewTaskControllerImpl(newTaskActivity: NewTaskActivity) : NewTakController
     }
 
     override suspend fun addNewTask(
+        displayId: Int,
         title: String,
         description: String,
         priority: Int,
@@ -48,6 +50,6 @@ class NewTaskControllerImpl(newTaskActivity: NewTaskActivity) : NewTakController
         startTime: Long,
         endTime: Long
     ) {
-        taskModel.addNewTask(title, description, priority, iconResId, startTime, endTime)
+        taskModel.addNewTask(displayId, title, description, priority, iconResId, startTime, endTime)
     }
 }

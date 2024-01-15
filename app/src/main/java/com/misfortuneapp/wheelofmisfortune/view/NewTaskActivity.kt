@@ -113,11 +113,11 @@ class NewTaskActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            updateActivityTitle(newTaskController.getAllTasks().size.toLong() + 1)
+            updateActivityTitle(newTaskController.getAllTasks().size + 1)
         }
     }
 
-    private fun updateActivityTitle(newTaskId: Long) {
+    private fun updateActivityTitle(newTaskId: Int) {
         val activityTitleTextView: TextView = findViewById(R.id.activityTitleTextView)
         activityTitleTextView.text = getString(R.string.new_task_activity, newTaskId)
     }
@@ -147,21 +147,20 @@ class NewTaskActivity : AppCompatActivity() {
                 isTaskCreated = true
 
                 lifecycleScope.launch {
-                    val existingTasks = newTaskController.getAllTasks()
-
-                    // Find the existing task using a unique identifier or ID
-                    val existingTask = existingTasks.find { it.id == currentTask?.id }
+                    val existingTask = currentTask?.let { newTaskController.getTaskByDisplayId(it.displayId) }
 
                     if (existingTask != null) {
+                        existingTask.title = taskName  // Update the task name
                         existingTask.description = taskDescription
                         existingTask.priority = taskPriority.progress
                         existingTask.iconResId = selectedIconResId
                         newTaskController.updateTask(existingTask)
                     } else {
-                        val newTaskId = existingTasks.size.toLong() + 1
-                        updateActivityTitle(newTaskId)
+                        val newDisplayId = newTaskController.getAllTasks().size + 1
+                        updateActivityTitle(newDisplayId)
 
                         newTaskController.addNewTask(
+                            displayId = newDisplayId,
                             title = taskName,
                             description = taskDescription,
                             priority = taskPriority.progress,
@@ -169,8 +168,9 @@ class NewTaskActivity : AppCompatActivity() {
                             startTime = 0,
                             endTime = 0
                         )
+
                         // Nastav aktuální úkol
-                        currentTask = newTaskController.getTaskByName(taskName)
+                        currentTask = newTaskController.getTaskByDisplayId(newDisplayId)
                     }
 
                     isTaskCreated = false

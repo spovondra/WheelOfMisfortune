@@ -26,8 +26,8 @@ interface TaskDao {
     suspend fun getTaskById(taskId: Int): Task?
 
     // Metoda pro získání úkolu podle jména
-    @Query("SELECT * FROM Task WHERE title = :taskName")
-    suspend fun getTaskByName(taskName: String): Task?
+    @Query("SELECT * FROM Task WHERE displayId = :displayId")
+    suspend fun displayId(displayId: Int): Task?
 
     // Metoda pro aktualizaci úkolu v databázi
     @Update

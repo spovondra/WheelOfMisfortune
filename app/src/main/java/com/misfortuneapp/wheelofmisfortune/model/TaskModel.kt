@@ -22,6 +22,7 @@ interface TaskModel {
 
     // Suspend funkce pro vložení nové úlohy s parametry názvu a popisu
     suspend fun addNewTask(
+        displayId: Int,
         title: String,
         description: String,
         priority: Int,
@@ -38,7 +39,7 @@ interface TaskModel {
 
     // Suspend funkce pro získání posledního záznamu o čase
     suspend fun getTimeRecord(): TimeRecord
-    suspend fun getTaskByName(taskName: String): Task?
+    suspend fun getTaskByDisplayId(id: Int): Task?
 }
 
 // Implementace rozhraní TaskModel
@@ -57,8 +58,8 @@ class TaskModelImpl(context: Context) : TaskModel {
         return@withContext taskDao.getTaskById(taskId)
     }
 
-    override suspend fun getTaskByName(taskName: String): Task? = withContext(Dispatchers.IO) {
-        return@withContext taskDao.getTaskByName(taskName)
+    override suspend fun getTaskByDisplayId(id: Int): Task? = withContext(Dispatchers.IO) {
+        return@withContext taskDao.displayId(id)
     }
 
     // Suspend funkce pro odstranění úkolu
@@ -78,6 +79,7 @@ class TaskModelImpl(context: Context) : TaskModel {
 
     // Nová suspend funkce pro vložení nové úlohy s parametry názvu a popisu
     override suspend fun addNewTask(
+        displayId: Int,
         title: String,
         description: String,
         priority: Int,
@@ -86,6 +88,7 @@ class TaskModelImpl(context: Context) : TaskModel {
         endTime: Long
     ) {
         val newTask = Task(
+            displayId = displayId,
             title = title,
             description = description,
             priority = priority,
