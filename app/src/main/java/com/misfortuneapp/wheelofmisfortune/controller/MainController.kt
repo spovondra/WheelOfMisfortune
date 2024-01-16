@@ -27,9 +27,9 @@ interface MainController {
     suspend fun removeTask(task: Task) // Asynchronně odstraní úlohu
     fun loadPointsFromDatabase() // Načte body z databáze
     fun startTimer(taskId: Int) // Spustí časovač pro úlohu
-    fun stopTimer() // Zastaví časovač (nepoužíváno)
-    fun clearAllData()
-    suspend fun setTaskDone(selectedTask: Task)
+    fun stopTimer() // Zastaví časovač
+    fun clearAllData() // Smaže všechna data o vylosovaných úlohách
+    suspend fun setTaskDone(selectedTask: Task) // Nastaví úlohu na splněnou
     suspend fun setTime(selectedTimeInMillis: Long) // Asynchronně nastaví čas úlohy
     suspend fun setFirstTime() // Asynchronně nastaví první čas (při prvním spuštění)
     suspend fun getTime(): TimeRecord // Asynchronně získá časový záznam

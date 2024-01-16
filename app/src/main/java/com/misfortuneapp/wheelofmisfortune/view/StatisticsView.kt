@@ -41,7 +41,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         supportActionBar?.title = getString(R.string.statistics_view)
         supportActionBar?.elevation = 0f
 
-        // Inicializace grafu, tlačítka a kontrolleru
+        // Inicializace grafu, tlačítka a kontroleru
         graphView = findViewById(R.id.graph)
         clearGraphButton = findViewById(R.id.clearDataButton)
 
@@ -116,6 +116,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         }
     }
 
+    // Metoda pro aktualizaci statistik v uživatelském rozhraní
     override fun updateStatistics(dailyStatistics: Double, overallStatistics: Double) {
         val dailyStatisticsText = findViewById<TextView>(R.id.dailyStatisticsText)
         val overallStatisticsText = findViewById<TextView>(R.id.overallStatisticsText)
@@ -124,6 +125,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         overallStatisticsText.text = getString(R.string.overall_statistics, overallStatistics)
     }
 
+    // Metoda pro navigaci zpět v akční liště
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true

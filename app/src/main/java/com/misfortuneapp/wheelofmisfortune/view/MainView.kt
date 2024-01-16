@@ -37,10 +37,7 @@ import java.util.Calendar
 interface MainView {
     fun showUpdatedPoints(text: String)
     suspend fun showAllTasks()
-    fun showStatistics()
-    suspend fun showDrawnTasks()
     fun showBarAndTime(progress: Int, currentCountdownTime: String)
-    fun wheelAbleToTouch()
     fun scrollToTask()
 }
 
@@ -233,7 +230,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     }
 
     // Metoda na zobrazení statistik
-    override fun showStatistics() {
+    private fun showStatistics() {
         val linearLayoutButtonUp = findViewById<LinearLayout>(R.id.buttonUp)
         linearLayoutButtonUp.setOnClickListener {
             val intent = Intent(this, StatisticsViewImp::class.java)
@@ -243,7 +240,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
     // Metoda na zobrazení vylosvaných úloh
     @SuppressLint("StringFormatMatches")
-    override suspend fun showDrawnTasks() {
+    private suspend fun showDrawnTasks() {
         runOnUiThread {
             lifecycleScope.launch {
                 val taskList = findViewById<RecyclerView>(R.id.drawnList)
@@ -360,7 +357,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
     // Metoda na kontrolu, zda skončil časovač a jsou k dispozici úlohy, aby se mohlo kolečko roztočit
     @OptIn(DelicateCoroutinesApi::class)
-    override fun wheelAbleToTouch() {
+    private fun wheelAbleToTouch() {
         val wheel: ImageView = findViewById(R.id.wheel_spin)
         wheel.setOnClickListener {
             if (!controller.getIsWheelSpinning()) {

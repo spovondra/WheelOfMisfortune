@@ -103,12 +103,7 @@ class StatisticsControllerImp(
                     SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
                 val dataEntity = getDataByDate(currentDate)
 
-                if (dataEntity != null) {
-                    dailyStatistics = dataEntity.value
-                }
-                else {
-                    dailyStatistics = 0.0
-                }
+                dailyStatistics = dataEntity?.value ?: 0.0
 
                 val overallStatistics = calculateAndUpdateOverallStatistics()
 
@@ -122,7 +117,6 @@ class StatisticsControllerImp(
         GlobalScope.launch {
             deleteAllData()  // Smazání všech dat v databázi
             updateGraph()      // Aktualizace grafu
-            //MainControllerHolder.mainController.clearAllData()
         }
     }
 }
