@@ -106,6 +106,9 @@ class StatisticsControllerImp(
                 if (dataEntity != null) {
                     dailyStatistics = dataEntity.value
                 }
+                else {
+                    dailyStatistics = 0.0
+                }
 
                 val overallStatistics = calculateAndUpdateOverallStatistics()
 
