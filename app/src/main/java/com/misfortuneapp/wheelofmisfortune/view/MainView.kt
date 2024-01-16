@@ -15,7 +15,6 @@ import androidx.activity.ComponentActivity
 import android.graphics.Color
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
 import com.misfortuneapp.wheelofmisfortune.custom.SwipeHelper
@@ -96,6 +95,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         registerReceiver(controller.countdownReceiver, IntentFilter(BroadcastService.COUNTDOWN_BR))
     }
 
+    // Metoda na zobrazení animace otáčení kolečka
     private fun showWheelSpin() {
         val wheel = findViewById<ImageView>(R.id.wheel_spin)
         val pivotX = wheel.width / 2f
@@ -116,34 +116,29 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         controller.doWithTaskDialog()
     }
 
+    // Metoda na zobrazení a aktulizaci počtu splněných úloh
     override fun showUpdatedPoints(text: String) {
         lifecycleScope.launch(Dispatchers.Main) {
             val linearLayoutButtonUp: LinearLayout = findViewById(R.id.buttonUp)
             val textView: TextView = linearLayoutButtonUp.findViewById(R.id.score)
             textView.text = text
             showAllTasks()
-            updateStatistics()
-        }
-    }
-
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun updateStatistics() {
-        GlobalScope.launch {
             showStatistics()
         }
     }
 
+    // Metoda na zobrazení všeh úloh
     @SuppressLint("SetTextI18n", "StringFormatMatches")
     private suspend fun showNumberOfAllTasks() {
         val textNum: TextView = findViewById(R.id.textNum)
         textNum.text = getString(R.string.your_tasks, controller.getAllTasks().size)
     }
 
+    // Metoda na zobrazní všech úloh v RecyclerView
     override suspend fun showAllTasks() {
         showNumberOfAllTasks()
         showDrawnTasks()
 
-        // Launch a coroutine for the UI update
         coroutineScope {
             launch(Dispatchers.Main) {
                 val taskList = findViewById<RecyclerView>(R.id.taskList)
@@ -154,7 +149,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 // Získejte aktuální seznam úkolů přímo z kontroléru
                 val tasks = controller.getAllTasks()
 
-                updateUIVisibility()
+                updateUIVisibility() // změna zobrazovaných prvků na základě požadavků
 
                 // Vytvořte nový adapter s aktuálním seznamem úkolů
                 val adapter = TaskAdapter(
@@ -173,6 +168,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
+    // Akce po provedení swipu na úloze
     private fun swipeToDeleteButton () {
         val taskList = findViewById<RecyclerView>(R.id.taskList)
         val drawnList = findViewById<RecyclerView>(R.id.drawnList)
@@ -180,6 +176,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         swipeHelperToDeleteAndEdit(drawnList,true)
     }
 
+    // Provedení akcí po swipu
     private fun swipeHelperToDeleteAndEdit(recyclerView: RecyclerView, enableDone: Boolean) {
         recyclerView.layoutManager = LinearLayoutManager(this@MainViewImp)
 
@@ -198,18 +195,13 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                     object : UnderlayButtonClickListener {
                         @SuppressLint("ClickableViewAccessibility")
                         override fun onClick(pos: Int) {
-                            Toast.makeText(
-                                this@MainViewImp,
-                                "Delete clicked at position $pos",
-                                Toast.LENGTH_SHORT
-                            ).show()
                             (recyclerView.adapter as? TaskAdapter)?.removeItem(pos)
                             recyclerView.adapter?.notifyItemRemoved(pos)
                         }
                     }
                 ))
 
-                // Done Button (if enabled)
+                // Done Button (pokud je aktivní)
                 if (enableDone) {
                     underlayButtons?.add(UnderlayButton(
                         AppCompatResources.getDrawable(
@@ -220,11 +212,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                         object : UnderlayButtonClickListener {
                             @SuppressLint("ClickableViewAccessibility")
                             override fun onClick(pos: Int) {
-                                Toast.makeText(
-                                    this@MainViewImp,
-                                    "Done clicked at position $pos",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                                 (recyclerView.adapter as? TaskAdapter)?.itemDone(pos)
                                 lifecycleScope.launch {
                                     showDrawnTasks()
@@ -237,6 +224,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
+    // NAHRADIT!!
     private fun openTaskDetailsScreen(task: Task) {
         val intent = Intent(this, TaskDetailsActivity::class.java)
         intent.putExtra("taskId", task.id)
@@ -244,6 +232,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         startActivity(intent)
     }
 
+    // Metoda na zobrazení statistik
     override fun showStatistics() {
         val linearLayoutButtonUp = findViewById<LinearLayout>(R.id.buttonUp)
         linearLayoutButtonUp.setOnClickListener {
@@ -252,6 +241,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
+    // Metoda na zobrazení vylosvaných úloh
     @SuppressLint("StringFormatMatches")
     override suspend fun showDrawnTasks() {
         runOnUiThread {
@@ -286,6 +276,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
+    // Metoda na zobrazování/skrývání prvků na obrazovce podle aktuálního dění
     @SuppressLint("StringFormatMatches")
     suspend fun updateUIVisibility() {
         runOnUiThread {
@@ -332,6 +323,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
+    // Metoda na zobrazení dialogu s nastavením času
     @OptIn(DelicateCoroutinesApi::class)
     private fun showSetTime() {
         val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
@@ -360,11 +352,13 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
+    // Metoda na zobrazení progressbaru a časovače
     override fun showBarAndTime(progress: Int, currentCountdownTime: String) {
         circularProgressBar.setProgress(progress)
         countdownTimerTextView.text = currentCountdownTime
     }
 
+    // Metoda na kontrolu, zda skončil časovač a jsou k dispozici úlohy, aby se mohlo kolečko roztočit
     @OptIn(DelicateCoroutinesApi::class)
     override fun wheelAbleToTouch() {
         val wheel: ImageView = findViewById(R.id.wheel_spin)
@@ -380,6 +374,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
+    // Metoda na dynamické nastavení velikostí tlačítek (mazání/splnění úlohy) na základě displeje
     private fun setViewSizesBasedOnScreen() {
         // Získání informací o displeji
         val displayMetrics = Resources.getSystem().displayMetrics
@@ -415,19 +410,21 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         countdownTimerTextView.textSize = countdownTimerTextSize.toFloat()
     }
 
+    // Metoda na zascrollování na vylosovanou úlohu
     override fun scrollToTask () {
         val scrollView: CustomScrollView = findViewById(R.id.scrollView)
         scrollView.post {
-            // Zavolejte metodu smoothScrollToChild s požadovaným počtem řádků k posunutí (v tomto případě 30)
             scrollView.scrollToChild(1000)
         }
     }
 
+    // Metoda na zrušení časovače
     override fun onDestroy() {
         unregisterReceiver(controller.countdownReceiver)
         super.onDestroy()
     }
 
+    // Metoda na zovunačtení dat po navrácení se z jiné obrazovky
     override fun onResume() {
         super.onResume()
 

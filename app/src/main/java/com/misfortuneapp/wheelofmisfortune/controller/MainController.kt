@@ -135,7 +135,7 @@ class MainControllerImpl(
         lifecycleScope.launch(Dispatchers.Main) {
             delay(3500)
             view.scrollToTask()
-            delay(100)
+            delay(250)
             updatePoints()
             isWheelSpinning = false  // Nastavení na false po skončení dialogu úlohy
             setTime(getTimeSetByUser())
