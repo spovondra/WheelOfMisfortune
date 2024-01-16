@@ -1,8 +1,9 @@
 package com.misfortuneapp.wheelofmisfortune.controller
 
-import com.jjoe64.graphview.series.BarGraphSeries
-import com.jjoe64.graphview.series.DataPoint
-import com.misfortuneapp.wheelofmisfortune.model.*
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.LineDataSet
+import com.misfortuneapp.wheelofmisfortune.model.DataEntity
+import com.misfortuneapp.wheelofmisfortune.model.DataRepository
 import com.misfortuneapp.wheelofmisfortune.view.StatisticsView
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +15,6 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-// Rozhraní pro presenter (kontroler) statistik
 interface StatisticsController {
     suspend fun insertOrUpdateData(date: String, currentPoints: Double)
     suspend fun getDataByDate(date: String): DataEntity?
@@ -24,36 +24,29 @@ interface StatisticsController {
     fun clearAllData()
 }
 
-
-// Kontroler pro statistiky, který zpracovává vkládání a aktualizaci dat
 class StatisticsControllerImp(
     private val repository: DataRepository,
     private val view: StatisticsView
-): StatisticsController {
+) : StatisticsController {
+
     private var dailyStatistics: Double = 0.0
 
-        // Metoda pro vložení nebo aktualizaci dat na základě data a hodnoty
+    @OptIn(DelicateCoroutinesApi::class)
     override suspend fun insertOrUpdateData(date: String, currentPoints: Double) {
-        // Převod data na hash pro použití jako klíč v databázi
         val day = date.hashCode()
-        // Formátování data pro zobrazení ve formátu "dd.MM"
         val formattedDate = SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
 
-        // Získání existujících dat pro daný den
         val existingData = repository.getDataByDate(day)
 
         if (existingData != null) {
-            // Aktualizace existujících dat, pokud existují
-            val updatedData = existingData.copy(value =  currentPoints, formattedDate = formattedDate)
+            val updatedData = existingData.copy(value = currentPoints, formattedDate = formattedDate)
             repository.insertData(updatedData)
         } else {
-            // Vložení nových dat, pokud pro daný den neexistují žádná data
-            val newData = DataEntity(day = day, value =  currentPoints, formattedDate = formattedDate)
+            val newData = DataEntity(day = day, value = currentPoints, formattedDate = formattedDate)
             repository.insertData(newData)
         }
     }
 
-    // Metoda pro získání dat pro konkrétní datum
     override suspend fun getDataByDate(date: String): DataEntity? {
         val day = date.hashCode()
         return repository.getDataByDate(day)
@@ -85,38 +78,33 @@ class StatisticsControllerImp(
     @OptIn(DelicateCoroutinesApi::class)
     override suspend fun updateGraph() {
         GlobalScope.launch {
-            // Získání všech dat z databáze
             val dataEntities = getAllData()
-            val series = BarGraphSeries(dataEntities.mapIndexed { index, dataEntity ->
-                DataPoint(index.toDouble() + 1, dataEntity.value)
-            }.toTypedArray())
-            // Získání formátovaných popisků pro osu X z databáze
-            val formattedDateStrings = getFormattedDates() + ""
+            val entries = dataEntities.mapIndexed { index, dataEntity ->
+                BarEntry(index.toFloat(), dataEntity.value.toFloat())
+            }
 
-            // Přepnutí na hlavní vlákno pro aktualizaci UI
+            LineDataSet(entries, "Label") // "Label" je název pro legendu
+
             withContext(Dispatchers.Main) {
-                // Vytvoření grafu s daty a popisky
-                view.createGraph(series, formattedDateStrings)
+                view.createBarChart(entries, getFormattedDates())
 
-                // Získání dat z databáze
-                val currentDate =
-                    SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
+                val currentDate = SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
                 val dataEntity = getDataByDate(currentDate)
 
                 dailyStatistics = dataEntity?.value ?: 0.0
 
                 val overallStatistics = calculateAndUpdateOverallStatistics()
 
-                // Aktualizace statistiky v UI
                 view.updateStatistics(dailyStatistics, overallStatistics)
             }
         }
     }
+
     @OptIn(DelicateCoroutinesApi::class)
     override fun clearAllData() {
         GlobalScope.launch {
-            deleteAllData()  // Smazání všech dat v databázi
-            updateGraph()      // Aktualizace grafu
+            deleteAllData()
+            updateGraph()
         }
     }
 }

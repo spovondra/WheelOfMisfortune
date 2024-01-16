@@ -1,122 +1,123 @@
 package com.misfortuneapp.wheelofmisfortune.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.jjoe64.graphview.GraphView
-import com.jjoe64.graphview.GridLabelRenderer
-import com.jjoe64.graphview.helper.StaticLabelsFormatter
-import com.jjoe64.graphview.series.BarGraphSeries
-import com.jjoe64.graphview.series.DataPoint
+import androidx.core.content.ContextCompat
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.misfortuneapp.wheelofmisfortune.R
+import com.misfortuneapp.wheelofmisfortune.controller.StatisticsController
+import com.misfortuneapp.wheelofmisfortune.controller.StatisticsControllerImp
+import com.misfortuneapp.wheelofmisfortune.custom.CustomXAxisFormatter
+import com.misfortuneapp.wheelofmisfortune.model.DataDatabase
+import com.misfortuneapp.wheelofmisfortune.model.DataRepositoryImpl
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import com.misfortuneapp.wheelofmisfortune.controller.*
-import com.misfortuneapp.wheelofmisfortune.model.*
 
-// Rozhraní pro pohled (view) statistik
 interface StatisticsView {
-    fun createGraph(series: BarGraphSeries<DataPoint>, formattedDateStrings: Array<String>)
+    fun createBarChart(entries: List<BarEntry>, formattedDateStrings: Array<String>)
     fun updateStatistics(dailyStatistics: Double, overallStatistics: Double)
 }
 
-// Třída pro zobrazování statistik v uživatelském rozhraní
 class StatisticsViewImp : AppCompatActivity(), StatisticsView {
 
-    private lateinit var graphView: GraphView
+    private lateinit var barChart: BarChart
     private lateinit var clearGraphButton: Button
     private lateinit var controller: StatisticsController
     private lateinit var database: DataDatabase
-    private lateinit var lastAddedDate: String
 
+    @SuppressLint("MissingInflatedId")
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
 
-        // Nastavení akční lišty
+        // ActionBar settings
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.statistics_view)
         supportActionBar?.elevation = 0f
 
-        // Inicializace grafu, tlačítka a kontroleru
-        graphView = findViewById(R.id.graph)
+        // Initialize BarChart, button, and controller
+        barChart = findViewById(R.id.barChart)
         clearGraphButton = findViewById(R.id.clearDataButton)
 
-        // Inicializace databáze a kontroleru s použitím datového rozhraní
+        // Initialize database and controller using data interface
         database = DataDatabase.getInstance(this)
         controller = StatisticsControllerImp(DataRepositoryImpl(database.dataDao()), this)
-        lastAddedDate = controller.getCurrentDate()
 
-        // Načtení aktuálních dat
+        // Load current data
         GlobalScope.launch {
             controller.updateGraph()
         }
 
-        // Nastavení posluchače pro tlačítko vymazání grafu
+        // Set listener for the clear graph button
         clearGraphButton.setOnClickListener {
-            // Volání metody pro smazání všech dat
+            // Call method to clear all data
             controller.clearAllData()
 
-            // Aktualizace grafu
+            // Update the graph
             GlobalScope.launch {
                 controller.updateGraph()
             }
         }
     }
 
-    // Metoda pro vytvoření grafu s danými daty a formátovanými popisky
-    override fun createGraph(series: BarGraphSeries<DataPoint>, formattedDateStrings: Array<String>) {
-        graphView.viewport.isXAxisBoundsManual = true
-        graphView.viewport.isYAxisBoundsManual = true
+    // Method to create BarChart with given data and formatted labels
+    override fun createBarChart(entries: List<BarEntry>, formattedDateStrings: Array<String>) {
+        val dataSet = BarDataSet(entries, "Počet splěných úloh")
 
-        val maxX = series.highestValueX
-        val maxY = series.highestValueY
+        val textColorPrimary = ContextCompat.getColor(this, R.color.inverted)
 
-        graphView.viewport.setMinX(0.5)
-        graphView.viewport.setMaxX(maxX + 0.5)
+        dataSet.color = textColorPrimary
+        dataSet.valueTextColor = textColorPrimary
 
-        graphView.viewport.setMinY(0.0)
-        graphView.viewport.setMaxY(maxY + 1.0)
+        val barData = BarData(dataSet)
+        barChart.data = barData
 
-        // Odebrání předchozí série a přidání nové série do grafu
-        graphView.removeAllSeries()
-        graphView.addSeries(series)
+        val xAxis = barChart.xAxis
+        xAxis.valueFormatter = CustomXAxisFormatter(formattedDateStrings)
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.granularity = 1f
+        xAxis.textColor = textColorPrimary
+        xAxis.setDrawGridLines(false) // Odebrat mřížku
+        xAxis.textColor = textColorPrimary // Přidat nastavení barvy popisků
 
-        // Zajištění, že jsou alespoň dvě popisky na ose X před jejich nastavením
-        if (formattedDateStrings.size >= 2) {
-            // Přidání aktuálního data do pole pro popisky na ose X
-            graphView.viewport.isXAxisBoundsManual = true
-            graphView.viewport.isYAxisBoundsManual = true
-            graphView.viewport.setMinX(0.5)
-            graphView.viewport.setMinY(0.0)
+        val leftYAxis = barChart.axisLeft
+        leftYAxis.textColor = textColorPrimary
+        leftYAxis.axisMinimum = 0f
+        leftYAxis.labelCount = entries.size + 1
+        leftYAxis.granularity = 1f
+        leftYAxis.setDrawGridLines(false) // Odebrat mřížku
 
-            // Nastavení popisků
-            graphView.gridLabelRenderer.setHorizontalLabelsAngle(35)
-            graphView.gridLabelRenderer.labelHorizontalHeight = 60
-            graphView.gridLabelRenderer.gridStyle = GridLabelRenderer.GridStyle.NONE
+        barChart.axisRight.isEnabled = false
 
-            // Nastavení popisků na ose X pomocí allFormattedDates
-            val staticLabelsFormatter = StaticLabelsFormatter(graphView)
-            staticLabelsFormatter.setHorizontalLabels(formattedDateStrings)
-            graphView.gridLabelRenderer.labelFormatter = staticLabelsFormatter
-
-            val barWidthPx = 25
-            series.spacing = barWidthPx
-        } else {
-            val staticLabelsFormatter = StaticLabelsFormatter(graphView)
-            staticLabelsFormatter.setHorizontalLabels(arrayOf("", ""))
-            staticLabelsFormatter.setVerticalLabels(arrayOf("", ""))
-            graphView.gridLabelRenderer.labelFormatter = staticLabelsFormatter
-            graphView.viewport.setMinX(0.0)
-            graphView.viewport.setMinY(0.0)
-            graphView.gridLabelRenderer.gridStyle = GridLabelRenderer.GridStyle.NONE
+        val xAxisData = formattedDateStrings.mapIndexed { index, _ ->
+            BarEntry(index.toFloat(), 0f)
         }
+
+        val xAxisDataSet = BarDataSet(xAxisData, null) // Null removes the description label
+        xAxisDataSet.color = textColorPrimary
+        xAxisDataSet.valueTextColor = textColorPrimary
+
+        barChart.xAxis.axisMinimum = -0.5f
+        barChart.xAxis.axisMaximum = formattedDateStrings.size.toFloat() - 0.5f
+        barChart.xAxis.isGranularityEnabled = true
+        barChart.xAxis.granularity = 1f
+
+        // Odebrat popisek v pravém dolním rohu
+        barChart.description.isEnabled = false
+
+        barChart.invalidate()
     }
 
-    // Metoda pro aktualizaci statistik v uživatelském rozhraní
+    // Method to update statistics in the user interface
     override fun updateStatistics(dailyStatistics: Double, overallStatistics: Double) {
         val dailyStatisticsText = findViewById<TextView>(R.id.dailyStatisticsText)
         val overallStatisticsText = findViewById<TextView>(R.id.overallStatisticsText)
@@ -125,7 +126,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         overallStatisticsText.text = getString(R.string.overall_statistics, overallStatistics)
     }
 
-    // Metoda pro navigaci zpět v akční liště
+    // Method for back navigation in the ActionBar
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true
