@@ -390,7 +390,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         val circularProgressBarSize = (displayMetrics.widthPixels * 0.807 * scalingFactor).toInt()
         val wheelSpinSize = (displayMetrics.widthPixels * 0.7083 * scalingFactor).toInt()
         val wheelStaticSize = (displayMetrics.widthPixels * 0.9 * scalingFactor).toInt()
-        val countdownTimerTextSize = (displayMetrics.densityDpi * 0.1).toInt()
+        val countdownTimerTextSize = (20 + displayMetrics.widthPixels/70)
 
         // Nastavení vypočítaných rozměrů pro jednotlivé pohledy
         val circularProgressBar = findViewById<CircularProgressBar>(R.id.circularProgressBar)

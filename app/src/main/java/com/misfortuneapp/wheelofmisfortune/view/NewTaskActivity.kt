@@ -34,6 +34,7 @@ class NewTaskActivity : AppCompatActivity() {
     private lateinit var taskDescriptionEditText: EditText
     private var currentTask: Task? = null
     private var taskName: String? = null
+    private var taskId: Int = 0
     private var newTaskId: Int = 0
 
     @SuppressLint("InflateParams")
@@ -48,10 +49,12 @@ class NewTaskActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             val allTasks = newTaskController.getAllTasks()
-            newTaskId = if (allTasks.isNotEmpty()) {
-                allTasks.last().id + 1
+            if (allTasks.isNotEmpty()) {
+                taskId = allTasks.last().id + 1
+                newTaskId = newTaskController.getAllTasks().size + 1
             } else {
-                1
+                taskId = 1
+                newTaskId = 1
             }
             updateActivityTitle()
         }
@@ -201,11 +204,10 @@ class NewTaskActivity : AppCompatActivity() {
                         existingTask.iconResId = selectedIconResId
                         newTaskController.updateTask(existingTask)
                     } else {
-                        newTaskId = newTaskController.getAllTasks().size + 1
                         updateActivityTitle()
 
                         newTaskController.addNewTask(
-                            displayId = newTaskId,
+                            displayId = taskId,
                             title = taskName!!,
                             description = taskDescription,
                             priority = taskPriority.progress,
@@ -215,7 +217,7 @@ class NewTaskActivity : AppCompatActivity() {
                         )
 
                         // Nastav aktuální úkol
-                        currentTask = newTaskController.getTaskByDisplayId(newTaskId)
+                        currentTask = newTaskController.getTaskByDisplayId(taskId)
                     }
 
                     isTaskCreated = false

@@ -10,7 +10,6 @@
         android:layout_height="32dp"
         android:background="@drawable/arrow_back"
         android:gravity="center"
-        android:text=""
         android:textColor="#FFFFFF" />
 
     <TextView
@@ -33,6 +32,5 @@
         android:background="@drawable/rounded_half_circle_button"
         android:gravity="center"
         android:layout_alignParentEnd="true"
-        android:text="@string/button_delete"
         android:textColor="#FFFFFF"/>
 </RelativeLayout>
