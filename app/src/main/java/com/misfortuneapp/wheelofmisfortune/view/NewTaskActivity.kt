@@ -191,7 +191,7 @@ class NewTaskActivity : AppCompatActivity() {
             taskName = taskNameEditText.text.toString()
             val taskDescription = taskDescriptionEditText.text.toString()
 
-            if (taskName!!.isNotBlank() && taskDescription.isNotBlank()) {
+            if (taskName!!.isNotBlank()) {
                 isTaskCreated = true
 
                 lifecycleScope.launch {

@@ -133,7 +133,9 @@ class MainControllerImpl(
     // Metoda pro provedení akcí souvisejících s dialogem úlohy
     override fun doWithTaskDialog() {
         lifecycleScope.launch(Dispatchers.Main) {
-            delay(3000)
+            delay(3500)
+            view.scrollToTask()
+            delay(100)
             updatePoints()
             isWheelSpinning = false  // Nastavení na false po skončení dialogu úlohy
             setTime(getTimeSetByUser())

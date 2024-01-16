@@ -42,6 +42,7 @@ interface MainView {
     suspend fun showDrawnTasks()
     fun showBarAndTime(progress: Int, currentCountdownTime: String)
     fun wheelAbleToTouch()
+    fun scrollToTask()
 }
 
 class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope() {
@@ -414,6 +415,13 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         countdownTimerTextView.textSize = countdownTimerTextSize.toFloat()
     }
 
+    override fun scrollToTask () {
+        val scrollView: CustomScrollView = findViewById(R.id.scrollView)
+        scrollView.post {
+            // Zavolejte metodu smoothScrollToChild s požadovaným počtem řádků k posunutí (v tomto případě 30)
+            scrollView.scrollToChild(1000)
+        }
+    }
 
     override fun onDestroy() {
         unregisterReceiver(controller.countdownReceiver)
