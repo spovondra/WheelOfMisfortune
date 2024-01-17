@@ -26,12 +26,11 @@ interface StatisticsController {
 
 class StatisticsControllerImp(
     private val repository: DataRepository,
-    private val view: StatisticsView
+    private val view: StatisticsView,
 ) : StatisticsController {
 
     private var dailyStatistics: Double = 0.0
 
-    @OptIn(DelicateCoroutinesApi::class)
     override suspend fun insertOrUpdateData(date: String, currentPoints: Double) {
         val day = date.hashCode()
         val formattedDate = SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())

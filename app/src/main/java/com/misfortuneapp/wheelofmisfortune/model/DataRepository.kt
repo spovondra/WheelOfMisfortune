@@ -1,5 +1,7 @@
 package com.misfortuneapp.wheelofmisfortune.model
 
+import android.content.Context
+
 interface DataRepository {
     suspend fun insertData(dataEntity: DataEntity)
     suspend fun getDataByDate(date: Int): DataEntity?
@@ -7,9 +9,13 @@ interface DataRepository {
     suspend fun deleteAllData()
     suspend fun getFormattedDates(): Array<String>
     suspend fun getAllValues(): List<Double>
+    suspend fun getTasksByState(taskState: TaskState): List<Task>
 }
 
-class DataRepositoryImpl(private val dataDao: DataDao) : DataRepository {
+class DataRepositoryImpl(context: Context) : DataRepository {
+    private val dataDao: DataDao = DataDatabase.getInstance(context).dataDao()
+    private val taskDao = TaskDatabase.getDatabase(context).taskDao()
+
     override suspend fun insertData(dataEntity: DataEntity) {
         dataDao.insertData(dataEntity)
     }
@@ -32,5 +38,9 @@ class DataRepositoryImpl(private val dataDao: DataDao) : DataRepository {
 
     override suspend fun getAllValues(): List<Double> {
         return dataDao.getAllValues()
+    }
+
+    override suspend fun getTasksByState(taskState: TaskState): List<Task> {
+        return taskDao.getTasksByState(taskState)
     }
 }

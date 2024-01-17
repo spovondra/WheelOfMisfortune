@@ -19,7 +19,8 @@ class TaskAdapter(
     private val tasks: MutableList<Task>,  // Seznam úkolů
     private val onItemClick: (Task) -> Unit,  // Akce při kliknutí na položku
     private val onItemDelete: (Task) -> Unit,  // Akce při odstranění položky
-    private val mainController: MainController  // Kontrolér pro interakci s daty a UI
+    private val mainController: MainController,  // Kontrolér pro interakci s daty a UI
+    private val fromMainView: Boolean
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     // ViewHolder pro jednotlivé položky v RecyclerView
@@ -104,7 +105,7 @@ class TaskAdapter(
 
             // Odstranění z databáze pomocí MainController
             GlobalScope.launch {
-                mainController.removeTask(removedTask)
+                mainController.removeTask(removedTask, fromMainView)
             }
             onItemDelete.invoke(removedTask)
         }

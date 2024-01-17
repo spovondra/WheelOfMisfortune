@@ -23,7 +23,8 @@ data class Task(
     var iconResId: Int = 0,      // ID ikonky úkolu
     var startTime: Long = 0,     // Čas spuštění úlohy
     var taskState: TaskState = TaskState.AVAILABLE, // Stav úkolu (dostupný, probíhá, hotovo)
-    var endTime: Long = 0        // Čas do konce úlohy (systémový čas + uživatelem zvolený)
+    var endTime: Long = 0,       // Čas do konce úlohy (systémový čas + uživatelem zvolený)
+    var completionTime: Long = 0 // Čas splnění úlohy
 ) {
     // Alternativní konstruktor pro vytvoření instance Task s určenými vlastnostmi
     constructor(
@@ -34,8 +35,9 @@ data class Task(
         iconResId: Int,
         startTime: Long,
         taskState: TaskState,
-        endTime: Long
-    ) : this(0, displayId, title, description, DEFAULT_POINTS, priority, iconResId, startTime, taskState, endTime)
+        endTime: Long,
+        completionTime: Long
+    ) : this(0, displayId, title, description, DEFAULT_POINTS, priority, iconResId, startTime, taskState, endTime, completionTime)
 
     // Společné hodnoty pro všechny instance třídy Task
     companion object {

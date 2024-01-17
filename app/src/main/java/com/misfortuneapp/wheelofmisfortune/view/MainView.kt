@@ -2,11 +2,11 @@ package com.misfortuneapp.wheelofmisfortune.view
 
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.ImageView
@@ -39,6 +39,7 @@ interface MainView {
     suspend fun showAllTasks()
     fun showBarAndTime(progress: Int, currentCountdownTime: String)
     fun scrollToTask()
+    fun openTaskDetailsScreen(task: Task, context: Context)
 }
 
 class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope() {
@@ -59,7 +60,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         taskList.layoutManager = LinearLayoutManager(this@MainViewImp)
 
         // Initialize DataRepository
-        dataRepository = DataRepositoryImpl(DataDatabase.getInstance(this).dataDao())
+        dataRepository = DataRepositoryImpl(this)
         taskDao = TaskDatabase.getDatabase(this).taskDao()
 
         circularProgressBar = findViewById(R.id.circularProgressBar)
@@ -68,7 +69,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         val taskRepository: TaskModel = TaskModelImpl(this)
         statisticsController = StatisticsControllerImp(dataRepository, StatisticsViewImp())
 
-        controller = MainControllerImpl(this,this, taskRepository, statisticsController)
+        controller = MainControllerImpl(this, this, taskRepository, statisticsController)
 
         //controller.startCountdownTime(10)
         controller.loadPointsFromDatabase()
@@ -151,13 +152,14 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 // Vytvořte nový adapter s aktuálním seznamem úkolů
                 val adapter = TaskAdapter(
                     tasks.toMutableList(),
-                    { selectedTask -> openTaskDetailsScreen(selectedTask) },
+                    { selectedTask -> openTaskDetailsScreen(selectedTask, this@MainViewImp) },
                     { removedTask ->
                         launch {
-                            controller.removeTask(removedTask)
+                            controller.removeTask(removedTask,true)
                         }
                     },
-                    controller
+                    controller,
+                    true
                 )
 
                 taskList.adapter = adapter
@@ -169,64 +171,15 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private fun swipeToDeleteButton () {
         val taskList = findViewById<RecyclerView>(R.id.taskList)
         val drawnList = findViewById<RecyclerView>(R.id.drawnList)
-        swipeHelperToDeleteAndEdit(taskList,false)
-        swipeHelperToDeleteAndEdit(drawnList,true)
-    }
-
-    // Provedení akcí po swipu
-    private fun swipeHelperToDeleteAndEdit(recyclerView: RecyclerView, enableDone: Boolean) {
-        recyclerView.layoutManager = LinearLayoutManager(this@MainViewImp)
-
-        object : SwipeHelper(this@MainViewImp, recyclerView, true) {
-            override fun instantiateUnderlayButton(
-                viewHolder: RecyclerView.ViewHolder?,
-                underlayButtons: MutableList<UnderlayButton>?
-            ) {
-                // Delete Button
-                underlayButtons?.add(UnderlayButton(
-                    AppCompatResources.getDrawable(
-                        this@MainViewImp,
-                        R.drawable.ic_action_trash
-                    ),
-                    Color.parseColor("#FF0000"),
-                    object : UnderlayButtonClickListener {
-                        @SuppressLint("ClickableViewAccessibility")
-                        override fun onClick(pos: Int) {
-                            (recyclerView.adapter as? TaskAdapter)?.removeItem(pos)
-                            recyclerView.adapter?.notifyItemRemoved(pos)
-                        }
-                    }
-                ))
-
-                // Done Button (pokud je aktivní)
-                if (enableDone) {
-                    underlayButtons?.add(UnderlayButton(
-                        AppCompatResources.getDrawable(
-                            this@MainViewImp,
-                            R.drawable.ic_action_tick
-                        ),
-                        Color.parseColor("#00FF00"),
-                        object : UnderlayButtonClickListener {
-                            @SuppressLint("ClickableViewAccessibility")
-                            override fun onClick(pos: Int) {
-                                (recyclerView.adapter as? TaskAdapter)?.itemDone(pos)
-                                lifecycleScope.launch {
-                                    showDrawnTasks()
-                                }
-                            }
-                        }
-                    ))
-                }
-            }
-        }
+        controller.swipeHelperToDeleteAndEdit(taskList,false, this)
+        controller.swipeHelperToDeleteAndEdit(drawnList,true, this)
     }
 
     // NAHRADIT!!
-    private fun openTaskDetailsScreen(task: Task) {
-        val intent = Intent(this, TaskDetailsActivity::class.java)
+    override fun openTaskDetailsScreen(task: Task, context: Context) {
+        val intent = Intent(context, TaskDetailsActivity::class.java)
         intent.putExtra("taskId", task.id)
-        Log.d("TaskDetailsActivity", "Task ID: $taskId")
-        startActivity(intent)
+        context.startActivity(intent)
     }
 
     // Metoda na zobrazení statistik
@@ -249,23 +202,21 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 (taskList.layoutManager as LinearLayoutManager).reverseLayout = true
                 (taskList.layoutManager as LinearLayoutManager).stackFromEnd = true
 
-                // Získejte aktuální seznam úkolů přímo z kontroléru
-                val allTasks = controller.getAllTasks()
-
                 // Vytvořte nový seznam obsahující pouze úkoly ve stavu IN_PROGRESS
-                val inProgressTasks = allTasks.filter { it.taskState == TaskState.IN_PROGRESS }
+                val inProgressTasks = controller.getTasksInStates(TaskState.IN_PROGRESS)
                 textNumDrawn.text = getString(R.string.your_drawn_tasks, inProgressTasks.size)
 
                 // Vytvořte nový adaptér s aktuálním seznamem úkolů ve stavu IN_PROGRESS
                 val adapter = TaskAdapter(
                     inProgressTasks.toMutableList(),
-                    { selectedTask -> openTaskDetailsScreen(selectedTask) },
+                    { selectedTask -> openTaskDetailsScreen(selectedTask, this@MainViewImp) },
                     { removedTask ->
                         launch {
-                            controller.removeTask(removedTask)
+                            controller.removeTask(removedTask, true)
                         }
                     },
-                    controller
+                    controller,
+                    true
                 )
 
                 taskList.adapter = adapter

@@ -1,11 +1,19 @@
 package com.misfortuneapp.wheelofmisfortune.controller
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.activity.ComponentActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.custom.BroadcastService
+import com.misfortuneapp.wheelofmisfortune.custom.SwipeHelper
+import com.misfortuneapp.wheelofmisfortune.custom.TaskAdapter
 import com.misfortuneapp.wheelofmisfortune.model.*
 import com.misfortuneapp.wheelofmisfortune.view.*
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -24,7 +32,7 @@ interface MainController {
     fun getIsWheelSpinning(): Boolean // Vrátí informaci, zda se kolo otáčí
     fun doWithTaskDialog() // Provede akce související s dialogem úlohy
     suspend fun getAllTasks(): List<Task> // Asynchronně získá všechny úlohy
-    suspend fun removeTask(task: Task) // Asynchronně odstraní úlohu
+    suspend fun removeTask(task: Task, fromMainView: Boolean) // Asynchronně odstraní úlohu
     fun loadPointsFromDatabase() // Načte body z databáze
     fun startTimer(taskId: Int) // Spustí časovač pro úlohu
     fun stopTimer() // Zastaví časovač
@@ -34,6 +42,12 @@ interface MainController {
     suspend fun setFirstTime() // Asynchronně nastaví první čas (při prvním spuštění)
     suspend fun getTime(): TimeRecord // Asynchronně získá časový záznam
     suspend fun getTasksInStates(taskState: TaskState): List<Task> // Asynchronně získá úlohy v daném stavu
+    fun openTaskDetailsScreen(task: Task, context: Context)
+    fun swipeHelperToDeleteAndEdit(
+        recyclerView: RecyclerView,
+        enableDone: Boolean,
+        context: Context
+    )
 }
 
 // Implementace rozhraní MainController
@@ -162,9 +176,11 @@ class MainControllerImpl(
     }
 
     // Metoda pro asynchronní odstranění úlohy
-    override suspend fun removeTask(task: Task) {
+    override suspend fun removeTask(task: Task, fromMainView: Boolean) {
         model.removeTask(task)
-        view.showAllTasks()
+        if (fromMainView) {
+            view.showAllTasks()
+        }
     }
 
     // Metoda pro načtení bodů z databáze
@@ -227,13 +243,61 @@ class MainControllerImpl(
         return model.getTasksByState(taskState)
     }
 
+    override fun openTaskDetailsScreen(task: Task, context: Context) {
+        view.openTaskDetailsScreen(task,context)
+    }
+
+    // Provedení akcí po swipu
+    override fun swipeHelperToDeleteAndEdit(recyclerView: RecyclerView, enableDone: Boolean, context: Context) {
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        object : SwipeHelper(context, recyclerView, true) {
+            override fun instantiateUnderlayButton(
+                viewHolder: RecyclerView.ViewHolder?,
+                underlayButtons: MutableList<UnderlayButton>?
+            ) {
+                // Delete Button
+                underlayButtons?.add(UnderlayButton(
+                    AppCompatResources.getDrawable(
+                        context,
+                        R.drawable.ic_action_trash
+                    ),
+                    Color.parseColor("#FF0000"),
+                    object : UnderlayButtonClickListener {
+                        @SuppressLint("ClickableViewAccessibility")
+                        override fun onClick(pos: Int) {
+                            (recyclerView.adapter as? TaskAdapter)?.removeItem(pos)
+                            recyclerView.adapter?.notifyItemRemoved(pos)
+                        }
+                    }
+                ))
+
+                // Done Button (pokud je aktivní)
+                if (enableDone) {
+                    underlayButtons?.add(UnderlayButton(
+                        AppCompatResources.getDrawable(
+                            context,
+                            R.drawable.ic_action_tick
+                        ),
+                        Color.parseColor("#00FF00"),
+                        object : UnderlayButtonClickListener {
+                            @SuppressLint("ClickableViewAccessibility")
+                            override fun onClick(pos: Int) {
+                                (recyclerView.adapter as? TaskAdapter)?.itemDone(pos)
+                                lifecycleScope.launch {
+                                }
+                            }
+                        }
+                    ))
+                }
+            }
+        }
+    }
+
     // Metoda pro asynchronní nastavení úlohy do stavu "DONE"
     override suspend fun setTaskDone(selectedTask: Task) {
-        val timeRecord = model.getTimeRecord()
-
-        selectedTask.startTime = timeRecord.startTime
-        selectedTask.endTime = timeRecord.endTime
         selectedTask.taskState = TaskState.DONE
+        selectedTask.completionTime = System.currentTimeMillis()
 
         model.updateTask(selectedTask)
 
