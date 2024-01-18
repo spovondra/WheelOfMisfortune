@@ -103,6 +103,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
                         )
                         recyclerView.adapter = adapter
                         recyclerView.layoutManager = LinearLayoutManager(this@StatisticsViewImp)
+                        (recyclerView.layoutManager as LinearLayoutManager).reverseLayout = true
                     }
                 }
             }
@@ -118,6 +119,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         clearGraphButton.setOnClickListener {
             // Call method to clear all data
             controller.clearAllData()
+
 
             // Update the graph
             GlobalScope.launch {

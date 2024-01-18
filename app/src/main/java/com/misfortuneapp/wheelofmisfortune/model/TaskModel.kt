@@ -26,9 +26,7 @@ interface TaskModel {
         title: String,
         description: String,
         priority: Int,
-        iconResId: Int,
-        startTime: Long,
-        endTime: Long
+        iconResId: Int
     )
 
     // Suspend funkce pro získání úkolů podle stavu
@@ -40,6 +38,7 @@ interface TaskModel {
     // Suspend funkce pro získání posledního záznamu o čase
     suspend fun getTimeRecord(): TimeRecord
     suspend fun getTaskByDisplayId(id: Int): Task?
+    suspend fun deleteDoneTasks()
 }
 
 // Implementace rozhraní TaskModel
@@ -83,9 +82,7 @@ class TaskModelImpl(context: Context) : TaskModel {
         title: String,
         description: String,
         priority: Int,
-        iconResId: Int,
-        startTime: Long,
-        endTime: Long
+        iconResId: Int
     ) {
         val newTask = Task(
             displayId = displayId,
@@ -93,9 +90,7 @@ class TaskModelImpl(context: Context) : TaskModel {
             description = description,
             priority = priority,
             iconResId = iconResId,
-            startTime = startTime,
-            taskState = TaskState.AVAILABLE,
-            endTime = endTime
+            taskState = TaskState.AVAILABLE
         )
 
         insertTask(newTask)
@@ -104,6 +99,10 @@ class TaskModelImpl(context: Context) : TaskModel {
     // Suspend funkce pro získání úkolů podle stavu
     override suspend fun getTasksByState(taskState: TaskState): List<Task> {
         return taskDao.getTasksByState(taskState)
+    }
+
+    override suspend fun deleteDoneTasks() {
+        taskDao.deleteTasksByState(TaskState.DONE)
     }
 
     // Suspend funkce pro vložení záznamu o čase (např. start a end čas) (imeRecord)

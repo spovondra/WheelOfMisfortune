@@ -202,6 +202,9 @@ class MainControllerImpl(
 
     override fun clearAllData() {
         currentPoints = 0
+        lifecycleScope.launch {
+            model.deleteDoneTasks()
+        }
     }
 
     // Metoda pro vrácení aktuálního data

@@ -14,15 +14,14 @@ interface NewTakController {
         title: String,
         description: String,
         priority: Int,
-        iconResId: Int,
-        startTime: Long,
-        endTime: Long
+        iconResId: Int
     )
 
     suspend fun getAllTasks(): List<Task>
     suspend fun getTaskByDisplayId(id: Int): Task?
     suspend fun updateTask(task: Task)
     suspend fun removeTask(task: Task)
+    suspend fun getTaskById(id: Int): Task?
 }
 
 // Implementace rozhraní NewTakController, která využívá TaskModel pro manipulaci s úkoly.
@@ -37,6 +36,10 @@ class NewTaskControllerImpl(newTaskActivity: NewTaskActivity) : NewTakController
     // Suspendovaná metoda pro získání úkolu podle jeho zobrazeného ID.
     override suspend fun getTaskByDisplayId(id: Int): Task? = withContext(Dispatchers.IO) {
         taskModel.getTaskByDisplayId(id)
+    }
+
+    override suspend fun getTaskById(id: Int): Task? = withContext(Dispatchers.IO) {
+        taskModel.getTaskById(id)
     }
 
     // Suspendovaná metoda pro aktualizaci úkolu.
@@ -55,10 +58,8 @@ class NewTaskControllerImpl(newTaskActivity: NewTaskActivity) : NewTakController
         title: String,
         description: String,
         priority: Int,
-        iconResId: Int,
-        startTime: Long,
-        endTime: Long
+        iconResId: Int
     ) {
-        taskModel.addNewTask(displayId, title, description, priority, iconResId, startTime, endTime)
+        taskModel.addNewTask(displayId, title, description, priority, iconResId)
     }
 }

@@ -36,6 +36,7 @@ class NewTaskActivity : AppCompatActivity() {
     private var taskName: String? = null
     private var taskId: Int = 0
     private var newTaskId: Int = 0
+    private var taskIdFromIntent = 0
 
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,15 +49,44 @@ class NewTaskActivity : AppCompatActivity() {
         newTaskController = NewTaskControllerImpl(this)
 
         lifecycleScope.launch {
-            val allTasks = newTaskController.getAllTasks()
-            if (allTasks.isNotEmpty()) {
-                taskId = allTasks.last().id + 1
-                newTaskId = newTaskController.getAllTasks().size + 1
+            taskIdFromIntent = intent.getIntExtra("taskId", -1)
+
+            if (taskIdFromIntent != -1) {
+                // Otevři existující úkol
+                currentTask = newTaskController.getTaskByDisplayId(taskIdFromIntent)
+                taskName = currentTask?.title
+                taskId = currentTask?.displayId ?: 0
+                newTaskId = newTaskController.getAllTasks().size // můžete upravit podle potřeby
+                updateActivityTitle(1)
+
+                taskNameEditText.setText(taskName)
+                taskDescriptionEditText.setText(currentTask?.description)
+                taskPriority.progress = currentTask?.priority ?: 0
+
+                // Nastav ikonu podle aktuálního úkolu
+                selectedIconResId = currentTask?.iconResId ?: R.drawable.icon
+
+                // Uprav ikonu v závislosti na aktuálním výběru
+                selectedImageView?.isSelected = false
+                when (selectedIconResId) {
+                    R.drawable.ic_action_cart -> selectedImageView = findViewById(R.id.icon1)
+                    R.drawable.ic_action_book -> selectedImageView = findViewById(R.id.icon2)
+                    R.drawable.ic_action_bell -> selectedImageView = findViewById(R.id.icon3)
+                    R.drawable.ic_action_box -> selectedImageView = findViewById(R.id.icon4)
+                }
+                selectedImageView?.isSelected = true
             } else {
-                taskId = 1
-                newTaskId = 1
+                // Vytvoř nový úkol
+                val allTasks = newTaskController.getAllTasks()
+                if (allTasks.isNotEmpty()) {
+                    taskId = allTasks.last().id + 1
+                    newTaskId = newTaskController.getAllTasks().size + 1
+                } else {
+                    taskId = 1
+                    newTaskId = 1
+                }
+                updateActivityTitle(taskIdFromIntent)
             }
-            updateActivityTitle()
         }
 
         taskPriority = findViewById(R.id.seekBarPriority)
@@ -71,7 +101,7 @@ class NewTaskActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 lifecycleScope.launch {
                     delay(500)
-                    updateActivityTitle()
+                    updateActivityTitle(taskIdFromIntent)
                 }
             }
 
@@ -151,16 +181,17 @@ class NewTaskActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            updateActivityTitle()
+            updateActivityTitle(taskIdFromIntent)
         }
     }
 
-    private fun updateActivityTitle() {
+    private fun updateActivityTitle(taskIdFromIntent: Int) {
         val activityTitleTextView: TextView = findViewById(R.id.activityTitleTextView)
         val deleteButton: Button = findViewById(R.id.action_delete_task)
         val finishLayout: FrameLayout = findViewById(R.id.finishLayout)
+
         if (taskName.isNullOrBlank()) {
-            activityTitleTextView.text = getString(R.string.new_task_activity, newTaskId, "")
+            activityTitleTextView.text = getString(R.string.new_task_activity,newTaskId, "")
             deleteButton.text = getString(R.string.button_cancel)
             finishLayout.visibility = View.GONE
         } else {
@@ -180,7 +211,7 @@ class NewTaskActivity : AppCompatActivity() {
             R.id.icon2 -> R.drawable.ic_action_book
             R.id.icon3 -> R.drawable.ic_action_bell
             R.id.icon4 -> R.drawable.ic_action_box
-            else -> R.drawable.ic_launcher_foreground
+            else -> R.drawable.icon
         }
 
         saveTask()
@@ -195,7 +226,7 @@ class NewTaskActivity : AppCompatActivity() {
                 isTaskCreated = true
 
                 lifecycleScope.launch {
-                    val existingTask = currentTask?.let { newTaskController.getTaskByDisplayId(it.displayId) }
+                    val existingTask = currentTask?.let { newTaskController.getTaskById(it.id) }
 
                     if (existingTask != null) {
                         existingTask.title = taskName as String
@@ -204,20 +235,18 @@ class NewTaskActivity : AppCompatActivity() {
                         existingTask.iconResId = selectedIconResId
                         newTaskController.updateTask(existingTask)
                     } else {
-                        updateActivityTitle()
+                        updateActivityTitle(taskIdFromIntent)
 
                         newTaskController.addNewTask(
                             displayId = taskId,
                             title = taskName!!,
                             description = taskDescription,
                             priority = taskPriority.progress,
-                            iconResId = selectedIconResId,
-                            startTime = 0,
-                            endTime = 0
+                            iconResId = selectedIconResId
                         )
 
                         // Nastav aktuální úkol
-                        currentTask = newTaskController.getTaskByDisplayId(taskId)
+                        currentTask = newTaskController.getTaskById(newTaskController.getAllTasks().last().id)
                     }
 
                     isTaskCreated = false

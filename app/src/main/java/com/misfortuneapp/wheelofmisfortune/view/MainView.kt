@@ -177,7 +177,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
     // NAHRADIT!!
     override fun openTaskDetailsScreen(task: Task, context: Context) {
-        val intent = Intent(context, TaskDetailsActivity::class.java)
+        val intent = Intent(context, NewTaskActivity::class.java)
         intent.putExtra("taskId", task.id)
         context.startActivity(intent)
     }
