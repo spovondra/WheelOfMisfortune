@@ -91,25 +91,6 @@
                     app:layoutManager="LinearLayoutManager" />
             </RelativeLayout>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="140dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:layout_margin="14dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp">
-
-                <Button
-                    android:id="@+id/clearDataButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:background="@drawable/button_shape"
-                    android:text="@string/statsResetBtn"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="18sp" />
-            </androidx.cardview.widget.CardView>
-
         </LinearLayout>
     </ScrollView>
 

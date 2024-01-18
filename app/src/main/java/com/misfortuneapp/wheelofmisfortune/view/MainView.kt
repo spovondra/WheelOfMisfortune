@@ -12,12 +12,9 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import android.graphics.Color
 import android.view.View
 import android.widget.LinearLayout
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
-import com.misfortuneapp.wheelofmisfortune.custom.SwipeHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.misfortuneapp.wheelofmisfortune.R

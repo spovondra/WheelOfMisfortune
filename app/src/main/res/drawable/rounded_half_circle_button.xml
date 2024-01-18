@@ -1,5 +1,13 @@
-<!-- res/drawable/half_circle_button_background.xml -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#f24646" /> <!-- Background color of the button -->
-    <corners android:radius="100dp" /> <!-- Adjust the radius to create half-circle edges -->
-</shape>
+<!-- res/drawable/icon1.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/delete" /> <!-- Set the orange background color -->
+            <corners android:radius="12dp" /> <!-- Set the radius to create rounded edges -->
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/ic_action_trash"
+        android:height="40dp"
+        android:width="40dp"/>
+</layer-list>

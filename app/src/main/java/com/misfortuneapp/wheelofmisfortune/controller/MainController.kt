@@ -36,7 +36,6 @@ interface MainController {
     fun loadPointsFromDatabase() // Načte body z databáze
     fun startTimer(taskId: Int) // Spustí časovač pro úlohu
     fun stopTimer() // Zastaví časovač
-    fun clearAllData() // Smaže všechna data o vylosovaných úlohách
     suspend fun setTaskDone(selectedTask: Task) // Nastaví úlohu na splněnou
     suspend fun setTime(selectedTimeInMillis: Long) // Asynchronně nastaví čas úlohy
     suspend fun setFirstTime() // Asynchronně nastaví první čas (při prvním spuštění)
@@ -197,13 +196,6 @@ class MainControllerImpl(
             }
             // Aktualizace zobrazených bodů v UI
             view.showUpdatedPoints("$currentPoints")
-        }
-    }
-
-    override fun clearAllData() {
-        currentPoints = 0
-        lifecycleScope.launch {
-            model.deleteDoneTasks()
         }
     }
 

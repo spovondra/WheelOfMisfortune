@@ -2,7 +2,6 @@ package com.misfortuneapp.wheelofmisfortune.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -24,9 +23,7 @@ import com.misfortuneapp.wheelofmisfortune.controller.StatisticsControllerImp
 import com.misfortuneapp.wheelofmisfortune.custom.CustomXAxisFormatter
 import com.misfortuneapp.wheelofmisfortune.custom.TaskAdapter
 import com.misfortuneapp.wheelofmisfortune.model.DataDatabase
-import com.misfortuneapp.wheelofmisfortune.model.DataRepository
 import com.misfortuneapp.wheelofmisfortune.model.DataRepositoryImpl
-import com.misfortuneapp.wheelofmisfortune.model.Task
 import com.misfortuneapp.wheelofmisfortune.model.TaskModel
 import com.misfortuneapp.wheelofmisfortune.model.TaskModelImpl
 import com.misfortuneapp.wheelofmisfortune.model.TaskState
@@ -45,9 +42,7 @@ interface StatisticsView {
 }
 
 class StatisticsViewImp : AppCompatActivity(), StatisticsView {
-
     private lateinit var barChart: BarChart
-    private lateinit var clearGraphButton: Button
     private lateinit var controller: StatisticsController
     private lateinit var database: DataDatabase
     private lateinit var mainController: MainController
@@ -66,7 +61,6 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
 
         // Initialize BarChart, button, and controller
         barChart = findViewById(R.id.barChart)
-        clearGraphButton = findViewById(R.id.clearDataButton)
 
         // Initialize database and controller using data interface
         database = DataDatabase.getInstance(this)
@@ -114,18 +108,6 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         })
 
         swipeToDeleteButton ()
-
-        // Set listener for the clear graph button
-        clearGraphButton.setOnClickListener {
-            // Call method to clear all data
-            controller.clearAllData()
-
-
-            // Update the graph
-            GlobalScope.launch {
-                controller.updateGraph()
-            }
-        }
     }
 
     // Method to create BarChart with given data and formatted labels

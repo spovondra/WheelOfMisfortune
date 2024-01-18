@@ -191,12 +191,10 @@ class NewTaskActivity : AppCompatActivity() {
         val finishLayout: FrameLayout = findViewById(R.id.finishLayout)
 
         if (taskName.isNullOrBlank()) {
-            activityTitleTextView.text = getString(R.string.new_task_activity,newTaskId, "")
-            deleteButton.text = getString(R.string.button_cancel)
+            activityTitleTextView.text = getString(R.string.new_task_activity,"$newTaskId")
             finishLayout.visibility = View.GONE
         } else {
-            activityTitleTextView.text  = getString(R.string.new_task_activity, newTaskId, ": $taskName")
-            deleteButton.text = getString(R.string.button_delete)
+            activityTitleTextView.text  = getString(R.string.task_edit)
             finishLayout.visibility = View.VISIBLE
         }
     }

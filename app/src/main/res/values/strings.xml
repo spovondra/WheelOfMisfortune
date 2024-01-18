@@ -8,7 +8,6 @@
     <string name="button_add_description">Add Button</string>
     <string name="zero_priority">Selected Priority: 0</string>
     <string name="priority_static">Priority:</string>
-    <string name="button_delete">Delete Task</string>
     <string name="newTaskDescription">Task Description</string>
     <string name="newTaskName">Task Name</string>
     <string name="icon_1">Icon 1</string>
@@ -26,7 +25,7 @@
     <string name="daily_statistics">Tasks completed today: %.0f</string>
     <string name="overall_statistics">"Total number of completed tasks: %.0f "</string>
     <string name="statistics_view">Statistics</string>
-    <string name="new_task_activity">Task %d%2$s</string>
+    <string name="new_task_activity">Task %1$s</string>
     <string name="your_tasks">All tasks (%1$s):</string>
     <string name="your_drawn_tasks">Tasks in Progress (%1$s):</string>
     <string name="no_drawn_tasks_text">"Currently, you don't have any tasks.\nSpin the wheel! "</string>
@@ -35,5 +34,5 @@
     <string name="time_to_spin">Time to spin the wheel</string>
     <string name="wheel_is_waiting">The wheel of misfortune is waiting for you.</string>
     <string name="button_finish">Finish</string>
-    <string name="button_cancel">Cancel</string>
+    <string name="task_edit">Task Edit</string>
 </resources>

@@ -8,4 +8,5 @@
     <color name="iconInactiveColor">#80F9661B</color>
     <color name="border">#80000000</color>
     <color name="inverted">#FF000000</color>
+    <color name="delete">#f24646</color>
 </resources>

@@ -26,8 +26,8 @@
 
     <Button
         android:id="@+id/action_delete_task"
-        android:layout_width="100dp"
-        android:layout_height="36dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_half_circle_button"
         android:gravity="center"
