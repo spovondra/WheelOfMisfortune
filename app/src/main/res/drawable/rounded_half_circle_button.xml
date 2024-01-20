@@ -8,6 +8,6 @@
     </item>
     <item
         android:drawable="@drawable/ic_action_trash"
-        android:height="40dp"
-        android:width="40dp"/>
+        android:height="48dp"
+        android:width="48dp"/>
 </layer-list>

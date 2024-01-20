@@ -47,6 +47,8 @@ interface MainController {
         enableDone: Boolean,
         context: Context
     )
+
+    suspend fun getDoneTasksForDate(dateString: String): List<Task>
 }
 
 // Implementace rozhraní MainController
@@ -335,6 +337,24 @@ class MainControllerImpl(
     // Metoda pro asynchronní získání časového záznamu
     override suspend fun getTime(): TimeRecord {
         return model.getTimeRecord()
+    }
+
+    // Metoda pro získání seznamu splněných úkolů v daný den
+    override suspend fun getDoneTasksForDate(dateString: String): List<Task> {
+        // Získání formátu pro datum
+        val dateFormat = SimpleDateFormat("dd.MM", Locale.getDefault())
+
+        // Převedení řetězce s datem na objekt typu Date
+        val selectedDate = dateFormat.parse(dateString) ?: return emptyList()
+
+        // Získání seznamu všech splněných úkolů
+        val allDoneTasks = model.getTasksByState(TaskState.DONE)
+
+        // Filtrujeme úkoly podle vybraného data
+        return allDoneTasks.filter { task ->
+            val taskCompletionDate = Date(task.completionTime)
+            dateFormat.format(taskCompletionDate) == dateString
+        }
     }
 
     // Metoda pro asynchronní získání délky úlohy nastavené uživatelem

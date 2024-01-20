@@ -53,6 +53,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         val taskList = findViewById<RecyclerView>(R.id.taskList)
         taskList.layoutManager = LinearLayoutManager(this@MainViewImp)
 
@@ -172,7 +173,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         controller.swipeHelperToDeleteAndEdit(drawnList,true, this)
     }
 
-    // NAHRADIT!!
+    // Metoda na zobrazení detailů o úloze
     override fun openTaskDetailsScreen(task: Task, context: Context) {
         val intent = Intent(context, NewTaskActivity::class.java)
         intent.putExtra("taskId", task.id)

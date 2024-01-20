@@ -10,5 +10,5 @@
     <color name="iconInactiveColor">#80F9661B</color>
     <color name="border">#434748</color>
     <color name="inverted">#FFFFFF</color>
-    <color name="delete">#f24646</color>
+    <color name="delete">#FD0001</color>
 </resources>

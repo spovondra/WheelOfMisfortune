@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.controller.NewTakController
@@ -176,7 +177,7 @@ class NewTaskActivity : AppCompatActivity() {
         }
 
         // Set up back button click listener
-        customActionBarButton.findViewById<Button>(R.id.action_back).setOnClickListener {
+        customActionBarButton.findViewById<CardView>(R.id.action_back).setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 

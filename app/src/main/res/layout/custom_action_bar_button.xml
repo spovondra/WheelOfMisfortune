@@ -1,16 +1,24 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary">
 
-    <Button
+    <androidx.cardview.widget.CardView
         android:id="@+id/action_back"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:background="@drawable/arrow_back"
-        android:gravity="center"
-        android:layout_marginEnd="24dp" />
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="12dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="0dp">
+
+        <Button
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/arrow_back"
+            android:layout_gravity="center_vertical" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/activityTitleTextView"
@@ -24,13 +32,22 @@
         android:textStyle="bold"
         tools:ignore="RelativeOverlap" />
 
-    <Button
-        android:id="@+id/action_delete_task"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/rounded_half_circle_button"
-        android:gravity="center"
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
         android:layout_alignParentEnd="true"
-        android:textColor="#FFFFFF"/>
+        android:layout_gravity="center"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="0dp">
+
+        <Button
+            android:id="@+id/action_delete_task"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_half_circle_button"
+            android:textColor="#FFFFFF" />
+    </androidx.cardview.widget.CardView>
+
 </RelativeLayout>

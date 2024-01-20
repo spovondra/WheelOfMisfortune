@@ -22,6 +22,7 @@ interface StatisticsController {
     fun getCurrentDate(): String
     suspend fun updateGraph()
     fun clearAllData()
+    suspend fun getFormatedDates(): Array<String>
 }
 
 class StatisticsControllerImp(
@@ -85,7 +86,8 @@ class StatisticsControllerImp(
             LineDataSet(entries, "Label") // "Label" je název pro legendu
 
             withContext(Dispatchers.Main) {
-                view.createBarChart(entries, getFormattedDates())
+                view.createBarChart (entries, getFormattedDates())
+                view.viewAfterClick (getFormattedDates())
 
                 val currentDate = SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
                 val dataEntity = getDataByDate(currentDate)
@@ -97,6 +99,10 @@ class StatisticsControllerImp(
                 view.updateStatistics(dailyStatistics, overallStatistics)
             }
         }
+    }
+
+    override suspend fun getFormatedDates (): Array<String> {
+        return getFormattedDates()
     }
 
     @OptIn(DelicateCoroutinesApi::class)

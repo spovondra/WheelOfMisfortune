@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.charts.BarChart
@@ -26,19 +27,16 @@ import com.misfortuneapp.wheelofmisfortune.model.DataDatabase
 import com.misfortuneapp.wheelofmisfortune.model.DataRepositoryImpl
 import com.misfortuneapp.wheelofmisfortune.model.TaskModel
 import com.misfortuneapp.wheelofmisfortune.model.TaskModelImpl
-import com.misfortuneapp.wheelofmisfortune.model.TaskState
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 interface StatisticsView {
     fun createBarChart(entries: List<BarEntry>, formattedDateStrings: Array<String>)
     fun updateStatistics(dailyStatistics: Double, overallStatistics: Double)
+    fun viewAfterClick(formattedDateStrings: Array<String>)
 }
 
 class StatisticsViewImp : AppCompatActivity(), StatisticsView {
@@ -74,39 +72,6 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
             controller.updateGraph()
         }
 
-        barChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-            override fun onValueSelected(e: Entry?, h: Highlight?) {
-                val selectedDate = SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
-
-                GlobalScope.launch {
-                    val drawnTasks = mainController.getTasksInStates(TaskState.DONE)
-
-                    withContext(Dispatchers.Main) {
-                        // Zobrazit vylosované úkoly v RecyclerView nebo jiném vhodném UI prvku
-                        val recyclerView: RecyclerView = findViewById(R.id.statisticsRecyclerView)
-                        val adapter = TaskAdapter(
-                            drawnTasks.toMutableList(),
-                            { selectedTask -> mainController.openTaskDetailsScreen(selectedTask, this@StatisticsViewImp) },
-                            { removedTask ->
-                                launch {
-                                    (mainController as MainControllerImpl).removeTask(removedTask, false)
-                                }
-                            },
-                            mainController,
-                            false
-                        )
-                        recyclerView.adapter = adapter
-                        recyclerView.layoutManager = LinearLayoutManager(this@StatisticsViewImp)
-                        (recyclerView.layoutManager as LinearLayoutManager).reverseLayout = true
-                    }
-                }
-            }
-
-            override fun onNothingSelected() {
-                // Akce, když není vybrána žádná hodnota
-            }
-        })
-
         swipeToDeleteButton ()
     }
 
@@ -116,7 +81,8 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
 
         val textColorPrimary = ContextCompat.getColor(this, R.color.inverted)
 
-        dataSet.color = textColorPrimary
+        dataSet.color = ContextCompat.getColor(this, R.color.iconInactiveColor)
+        dataSet.highLightColor = ContextCompat.getColor(this, R.color.iconColor)
         dataSet.valueTextColor = textColorPrimary
 
         val barData = BarData(dataSet)
@@ -158,6 +124,49 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         barChart.description.isEnabled = false
         barChart.isDoubleTapToZoomEnabled = false
 
+        barChart.invalidate()
+    }
+
+    override fun viewAfterClick(formattedDateStrings: Array<String>) {
+        barChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                // Získání vybrané hodnoty z grafu (datum)
+                val selectedDateIndex = e?.x?.toInt() ?: return
+                val selectedDate = formattedDateStrings.getOrNull(selectedDateIndex) ?: return
+
+                lifecycleScope.launch {
+                    // Získání hotových úkolů pro vybraný den
+                    val doneTasksForSelectedDate = mainController.getDoneTasksForDate(selectedDate)
+
+                    withContext(Dispatchers.Main) {
+                        // Zobrazení hotových úkolů ve vhodném UI prvku (RecyclerView nebo jiném)
+                        val recyclerView: RecyclerView = findViewById(R.id.statisticsRecyclerView)
+                        val adapter = TaskAdapter(
+                            doneTasksForSelectedDate.toMutableList(),
+                            { selectedTask -> mainController.openTaskDetailsScreen(selectedTask, this@StatisticsViewImp) },
+                            { removedTask ->
+                                launch {
+                                    (mainController as MainControllerImpl).removeTask(removedTask, false)
+                                }
+                            },
+                            mainController,
+                            false
+                        )
+                        recyclerView.adapter = adapter
+                        recyclerView.layoutManager = LinearLayoutManager(this@StatisticsViewImp)
+                        (recyclerView.layoutManager as LinearLayoutManager).reverseLayout = true
+                    }
+                }
+                barChart.highlightValues(arrayOf(Highlight(selectedDateIndex.toFloat(), 0f, 0))) // Zvýraznění hodnoty
+            }
+
+            override fun onNothingSelected() {
+                barChart.highlightValues(null) // Zrušení zvýraznění
+
+                val recyclerView: RecyclerView = findViewById(R.id.statisticsRecyclerView)
+                recyclerView.adapter = null
+            }
+        })
         barChart.invalidate()
     }
 
