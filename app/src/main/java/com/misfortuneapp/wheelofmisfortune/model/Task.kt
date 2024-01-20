@@ -15,7 +15,6 @@ enum class TaskState {
 data class Task(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,             // Identifikační číslo úkolu v databázi
-    val displayId: Int = 0,          // Identifikační číslo úkolu pro zobrazení uživateli
     var title: String,           // Název úkolu
     var description: String,     // Popis úkolu
     val points: Int = DEFAULT_POINTS, // Počet bodů při splnění úkolu, defaultně nastaven na 5
@@ -28,7 +27,6 @@ data class Task(
 ) {
     // Alternativní konstruktor pro vytvoření instance Task s určenými vlastnostmi
     constructor(
-        displayId: Int,
         title: String,
         description: String,
         priority: Int,
@@ -37,7 +35,7 @@ data class Task(
         taskState: TaskState,
         endTime: Long,
         completionTime: Long
-    ) : this(0, displayId, title, description, DEFAULT_POINTS, priority, iconResId, startTime, taskState, endTime, completionTime)
+    ) : this(0, title, description, DEFAULT_POINTS, priority, iconResId, startTime, taskState, endTime, completionTime)
 
     // Společné hodnoty pro všechny instance třídy Task
     companion object {

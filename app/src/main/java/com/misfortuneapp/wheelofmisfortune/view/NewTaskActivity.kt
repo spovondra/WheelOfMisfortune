@@ -53,9 +53,9 @@ class NewTaskActivity : AppCompatActivity() {
 
             if (taskIdFromIntent != -1) {
                 // Otevři existující úkol
-                currentTask = newTaskController.getTaskByDisplayId(taskIdFromIntent)
+                currentTask = newTaskController.getTaskById(taskIdFromIntent)
                 taskName = currentTask?.title
-                taskId = currentTask?.displayId ?: 0
+                taskId = currentTask?.id ?: 0
                 newTaskId = newTaskController.getAllTasks().size // můžete upravit podle potřeby
                 updateActivityTitle(1)
 
@@ -187,7 +187,6 @@ class NewTaskActivity : AppCompatActivity() {
 
     private fun updateActivityTitle(taskIdFromIntent: Int) {
         val activityTitleTextView: TextView = findViewById(R.id.activityTitleTextView)
-        val deleteButton: Button = findViewById(R.id.action_delete_task)
         val finishLayout: FrameLayout = findViewById(R.id.finishLayout)
 
         if (taskName.isNullOrBlank()) {
@@ -236,7 +235,6 @@ class NewTaskActivity : AppCompatActivity() {
                         updateActivityTitle(taskIdFromIntent)
 
                         newTaskController.addNewTask(
-                            displayId = taskId,
                             title = taskName!!,
                             description = taskDescription,
                             priority = taskPriority.progress,

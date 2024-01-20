@@ -135,7 +135,9 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         leftYAxis.axisMinimum = 0f
         leftYAxis.labelCount = entries.size + 1
         leftYAxis.granularity = 1f
-        leftYAxis.setDrawGridLines(false) // Odebrat mřížku
+        leftYAxis.setDrawGridLines(false) // Remove grid lines
+
+        barChart.isScaleYEnabled = false // Disable vertical scaling
 
         barChart.axisRight.isEnabled = false
 
@@ -154,6 +156,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
 
         // Odebrat popisek v pravém dolním rohu
         barChart.description.isEnabled = false
+        barChart.isDoubleTapToZoomEnabled = false
 
         barChart.invalidate()
     }
