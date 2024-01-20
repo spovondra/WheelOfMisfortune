@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="colorPrimary">#1A1A1A</color>
+    <color name="white">#FFFFFF</color>
+    <color name="colorPrimary">#000000</color>
+    <color name="backgroud">#1A1A1A</color>
     <color name="colorButton">#000000</color>
     <color name="shadowButton">#80202020</color>
     <color name="iconColor">#F9661B</color>
     <color name="iconInactiveColor">#80F9661B</color>
     <color name="border">#434748</color>
     <color name="inverted">#FFFFFF</color>
+    <color name="delete">#f24646</color>
 </resources>

@@ -10,7 +10,7 @@
         android:layout_height="32dp"
         android:background="@drawable/arrow_back"
         android:gravity="center"
-        android:textColor="#FFFFFF" />
+        android:layout_marginEnd="24dp" />
 
     <TextView
         android:id="@+id/activityTitleTextView"
@@ -19,7 +19,7 @@
         android:layout_toEndOf="@+id/action_back"
         android:layout_centerVertical="true"
         android:text="@string/new_task_activity"
-        android:textColor="@color/inverted"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
         tools:ignore="RelativeOverlap" />

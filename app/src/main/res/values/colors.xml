@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
-    <color name="colorPrimary">#F4F4F4</color>
+    <color name="white">#FFFFFF</color>
+    <color name="colorPrimary">#F9661B</color>
+    <color name="backgroud">#F4F4F4</color>
     <color name="colorButton">#FFFFFFFF</color>
     <color name="shadowButton">#80FFFFFF</color>
     <color name="iconColor">#F9661B</color>

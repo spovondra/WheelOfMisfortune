@@ -28,13 +28,13 @@
             android:name=".view.StatisticsViewImp"
             android:exported="true"
             android:label="Statistics Activity"
-            android:theme="@style/Theme.KoleckoNestesti">
+            android:theme="@style/Theme.KoleckoNestestiWindows">
         </activity>
         <activity
             android:name=".view.NewTaskActivity"
             android:exported="true"
             android:label="Nová úloha"
-            android:theme="@style/Theme.KoleckoNestesti">
+            android:theme="@style/Theme.KoleckoNestestiWindows">
         </activity>
         <activity
             android:name=".view.TaskDetailsActivity"

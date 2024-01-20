@@ -38,7 +38,7 @@ class NewTaskActivity : AppCompatActivity() {
     private var newTaskId: Int = 0
     private var taskIdFromIntent = 0
 
-    @SuppressLint("InflateParams")
+    @SuppressLint("InflateParams", "CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_task)
@@ -57,7 +57,7 @@ class NewTaskActivity : AppCompatActivity() {
                 taskName = currentTask?.title
                 taskId = currentTask?.id ?: 0
                 newTaskId = newTaskController.getAllTasks().size // můžete upravit podle potřeby
-                updateActivityTitle(1)
+                updateActivityTitle()
 
                 taskNameEditText.setText(taskName)
                 taskDescriptionEditText.setText(currentTask?.description)
@@ -85,7 +85,7 @@ class NewTaskActivity : AppCompatActivity() {
                     taskId = 1
                     newTaskId = 1
                 }
-                updateActivityTitle(taskIdFromIntent)
+                updateActivityTitle()
             }
         }
 
@@ -101,7 +101,7 @@ class NewTaskActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 lifecycleScope.launch {
                     delay(500)
-                    updateActivityTitle(taskIdFromIntent)
+                    updateActivityTitle()
                 }
             }
 
@@ -159,7 +159,7 @@ class NewTaskActivity : AppCompatActivity() {
         icon4.setOnClickListener { onIconClick(icon4) }
 
         // Set up custom action bar button click listener
-        val customActionBarButton = layoutInflater.inflate(R.layout.custom_action_bar_button, null)
+        val customActionBarButton = layoutInflater.inflate(R.layout.custom_action_bar_button, FrameLayout(this))
         supportActionBar?.customView = customActionBarButton
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.elevation = 0f
@@ -181,11 +181,11 @@ class NewTaskActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            updateActivityTitle(taskIdFromIntent)
+            updateActivityTitle()
         }
     }
 
-    private fun updateActivityTitle(taskIdFromIntent: Int) {
+    private fun updateActivityTitle() {
         val activityTitleTextView: TextView = findViewById(R.id.activityTitleTextView)
         val finishLayout: FrameLayout = findViewById(R.id.finishLayout)
 
@@ -232,7 +232,7 @@ class NewTaskActivity : AppCompatActivity() {
                         existingTask.iconResId = selectedIconResId
                         newTaskController.updateTask(existingTask)
                     } else {
-                        updateActivityTitle(taskIdFromIntent)
+                        updateActivityTitle()
 
                         newTaskController.addNewTask(
                             title = taskName!!,

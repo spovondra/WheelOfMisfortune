@@ -3,6 +3,12 @@
     <style name="Theme.KoleckoNestesti" parent="Theme.AppCompat.DayNight">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/black</item>
-        <item name="android:colorBackground">@color/colorPrimary</item>
+        <item name="android:colorBackground">@color/backgroud</item>
+    </style>
+
+    <style name="Theme.KoleckoNestestiWindows" parent="Theme.AppCompat.DayNight">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/black</item>
+        <item name="android:colorBackground">@color/backgroud</item>
     </style>
 </resources>
