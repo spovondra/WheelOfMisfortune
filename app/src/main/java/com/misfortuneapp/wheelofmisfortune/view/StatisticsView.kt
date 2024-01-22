@@ -33,6 +33,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+
 interface StatisticsView {
     fun createBarChart(entries: List<BarEntry>, formattedDateStrings: Array<String>)
     fun updateStatistics(dailyStatistics: Double, overallStatistics: Double)
@@ -75,6 +76,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         swipeToDeleteButton ()
     }
 
+
     // Method to create BarChart with given data and formatted labels
     override fun createBarChart(entries: List<BarEntry>, formattedDateStrings: Array<String>) {
         val dataSet = BarDataSet(entries, "Počet splěných úloh")
@@ -91,10 +93,11 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         val xAxis = barChart.xAxis
         xAxis.valueFormatter = CustomXAxisFormatter(formattedDateStrings)
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.granularity = 1f
         xAxis.textColor = textColorPrimary
+        xAxis.axisMinimum = -0.5f
+        xAxis.axisMaximum = formattedDateStrings.size.toFloat() - 0.5f
+        xAxis.granularity = 1f
         xAxis.setDrawGridLines(false) // Odebrat mřížku
-        xAxis.textColor = textColorPrimary // Přidat nastavení barvy popisků
 
         val leftYAxis = barChart.axisLeft
         leftYAxis.textColor = textColorPrimary
@@ -102,10 +105,6 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         leftYAxis.labelCount = entries.size + 1
         leftYAxis.granularity = 1f
         leftYAxis.setDrawGridLines(false) // Remove grid lines
-
-        barChart.isScaleYEnabled = false // Disable vertical scaling
-
-        barChart.axisRight.isEnabled = false
 
         val xAxisData = formattedDateStrings.mapIndexed { index, _ ->
             BarEntry(index.toFloat(), 0f)
@@ -115,14 +114,14 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         xAxisDataSet.color = textColorPrimary
         xAxisDataSet.valueTextColor = textColorPrimary
 
-        barChart.xAxis.axisMinimum = -0.5f
-        barChart.xAxis.axisMaximum = formattedDateStrings.size.toFloat() - 0.5f
-        barChart.xAxis.isGranularityEnabled = true
-        barChart.xAxis.granularity = 1f
-
-        // Odebrat popisek v pravém dolním rohu
+        // Odebrání prvků z grafu
+        barChart.isHighlightPerDragEnabled = false
+        barChart.axisRight.isEnabled = false
         barChart.description.isEnabled = false
         barChart.isDoubleTapToZoomEnabled = false
+        barChart.isScaleYEnabled = false
+        barChart.isScaleXEnabled = false
+        barChart.legend.isEnabled = false
 
         barChart.invalidate()
     }
@@ -157,12 +156,9 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
                         (recyclerView.layoutManager as LinearLayoutManager).reverseLayout = true
                     }
                 }
-                barChart.highlightValues(arrayOf(Highlight(selectedDateIndex.toFloat(), 0f, 0))) // Zvýraznění hodnoty
             }
 
             override fun onNothingSelected() {
-                barChart.highlightValues(null) // Zrušení zvýraznění
-
                 val recyclerView: RecyclerView = findViewById(R.id.statisticsRecyclerView)
                 recyclerView.adapter = null
             }
