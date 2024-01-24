@@ -11,10 +11,6 @@
     <color name="border">#80000000</color>
     <color name="inverted">#FF000000</color>
     <color name="delete">#FD0001</color>
+    <color name="graph">#F88C57</color>
 
-    <color name="rack_month_picker_title_text_color">@color/white</color>
-    <color name="rack_month_picker_month_selected_text_color">@color/white</color>
-    <color name="rack_month_picker_month_not_selected_text_color">
-        ?attr/textColorAlertDialogListItem
-    </color>
 </resources>

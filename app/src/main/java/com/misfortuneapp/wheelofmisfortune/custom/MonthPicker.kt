@@ -21,6 +21,8 @@ class MonthPicker(context: Context, attrs: AttributeSet? = null) : LinearLayout(
     private val btnNext: ImageView
     private val title: TextView
 
+    private var dateChangeListener: ((String) -> Unit)? = null
+
     init {
         LayoutInflater.from(context).inflate(R.layout.month_picker, this, true)
 
@@ -38,6 +40,7 @@ class MonthPicker(context: Context, attrs: AttributeSet? = null) : LinearLayout(
             if (!newDate.before(minDate)) {
                 currentDate = newDate
                 updateTitle()
+                notifyDateChange()
             }
         }
 
@@ -45,6 +48,7 @@ class MonthPicker(context: Context, attrs: AttributeSet? = null) : LinearLayout(
             if (currentDate.before(maxDate)) {
                 currentDate.add(Calendar.MONTH, 1)
                 updateTitle()
+                notifyDateChange()
             }
         }
     }
@@ -52,14 +56,27 @@ class MonthPicker(context: Context, attrs: AttributeSet? = null) : LinearLayout(
     fun setDateRange(minDate: String, maxDate: String) {
         this.minDate = parseDate(minDate)
         this.maxDate = parseDate(maxDate)
-        // Optionally, you can validate minDate and maxDate to ensure minDate is before maxDate
+    }
+
+    fun getSelectedDateAsString(): String {
+        return SimpleDateFormat("MM.yyyy", Locale.getDefault()).format(currentDate.time)
+    }
+
+    fun setDateChangeListener(listener: (String) -> Unit) {
+        dateChangeListener = listener
+    }
+
+    private fun notifyDateChange() {
+        dateChangeListener?.invoke(getSelectedDateAsString())
     }
 
     private fun parseDate(dateString: String): Calendar {
         val dateFormat = SimpleDateFormat("MM.yyyy", Locale.getDefault())
         val date = dateFormat.parse(dateString)
         val calendar = Calendar.getInstance()
-        calendar.time = date
+        if (date != null) {
+            calendar.time = date
+        }
         return calendar
     }
 
@@ -67,12 +84,5 @@ class MonthPicker(context: Context, attrs: AttributeSet? = null) : LinearLayout(
         val month = DateFormatSymbols().months[currentDate.get(Calendar.MONTH)]
         val year = currentDate.get(Calendar.YEAR)
         title.text = String.format("%s, %d", month, year)
-        logSelectedDate()
-    }
-
-    private fun logSelectedDate() {
-        val selectedDate = SimpleDateFormat("MM.yyyy", Locale.getDefault()).format(currentDate.time)
-        // Log the selected date to the console or any other desired output
-        println("Selected Date: $selectedDate")
     }
 }

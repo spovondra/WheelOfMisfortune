@@ -2,7 +2,6 @@ package com.misfortuneapp.wheelofmisfortune.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -34,7 +33,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.Locale
 
 
 interface StatisticsView {
@@ -71,11 +69,6 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         mainView = MainViewImp()
         mainController = MainControllerImpl(mainView as MainViewImp, mainView, taskRepository, controller)
 
-        // Load current data
-        GlobalScope.launch {
-            controller.updateGraph()
-        }
-
         swipeToDeleteButton ()
 
         // Zadání rozsahu měsíců a let (MM.YYYY až MM.YYYY)
@@ -85,8 +78,18 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         // Přidání MonthPicker do layoutu
         val monthPicker = findViewById<MonthPicker>(R.id.monthPicker) // Adjust the container ID accordingly
         monthPicker.setDateRange(minDate, maxDate)
-    }
 
+        // Set the listener to update the graph when the date changes
+        monthPicker.setDateChangeListener { selectedDate ->
+            GlobalScope.launch {
+                (controller as StatisticsControllerImp).updateGraph(selectedDate)
+            }
+        }
+
+        GlobalScope.launch {
+            controller.updateGraph(monthPicker.getSelectedDateAsString())
+        }
+    }
 
     // Method to create BarChart with given data and formatted labels
     override fun createBarChart(entries: List<BarEntry>, formattedDateStrings: Array<String>) {
@@ -102,7 +105,8 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         barChart.data = barData
 
         val xAxis = barChart.xAxis
-        xAxis.valueFormatter = CustomXAxisFormatter(formattedDateStrings)
+        val modifiedDateStrings = formattedDateStrings.map { it.dropLast(5) }.toTypedArray()
+        xAxis.valueFormatter = CustomXAxisFormatter(modifiedDateStrings)
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.textColor = textColorPrimary
         xAxis.axisMinimum = -0.5f
@@ -138,6 +142,10 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
     }
 
     override fun viewAfterClick(formattedDateStrings: Array<String>) {
+        val recyclerView: RecyclerView = findViewById(R.id.statisticsRecyclerView)
+        recyclerView.adapter = null
+        barChart.highlightValues(null)
+
         barChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
                 // Získání vybrané hodnoty z grafu (datum)
@@ -150,12 +158,11 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
 
                     withContext(Dispatchers.Main) {
                         // Zobrazení hotových úkolů ve vhodném UI prvku (RecyclerView nebo jiném)
-                        val recyclerView: RecyclerView = findViewById(R.id.statisticsRecyclerView)
                         val adapter = TaskAdapter(
                             doneTasksForSelectedDate.toMutableList(),
                             { selectedTask -> mainController.openTaskDetailsScreen(selectedTask, this@StatisticsViewImp) },
                             { removedTask ->
-                                launch {
+                                lifecycleScope.launch {
                                     (mainController as MainControllerImpl).removeTask(removedTask, false)
                                 }
                             },
@@ -170,7 +177,6 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
             }
 
             override fun onNothingSelected() {
-                val recyclerView: RecyclerView = findViewById(R.id.statisticsRecyclerView)
                 recyclerView.adapter = null
             }
         })

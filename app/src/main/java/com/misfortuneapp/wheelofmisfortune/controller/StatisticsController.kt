@@ -20,9 +20,7 @@ interface StatisticsController {
     suspend fun getDataByDate(date: String): DataEntity?
     suspend fun getAllData(): List<DataEntity>
     fun getCurrentDate(): String
-    suspend fun updateGraph()
-    fun clearAllData()
-    suspend fun getFormatedDates(): Array<String>
+    suspend fun updateGraph(selectedDate: String)
 }
 
 class StatisticsControllerImp(
@@ -34,7 +32,7 @@ class StatisticsControllerImp(
 
     override suspend fun insertOrUpdateData(date: String, currentPoints: Double) {
         val day = date.hashCode()
-        val formattedDate = SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
+        val formattedDate = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
 
         val existingData = repository.getDataByDate(day)
 
@@ -61,14 +59,6 @@ class StatisticsControllerImp(
         return repository.getAllData()
     }
 
-    private suspend fun deleteAllData() {
-        return repository.deleteAllData()
-    }
-
-    private suspend fun getFormattedDates(): Array<String> {
-        return repository.getFormattedDates()
-    }
-
     override fun getCurrentDate(): String {
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -76,20 +66,34 @@ class StatisticsControllerImp(
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    override suspend fun updateGraph() {
+    override suspend fun updateGraph(selectedDate: String) {
         GlobalScope.launch {
-            val dataEntities = getAllData()
-            val entries = dataEntities.mapIndexed { index, dataEntity ->
+            val dataEntities = getAllData().filter {
+                val formattedDate = SimpleDateFormat("MM.yyyy", Locale.getDefault()).format(
+                    SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).parse(it.formattedDate) ?: Date()
+                )
+                formattedDate == selectedDate
+            }
+
+            val sortedDataEntities = dataEntities.sortedBy { it.formattedDate }
+
+            val newpopisek = sortedDataEntities.map { dataEntity ->
+                SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(
+                    SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).parse(dataEntity.formattedDate) ?: Date()
+                )
+            }.toTypedArray()
+
+            val entries = sortedDataEntities.mapIndexed { index, dataEntity ->
                 BarEntry(index.toFloat(), dataEntity.value.toFloat())
             }
 
             LineDataSet(entries, "Label") // "Label" je název pro legendu
 
             withContext(Dispatchers.Main) {
-                view.createBarChart (entries, getFormattedDates())
-                view.viewAfterClick (getFormattedDates())
+                view.createBarChart(entries, newpopisek)
+                view.viewAfterClick(newpopisek)
 
-                val currentDate = SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
+                val currentDate = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
                 val dataEntity = getDataByDate(currentDate)
 
                 dailyStatistics = dataEntity?.value ?: 0.0
@@ -98,18 +102,6 @@ class StatisticsControllerImp(
 
                 view.updateStatistics(dailyStatistics, overallStatistics)
             }
-        }
-    }
-
-    override suspend fun getFormatedDates (): Array<String> {
-        return getFormattedDates()
-    }
-
-    @OptIn(DelicateCoroutinesApi::class)
-    override fun clearAllData() {
-        GlobalScope.launch {
-            deleteAllData()
-            updateGraph()
         }
     }
 }

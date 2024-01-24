@@ -190,7 +190,7 @@ class MainControllerImpl(
             currentPoints = 0
             // Získání dat z databáze
             val currentDate =
-                SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
+                SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
             val dataEntity = statisticsController.getDataByDate(currentDate)
 
             if (dataEntity != null) {
@@ -314,7 +314,7 @@ class MainControllerImpl(
 
         // Uložení bodů do databáze
         val formattedDate =
-            SimpleDateFormat("dd.MM", Locale.getDefault()).format(Date())
+            SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
         statisticsController.insertOrUpdateData(formattedDate, currentPoints.toDouble())
     }
 
@@ -342,10 +342,7 @@ class MainControllerImpl(
     // Metoda pro získání seznamu splněných úkolů v daný den
     override suspend fun getDoneTasksForDate(dateString: String): List<Task> {
         // Získání formátu pro datum
-        val dateFormat = SimpleDateFormat("dd.MM", Locale.getDefault())
-
-        // Převedení řetězce s datem na objekt typu Date
-        val selectedDate = dateFormat.parse(dateString) ?: return emptyList()
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
 
         // Získání seznamu všech splněných úkolů
         val allDoneTasks = model.getTasksByState(TaskState.DONE)

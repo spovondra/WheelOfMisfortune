@@ -7,7 +7,6 @@ interface DataRepository {
     suspend fun getDataByDate(date: Int): DataEntity?
     suspend fun getAllData(): List<DataEntity>
     suspend fun deleteAllData()
-    suspend fun getFormattedDates(): Array<String>
     suspend fun getAllValues(): List<Double>
     suspend fun getTasksByState(taskState: TaskState): List<Task>
 }
@@ -30,10 +29,6 @@ class DataRepositoryImpl(context: Context) : DataRepository {
 
     override suspend fun deleteAllData() {
         return dataDao.deleteAllData()
-    }
-
-    override suspend fun getFormattedDates(): Array<String> {
-        return dataDao.getFormattedDates()
     }
 
     override suspend fun getAllValues(): List<Double> {
