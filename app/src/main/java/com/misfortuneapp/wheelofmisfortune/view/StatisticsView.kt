@@ -2,12 +2,14 @@ package com.misfortuneapp.wheelofmisfortune.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.misfortuneapp.wheelofmisfortune.custom.datapicker.RackMonthPicker
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -32,6 +34,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
 
 
 interface StatisticsView {
@@ -74,6 +77,18 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         }
 
         swipeToDeleteButton ()
+
+        // Zadání rozsahu měsíců a let (MM.YYYY až MM.YYYY)
+        val minDate = "09.2020"
+        val maxDate = "01.2025"
+
+        val rackMonthPicker = RackMonthPicker(this)
+            .setLocale(Locale.getDefault())
+            .setDateRange(minDate, maxDate)
+
+        val container = findViewById<FrameLayout>(R.id.rackMonthPickerContainer)
+
+        container.addView(rackMonthPicker.contentView)
     }
 
 

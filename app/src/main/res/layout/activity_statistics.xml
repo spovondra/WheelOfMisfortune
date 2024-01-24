@@ -14,80 +14,77 @@
         android:orientation="vertical"
         android:paddingTop="8dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+            android:layout_height="wrap_content"
+            android:background="@drawable/window_shape"
+            android:orientation="vertical"
+            android:paddingBottom="14dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp">
 
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/rackMonthPickerContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
+            </FrameLayout>
 
-                <NumberPicker
-                    android:id="@+id/pickerYear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp" />
-
-                <NumberPicker
-                    android:id="@+id/pickerMonth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/window_shape"
-                android:orientation="vertical"
-                android:paddingBottom="14dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingTop="14dp"
-                    android:text="@string/graphText"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    android:textSize="28sp" />
-
-                <TextView
-                    android:id="@+id/dailyStatisticsText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/overallStatisticsText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="18sp" />
-
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="240dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="14dp" />
-
-            </LinearLayout>
-        </RelativeLayout>
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="16dp"
             android:background="@android:color/transparent" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/window_shape"
+            android:orientation="vertical"
+            android:paddingBottom="14dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="14dp"
+                android:text="@string/graphText"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="28sp" />
+
+            <TextView
+                android:id="@+id/dailyStatisticsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/overallStatisticsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="18sp" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barChart"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_gravity="center"
+                android:layout_margin="14dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="@android:color/transparent" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -100,6 +97,11 @@
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="LinearLayoutManager" />
         </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="@android:color/transparent" />
 
     </LinearLayout>
 </ScrollView>
