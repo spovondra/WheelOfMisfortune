@@ -7,29 +7,30 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Resources
 import android.os.Bundle
+import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import android.view.View
-import android.widget.LinearLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.controller.*
 import com.misfortuneapp.wheelofmisfortune.custom.*
+import com.misfortuneapp.wheelofmisfortune.custom.GuideView.GuideView
 import com.misfortuneapp.wheelofmisfortune.model.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlin.random.Random
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.util.Calendar
+import kotlin.random.Random
 
 interface MainView {
     fun showUpdatedPoints(text: String)
@@ -53,7 +54,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         val taskList = findViewById<RecyclerView>(R.id.taskList)
         taskList.layoutManager = LinearLayoutManager(this@MainViewImp)
 
@@ -74,6 +74,10 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
         GlobalScope.launch {
             controller.getTime().let { controller.startTimer(it.id) }
+
+            if(controller.getAllTasks().isEmpty()) {
+                showHelp()
+            }
         }
 
         setViewSizesBasedOnScreen()
@@ -89,6 +93,22 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
 
         registerReceiver(controller.countdownReceiver, IntentFilter(BroadcastService.COUNTDOWN_BR))
+    }
+
+    private fun showHelp() {
+        val newTaskButton: Button = findViewById(R.id.floatingActionButton)
+        buildGuideView (newTaskButton, "Přidejte novou úlohu")
+    }
+
+    private fun buildGuideView (targetView: View?, title: String) {
+        GuideView.Builder(this)
+            .setTitle(title)
+            //.setContentText(content)
+            .setTargetView(targetView)
+            .setContentTextSize(12) //optional
+            .setTitleTextSize(14) //optional
+            .build()
+            .show()
     }
 
     // Metoda na zobrazení animace otáčení kolečka

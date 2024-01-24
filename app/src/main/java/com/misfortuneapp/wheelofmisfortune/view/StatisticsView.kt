@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.misfortuneapp.wheelofmisfortune.R
@@ -100,6 +101,12 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         dataSet.color = ContextCompat.getColor(this, R.color.iconInactiveColor)
         dataSet.highLightColor = ContextCompat.getColor(this, R.color.iconColor)
         dataSet.valueTextColor = textColorPrimary
+
+        dataSet.valueFormatter = object : ValueFormatter() {
+            override fun getBarLabel(barEntry: BarEntry?): String {
+                return barEntry?.y?.toInt().toString()
+            }
+        }
 
         val barData = BarData(dataSet)
         barChart.data = barData
