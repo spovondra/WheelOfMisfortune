@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.misfortuneapp.wheelofmisfortune.custom.datapicker.RackMonthPicker
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
@@ -24,6 +23,7 @@ import com.misfortuneapp.wheelofmisfortune.controller.MainControllerImpl
 import com.misfortuneapp.wheelofmisfortune.controller.StatisticsController
 import com.misfortuneapp.wheelofmisfortune.controller.StatisticsControllerImp
 import com.misfortuneapp.wheelofmisfortune.custom.CustomXAxisFormatter
+import com.misfortuneapp.wheelofmisfortune.custom.MonthPicker
 import com.misfortuneapp.wheelofmisfortune.custom.TaskAdapter
 import com.misfortuneapp.wheelofmisfortune.model.DataDatabase
 import com.misfortuneapp.wheelofmisfortune.model.DataRepositoryImpl
@@ -79,16 +79,12 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         swipeToDeleteButton ()
 
         // Zadání rozsahu měsíců a let (MM.YYYY až MM.YYYY)
-        val minDate = "09.2020"
-        val maxDate = "01.2025"
+        val minDate = "09.2023"
+        val maxDate = "02.2025"
 
-        val rackMonthPicker = RackMonthPicker(this)
-            .setLocale(Locale.getDefault())
-            .setDateRange(minDate, maxDate)
-
-        val container = findViewById<FrameLayout>(R.id.rackMonthPickerContainer)
-
-        container.addView(rackMonthPicker.contentView)
+        // Přidání MonthPicker do layoutu
+        val monthPicker = findViewById<MonthPicker>(R.id.monthPicker) // Adjust the container ID accordingly
+        monthPicker.setDateRange(minDate, maxDate)
     }
 
 

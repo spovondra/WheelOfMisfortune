@@ -14,23 +14,6 @@
         android:orientation="vertical"
         android:paddingTop="8dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/window_shape"
-            android:orientation="vertical"
-            android:paddingBottom="14dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp">
-
-            <FrameLayout
-                android:id="@+id/rackMonthPickerContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </FrameLayout>
-
-        </LinearLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="16dp"
@@ -38,12 +21,17 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:background="@drawable/window_shape"
             android:orientation="vertical"
-            android:paddingBottom="14dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp">
+            android:paddingBottom="14dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:background="@android:color/transparent" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -72,12 +60,34 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="18sp" />
 
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="@android:color/transparent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/window_shape"
+            android:orientation="vertical"
+            android:paddingBottom="14dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp">
+
+            <com.misfortuneapp.wheelofmisfortune.custom.MonthPicker
+                android:id="@+id/monthPicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barChart"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:layout_gravity="center"
-                android:layout_margin="14dp" />
+                android:layout_margin="10dp" />
 
         </LinearLayout>
 
