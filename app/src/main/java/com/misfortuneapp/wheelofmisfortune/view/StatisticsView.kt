@@ -2,6 +2,7 @@ package com.misfortuneapp.wheelofmisfortune.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -72,13 +73,22 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
 
         swipeToDeleteButton ()
 
-        // Zadání rozsahu měsíců a let (MM.YYYY až MM.YYYY)
-        val minDate = "09.2023"
-        val maxDate = "02.2025"
-
         // Přidání MonthPicker do layoutu
-        val monthPicker = findViewById<MonthPicker>(R.id.monthPicker) // Adjust the container ID accordingly
-        monthPicker.setDateRange(minDate, maxDate)
+        val monthPicker = findViewById<MonthPicker>(R.id.monthPicker)
+
+        lifecycleScope.launch {
+            // Zadání rozsahu měsíců a let (MM.YYYY až MM.YYYY)
+            val minDate = controller.getAllData().map { it.formattedDate }
+                .minByOrNull { it.substring(3) }?.substring(3) ?: ""
+
+            val maxDate = controller.getAllData().map { it.formattedDate }
+                .maxByOrNull { it.substring(3) }?.substring(3) ?: ""
+
+            Log.d("YourTag", "Min Date: $minDate")
+            Log.d("YourTag", "Max Date: $maxDate")
+
+            monthPicker.setDateRange(minDate, maxDate)
+        }
 
         // Set the listener to update the graph when the date changes
         monthPicker.setDateChangeListener { selectedDate ->

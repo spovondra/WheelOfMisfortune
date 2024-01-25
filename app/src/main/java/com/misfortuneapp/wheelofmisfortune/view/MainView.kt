@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
@@ -29,6 +30,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import smartdevelop.ir.eram.showcaseviewlib.listener.GuideListener
 import java.util.Calendar
 import kotlin.random.Random
 
@@ -47,6 +49,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private lateinit var statisticsController: StatisticsController
     private lateinit var dataRepository: DataRepository
     private lateinit var taskDao: TaskDao
+    private var helpCounter = 0
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @OptIn(DelicateCoroutinesApi::class)
@@ -74,10 +77,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
         GlobalScope.launch {
             controller.getTime().let { controller.startTimer(it.id) }
-
-            if(controller.getAllTasks().isEmpty()) {
-                showHelp()
-            }
         }
 
         setViewSizesBasedOnScreen()
@@ -95,20 +94,36 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         registerReceiver(controller.countdownReceiver, IntentFilter(BroadcastService.COUNTDOWN_BR))
     }
 
-    private fun showHelp() {
+    private suspend fun showHelp() {
         val newTaskButton: Button = findViewById(R.id.floatingActionButton)
-        buildGuideView (newTaskButton, "Přidejte novou úlohu")
+        val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
+        val drawnList = findViewById<RecyclerView>(R.id.drawnList)
+
+        Log.d("counter", helpCounter.toString())
+        if (helpCounter == 0 && controller.getAllTasks().isEmpty()) {
+            buildGuideView (newTaskButton, "Přidej úlohu")
+        }
+        if (helpCounter == 1 && controller.getAllTasks().size == 1) {
+            buildGuideView (buttonSetTime, "Nastav čas upozornění")
+        }
+        if (helpCounter == 3 && controller.getAllTasks().size == 1) {
+            buildGuideView (countdownTimerTextView, "Zatoč si kolečkem!")
+        }
     }
 
     private fun buildGuideView (targetView: View?, title: String) {
-        GuideView.Builder(this)
+        val guideView = GuideView.Builder(this)
             .setTitle(title)
             //.setContentText(content)
             .setTargetView(targetView)
-            .setContentTextSize(12) //optional
-            .setTitleTextSize(14) //optional
-            .build()
-            .show()
+            .setContentTextSize(12) // optional
+            .setTitleTextSize(14) // optional
+
+        guideView.setGuideListener {
+            helpCounter++
+        }
+
+        guideView.build().show()
     }
 
     // Metoda na zobrazení animace otáčení kolečka
@@ -128,7 +143,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 .setInterpolator(DecelerateInterpolator())
                 .start()
         }
-
         controller.doWithTaskDialog()
     }
 
@@ -265,7 +279,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                     // Skrýt taskList, textNum a tocteTextView
                     taskList.visibility = View.GONE
                     textNum.visibility = View.GONE
-                    noTasksTextView.visibility = View.VISIBLE
+                    //noTasksTextView.visibility = View.VISIBLE //......... odebrat
                     // Skrýt drawnList, textNumDrawn a drawnTasksTextView
                     drawnList.visibility = View.GONE
                     textNumDrawn.visibility = View.GONE
@@ -315,6 +329,12 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 true
             )
             timePicker.show()
+            timePicker.setOnDismissListener {
+                helpCounter++
+                lifecycleScope.launch {
+                    showHelp()
+                }
+            }
         }
     }
 
@@ -397,6 +417,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         launch {
             showAllTasks()
             controller.loadPointsFromDatabase()
+            showHelp()
         }
     }
 }
