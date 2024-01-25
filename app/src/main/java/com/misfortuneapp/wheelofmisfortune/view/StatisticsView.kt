@@ -35,6 +35,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 interface StatisticsView {
@@ -78,14 +81,27 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
 
         lifecycleScope.launch {
             // Zadání rozsahu měsíců a let (MM.YYYY až MM.YYYY)
-            val minDate = controller.getAllData().map { it.formattedDate }
-                .minByOrNull { it.substring(3) }?.substring(3) ?: ""
+            val allData = controller.getAllData()
 
-            val maxDate = controller.getAllData().map { it.formattedDate }
-                .maxByOrNull { it.substring(3) }?.substring(3) ?: ""
+            val minDate = if (allData.isNotEmpty()) {
+                allData.map { it.formattedDate }
+                    .minByOrNull { it.substring(3) }?.substring(3) ?: ""
+            } else {
+                // Nastavení aktuálního dne ve formátu MM.rrrr, pokud getAllData() vrací null nebo je prázdný
+                SimpleDateFormat("MM.yyyy", Locale.getDefault()).format(Date())
+            }
+
+            val maxDate = if (allData.isNotEmpty()) {
+                allData.map { it.formattedDate }
+                    .maxByOrNull { it.substring(3) }?.substring(3) ?: ""
+            } else {
+                // Nastavení aktuálního dne ve formátu MM.rrrr, pokud getAllData() vrací null nebo je prázdný
+                SimpleDateFormat("MM.yyyy", Locale.getDefault()).format(Date())
+            }
 
             Log.d("YourTag", "Min Date: $minDate")
             Log.d("YourTag", "Max Date: $maxDate")
+
 
             monthPicker.setDateRange(minDate, maxDate)
         }
