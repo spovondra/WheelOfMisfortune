@@ -250,7 +250,7 @@ class MainControllerImpl(
 
         object : SwipeHelper(context, recyclerView, true) {
             override fun instantiateUnderlayButton(
-                viewHolder: RecyclerView.ViewHolder?,
+                ignoredViewHolder: RecyclerView.ViewHolder?,
                 underlayButtons: MutableList<UnderlayButton>?
             ) {
                 // Delete Button
