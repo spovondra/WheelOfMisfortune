@@ -11,6 +11,5 @@
     <color name="border">#80000000</color>
     <color name="inverted">#FF000000</color>
     <color name="delete">#FD0001</color>
-    <color name="graph">#F88C57</color>
 
 </resources>

@@ -30,7 +30,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import smartdevelop.ir.eram.showcaseviewlib.listener.GuideListener
 import java.util.Calendar
 import kotlin.random.Random
 

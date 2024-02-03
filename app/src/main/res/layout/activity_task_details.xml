@@ -49,7 +49,6 @@
                 android:layout_height="334dp" />
 
             <Button
-                android:id="@+id/buttonAddTask"
                 android:layout_width="240sp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_half_circle_button_done"

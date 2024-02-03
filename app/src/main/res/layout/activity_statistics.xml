@@ -5,8 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none"
-    android:background="@color/backgroud">
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingTop="14dp"
-                android:text="@string/graphText"
+                android:text="@string/achievementsTitleText"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="28sp"
                 android:paddingBottom="16dp"/>
@@ -71,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingTop="14dp"
-                android:text="Další statistiky"
+                android:text="@string/moreStatisticsText"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="28sp"
                 android:paddingBottom="8dp"/>

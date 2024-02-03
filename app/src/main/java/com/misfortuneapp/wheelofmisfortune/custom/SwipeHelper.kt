@@ -169,7 +169,7 @@ abstract class SwipeHelper(
      * // Abstraktní metoda, která je implementována v potomcích pro vytvoření tlačítek pod řádky.
      */
     abstract fun instantiateUnderlayButton(
-        viewHolder: RecyclerView.ViewHolder?,
+        ignoredViewHolder: RecyclerView.ViewHolder?,
         underlayButtons: MutableList<UnderlayButton>?
     )
 

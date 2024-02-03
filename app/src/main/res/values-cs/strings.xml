@@ -14,8 +14,7 @@
     <string name="icon_2">Ikona 2</string>
     <string name="icon_3">Ikona 3</string>
     <string name="icon_4">Ikona 4</string>
-    <string name="statsResetBtn">Resetovat</string>
-    <string name="graphText">Vaše úspěchy</string>
+    <string name="achievementsTitleText">Vaše úspěchy</string>
     <string name="doneBtn">Hotovo</string>
     <string name="backBtn">Zpět</string>
     <string name="taskDescription">Popis úkolu</string>
@@ -35,4 +34,5 @@
     <string name="wheel_is_waiting">Kolo neštěstí na Tebe už čeká.</string>
     <string name="button_finish">Dokončit</string>
     <string name="task_edit">Úprava úkolu</string>
+    <string name="moreStatisticsText">Další statistiky</string>
 </resources>

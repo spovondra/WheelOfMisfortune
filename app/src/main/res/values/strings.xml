@@ -14,8 +14,7 @@
     <string name="icon_2">Icon 2</string>
     <string name="icon_3">Icon 3</string>
     <string name="icon_4">Icon 4</string>
-    <string name="statsResetBtn">Reset</string>
-    <string name="graphText">Your achievements</string>
+    <string name="achievementsTitleText">Your achievements</string>
     <string name="doneBtn">Done</string>
     <string name="backBtn">Back</string>
     <string name="taskDescription">Task Description</string>
@@ -35,4 +34,5 @@
     <string name="wheel_is_waiting">The wheel of misfortune is waiting for you.</string>
     <string name="button_finish">Finish</string>
     <string name="task_edit">Task Edit</string>
+    <string name="moreStatisticsText">Additional Statistics</string>
 </resources>

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 // Definice databáze pro časové záznamy
-@Database(entities = [TimeRecord::class], version = 1)
+@Database(entities = [TimeRecord::class], version = 1, exportSchema = false)
 abstract class TimeDatabase : RoomDatabase() {
 
     // Abstraktní metoda pro získání přístupu k DAO pro časové záznamy
