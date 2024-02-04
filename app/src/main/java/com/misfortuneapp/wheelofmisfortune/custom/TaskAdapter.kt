@@ -101,8 +101,9 @@ class TaskAdapter(
                 holder.itemView.background?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(blendedColor, BlendModeCompat.SRC_IN)
             }
             else -> {
-                val defaultColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButtonInProgress)
-                holder.itemView.background?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(defaultColor, BlendModeCompat.SRC_IN)
+                val inProgressColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButtonInProgress)
+                val blendedColor = ColorUtils.blendARGB(baseColor, inProgressColor, 0.2f)
+                holder.itemView.background?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(blendedColor, BlendModeCompat.SRC_IN)
             }
         }
 

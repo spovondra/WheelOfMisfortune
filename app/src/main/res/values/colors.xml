@@ -5,10 +5,10 @@
     <color name="colorPrimary">#F9661B</color>
     <color name="background">#F4F4F4</color>
     <color name="colorButton">#FFFFFFFF</color>
-    <color name="colorButtonInProgress">#FFFFFF</color>
-    <color name="colorButtonAvailable">#D2E9F3</color>
-    <color name="colorButtonDone">#DDF8DF</color>
-    <color name="colorButtonDeleted">#FBD6D9</color>
+    <color name="colorButtonAvailable">#2196F3</color>
+    <color name="colorButtonInProgress">#F9661B</color>
+    <color name="colorButtonDone">#4CAF50</color>
+    <color name="colorButtonDeleted">#FD0001</color>
     <color name="shadowButton">#80FFFFFF</color>
     <color name="iconColor">#F9661B</color>
     <color name="iconInactiveColor">#80F9661B</color>
