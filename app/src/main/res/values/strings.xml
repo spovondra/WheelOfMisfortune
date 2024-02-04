@@ -4,6 +4,7 @@
     <string name="zero_time">00:00</string>
     <string name="wheel_spin_description">Wheel To Spin</string>
     <string name="button_change_time_of_notification">Change notification time</string>
+    <string name="button_set_time_of_notification">Set notification time</string>
     <string name="wheel_static_description">Static surroundings of the wheel</string>
     <string name="button_add_description">Add Button</string>
     <string name="zero_priority">Selected Priority: 0</string>

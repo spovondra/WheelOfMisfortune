@@ -103,12 +103,15 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         Log.d("counter", helpCounter.toString())
         if (helpCounter == 0 && controller.getAllTasks().isEmpty()) {
             buildGuideView (newTaskButton, "Přidej úlohu", (displayHeight*0.1).toFloat())
+            buttonSetTime.text = getString(R.string.button_set_time_of_notification)
         }
         if (helpCounter == 1 && controller.getAllTasks().size == 1) {
             buildGuideView (buttonSetTime, "Nastav čas upozornění", (displayHeight*0.18).toFloat())
+            buttonSetTime.text = getString(R.string.button_set_time_of_notification)
         }
         if (helpCounter == 3 && controller.getAllTasks().size == 1) {
             buildGuideView (countdownTimerTextView, "Zatoč si kolečkem!", (displayHeight*0.05).toFloat())
+            buttonSetTime.text = getString(R.string.button_change_time_of_notification)
         }
     }
 
@@ -269,12 +272,10 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 val textNumDrawn: TextView = findViewById(R.id.textNumDrawn)
                 val drawnSpace: View = findViewById(R.id.drawnSpace)
 
-                // Získejte aktuální seznam úkolů přímo z kontroléru
                 val tasks = controller.getAllTasks()
-                val allTasks = controller.getAllTasks()
 
-                // Vytvořte nový seznam obsahující pouze úkoly ve stavu IN_PROGRESS
-                val inDrawnTasks = allTasks.filter { it.taskState == TaskState.IN_PROGRESS }
+                // Vytvořit nový seznam obsahující pouze úkoly ve stavu IN_PROGRESS
+                val inDrawnTasks = tasks.filter { it.taskState == TaskState.IN_PROGRESS }
 
                 if (tasks.isEmpty() && inDrawnTasks.isEmpty()) {
                     // Skrýt taskList, textNum a tocteTextView
