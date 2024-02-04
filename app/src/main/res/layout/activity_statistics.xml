@@ -57,13 +57,15 @@
             android:background="@android:color/transparent" />
 
         <LinearLayout
+            android:id="@+id/additionalStatistics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/window_shape"
             android:orientation="vertical"
             android:paddingBottom="14dp"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp">
+            android:layout_marginEnd="8dp"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="match_parent"

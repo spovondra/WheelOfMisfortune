@@ -27,8 +27,6 @@
     <string name="your_tasks">Wszystkie zadania (%1$s):</string>
     <string name="your_drawn_tasks">Zadania w trakcie (%1$s):</string>
     <string name="new_task_activity">Zadanie %1$s</string>
-    <string name="no_drawn_tasks_text">"Obróć kołem, aby wylosować zadanie!"</string>
-    <string name="no_tasks_text">1) Dodaj nowe zadanie\n2) Ustaw czas powiadomienia\n3) Zakręć swoim niepowodzeniem!</string>
     <string name="countdown_start">Rozpoczęto odliczanie.</string>
     <string name="time_to_spin">Czas na obrót kołem!</string>
     <string name="wheel_is_waiting">Koło nieszczęścia już na Ciebie czeka.</string>

@@ -27,8 +27,6 @@
     <string name="new_task_activity">Task %1$s</string>
     <string name="your_tasks">All tasks (%1$s):</string>
     <string name="your_drawn_tasks">Tasks in Progress (%1$s):</string>
-    <string name="no_drawn_tasks_text">"Spin the wheel to draw a task!"</string>
-    <string name="no_tasks_text">1) Add a new task\n2) Set a reminder time\n3) Spin your misfortune!</string>
     <string name="countdown_start">Countdown started.</string>
     <string name="time_to_spin">Time to spin the wheel</string>
     <string name="wheel_is_waiting">The wheel of misfortune is waiting for you.</string>

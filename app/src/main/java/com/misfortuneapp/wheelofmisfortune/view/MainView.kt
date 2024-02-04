@@ -265,10 +265,9 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             lifecycleScope.launch {
                 val taskList = findViewById<RecyclerView>(R.id.taskList)
                 val textNum: TextView = findViewById(R.id.textNum)
-                val noTasksTextView = findViewById<LinearLayout>(R.id.noTasksTextView)
                 val drawnList = findViewById<RecyclerView>(R.id.drawnList)
                 val textNumDrawn: TextView = findViewById(R.id.textNumDrawn)
-                val drawnTasksTextView = findViewById<LinearLayout>(R.id.noDrawnTasksTextView)
+                val drawnSpace: View = findViewById(R.id.drawnSpace)
 
                 // Získejte aktuální seznam úkolů přímo z kontroléru
                 val tasks = controller.getAllTasks()
@@ -281,24 +280,21 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                     // Skrýt taskList, textNum a tocteTextView
                     taskList.visibility = View.GONE
                     textNum.visibility = View.GONE
-                    //noTasksTextView.visibility = View.VISIBLE //......... odebrat
                     // Skrýt drawnList, textNumDrawn a drawnTasksTextView
                     drawnList.visibility = View.GONE
                     textNumDrawn.visibility = View.GONE
-                    drawnTasksTextView.visibility = View.GONE
                 } else {
                     taskList.visibility = View.VISIBLE
                     textNum.visibility = View.VISIBLE
-                    noTasksTextView.visibility = View.GONE
 
                     if (inDrawnTasks.isEmpty()) {
                         drawnList.visibility = View.GONE
                         textNumDrawn.visibility = View.GONE
-                        drawnTasksTextView.visibility = View.VISIBLE
+                        drawnSpace.visibility = View.GONE
                     } else {
                         drawnList.visibility = View.VISIBLE
                         textNumDrawn.visibility = View.VISIBLE
-                        drawnTasksTextView.visibility = View.GONE
+                        drawnSpace.visibility = View.VISIBLE
                     }
                 }
             }

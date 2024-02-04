@@ -2,7 +2,7 @@ package com.misfortuneapp.wheelofmisfortune.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -30,15 +30,12 @@ import com.misfortuneapp.wheelofmisfortune.model.DataDatabase
 import com.misfortuneapp.wheelofmisfortune.model.DataRepositoryImpl
 import com.misfortuneapp.wheelofmisfortune.model.TaskModel
 import com.misfortuneapp.wheelofmisfortune.model.TaskModelImpl
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
 
 interface StatisticsView {
     fun createBarChart(entries: List<BarEntry>, formattedDateStrings: Array<String>)
@@ -54,7 +51,6 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
     private lateinit var mainView: MainView
 
     @SuppressLint("MissingInflatedId")
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
@@ -74,11 +70,14 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         mainView = MainViewImp()
         mainController = MainControllerImpl(mainView as MainViewImp, mainView, taskRepository, controller)
 
-        swipeToDeleteButton ()
-
         // Přidání MonthPicker do layoutu
         val monthPicker = findViewById<MonthPicker>(R.id.monthPicker)
+        configureMonthPicker(monthPicker)
 
+        observeDataForMonthPicker(monthPicker)
+    }
+
+    private fun configureMonthPicker(monthPicker: MonthPicker) {
         lifecycleScope.launch {
             // Zadání rozsahu měsíců a let (MM.YYYY až MM.YYYY)
             val allData = controller.getAllData()
@@ -99,21 +98,18 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
                 SimpleDateFormat("MM.yyyy", Locale.getDefault()).format(Date())
             }
 
-            Log.d("YourTag", "Min Date: $minDate")
-            Log.d("YourTag", "Max Date: $maxDate")
-
-
             monthPicker.setDateRange(minDate, maxDate)
         }
 
-        // Set the listener to update the graph when the date changes
         monthPicker.setDateChangeListener { selectedDate ->
-            GlobalScope.launch {
+            lifecycleScope.launch {
                 (controller as StatisticsControllerImp).updateGraph(selectedDate)
             }
         }
+    }
 
-        GlobalScope.launch {
+    private fun observeDataForMonthPicker(monthPicker: MonthPicker) {
+        lifecycleScope.launch {
             controller.updateGraph(monthPicker.getSelectedDateAsString())
         }
     }
@@ -172,6 +168,19 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         barChart.legend.isEnabled = false
 
         barChart.invalidate()
+
+        // Toggle visibility of additional statistics view
+        toggleAdditionalStatisticsVisibility(entries.isNotEmpty())
+    }
+
+    private fun toggleAdditionalStatisticsVisibility(hasData: Boolean) {
+        val additionalStatisticsView = findViewById<View>(R.id.additionalStatistics) // Replace R.id.additionalStatistics with the actual ID of your additional statistics view
+
+        if (hasData) {
+            additionalStatisticsView.visibility = View.VISIBLE
+        } else {
+            additionalStatisticsView.visibility = View.GONE
+        }
     }
 
     override fun viewAfterClick(formattedDateStrings: Array<String>) {
@@ -214,11 +223,6 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
             }
         })
         barChart.invalidate()
-    }
-
-    private fun swipeToDeleteButton() {
-        val statisticsList = findViewById<RecyclerView>(R.id.statisticsRecyclerView)
-        mainController.swipeHelperToDeleteAndEdit(statisticsList,false, this@StatisticsViewImp)
     }
 
     // Method to update statistics in the user interface
