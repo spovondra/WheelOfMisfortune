@@ -6,11 +6,4 @@
             <solid android:color="@color/colorButton" />
         </shape>
     </item>
-    <!-- Light shadow on top -->
-    <item android:bottom="10dp">
-        <shape android:shape="rectangle">
-            <corners android:radius="6dp" />
-            <solid android:color="@color/shadowButton" />
-        </shape>
-    </item>
 </layer-list>

@@ -3,8 +3,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFF</color>
     <color name="colorPrimary">#000000</color>
-    <color name="backgroud">#1A1A1A</color>
+    <color name="background">#1A1A1A</color>
     <color name="colorButton">#000000</color>
+    <color name="colorButtonAvailable">#03A9F4</color>
+    <color name="colorButtonInProgress">#000000</color>
+    <color name="colorButtonDone">#4CAF50</color>
+    <color name="colorButtonDeleted">#FD0001</color>
     <color name="shadowButton">#80202020</color>
     <color name="iconColor">#F9661B</color>
     <color name="iconInactiveColor">#80F9661B</color>

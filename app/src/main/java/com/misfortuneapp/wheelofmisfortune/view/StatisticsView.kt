@@ -59,27 +59,27 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_statistics)
 
-        // ActionBar settings
+        // ActionBar nastavení
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.statistics_view)
         supportActionBar?.elevation = 0f
 
-        // Initialize BarChart, button, and controller
+        // Inicializace BarChartu, tlačítka a controlleru
         barChart = findViewById(R.id.barChart)
 
-        // Initialize database and controller using data interface
+        // Inicializace databáze a controlleru pomocí datového rozhraní
         database = DataDatabase.getInstance(this)
         val taskRepository: TaskModel = TaskModelImpl(this)
         controller = StatisticsControllerImp(DataRepositoryImpl(this), this)
         mainView = MainViewImp()
         mainController = MainControllerImpl(mainView as MainViewImp, mainView, taskRepository, controller)
 
-        // Přidání MonthPicker do layoutu
+        // Přidání MonthPickeru do layoutu
         val monthPicker = findViewById<MonthPicker>(R.id.monthPicker)
         configureMonthPicker(monthPicker)
         observeDataForMonthPicker(monthPicker)
 
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             showAllTasks()
         }
     }
@@ -121,9 +121,9 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         }
     }
 
-    // Method to create BarChart with given data and formatted labels
+    // Metoda pro vytvoření BarChartu se zadanými daty a formátovanými popisky
     override fun createBarChart(entries: List<BarEntry>, formattedDateStrings: Array<String>) {
-        val dataSet = BarDataSet(entries, "Počet splěných úloh")
+        val dataSet = BarDataSet(entries, "Počet splněných úkolů")
 
         val textColorPrimary = ContextCompat.getColor(this, R.color.inverted)
 
@@ -155,13 +155,13 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         leftYAxis.axisMinimum = 0f
         leftYAxis.labelCount = entries.size + 1
         leftYAxis.granularity = 1f
-        leftYAxis.setDrawGridLines(false) // Remove grid lines
+        leftYAxis.setDrawGridLines(false) // Odebrat mřížku
 
         val xAxisData = formattedDateStrings.mapIndexed { index, _ ->
             BarEntry(index.toFloat(), 0f)
         }
 
-        val xAxisDataSet = BarDataSet(xAxisData, null) // Null removes the description label
+        val xAxisDataSet = BarDataSet(xAxisData, null) // Null odstraní popisek
         xAxisDataSet.color = textColorPrimary
         xAxisDataSet.valueTextColor = textColorPrimary
 
@@ -176,7 +176,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
 
         barChart.invalidate()
 
-        // Toggle visibility of additional statistics view
+        // Přepnutí viditelnosti dalšího statistického zobrazení
         toggleAdditionalStatisticsVisibility(entries.isNotEmpty())
     }
 
@@ -219,7 +219,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         barChart.invalidate()
     }
 
-    // Method to update statistics in the user interface
+    // Metoda pro aktualizaci statistiky v uživatelském rozhraní
     override fun updateStatistics(dailyStatistics: Double, overallStatistics: Double) {
         val dailyStatisticsText = findViewById<TextView>(R.id.dailyStatisticsText)
         val overallStatisticsText = findViewById<TextView>(R.id.overallStatisticsText)
@@ -264,10 +264,10 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
             (allTaskList.layoutManager as LinearLayoutManager).reverseLayout = true
             (allTaskList.layoutManager as LinearLayoutManager).stackFromEnd = true
 
-            // Získejte aktuální seznam úkolů přímo z kontroléru s filtrováním podle taskState
+            // Získání aktuálního seznamu úkolů přímo z controlleru s filtrováním podle taskState
             val allTasks = mainController.getAllTasks()
 
-            // Vytvořte nový adaptér s aktuálním seznamem úkolů
+            // Vytvoření nového adaptéru s aktuálním seznamem úkolů
             withContext(Dispatchers.Main) {
                 // Zobrazení hotových úkolů ve vhodném UI prvku (RecyclerView nebo jiném)
                 val adapter = TaskAdapter(
@@ -280,7 +280,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         }
     }
 
-    // Method for back navigation in the ActionBar
+    // Metoda pro zpětnou navigaci v ActionBaru
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true

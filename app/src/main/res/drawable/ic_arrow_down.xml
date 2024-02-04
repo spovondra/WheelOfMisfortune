@@ -3,8 +3,8 @@
     android:height="24dp"
     android:viewportWidth="960"
     android:viewportHeight="960"
-    android:tint="@color/black">
+    android:tint="@color/inverted">
   <path
-      android:fillColor="@android:color/white"
+      android:fillColor="?attr/colorButtonNormal"
       android:pathData="M480,602.15L253.85,376L296,333.85L480,517.85L664,333.85L706.15,376L480,602.15Z"/>
 </vector>

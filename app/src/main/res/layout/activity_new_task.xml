@@ -32,7 +32,6 @@
                 android:maxLength="50"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:textColorHint="#546E7A"
                 tools:ignore="TextContrastCheck" />
 
             <View

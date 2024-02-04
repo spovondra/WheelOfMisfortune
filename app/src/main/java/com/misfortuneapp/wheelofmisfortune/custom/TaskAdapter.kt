@@ -6,6 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
+import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.controller.MainController
@@ -74,6 +77,32 @@ class TaskAdapter(
                     holder.itemView.context,
                     R.drawable.task_shape
                 )
+            }
+        }
+
+        // Získání základní barvy
+        val baseColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButton)
+
+// Nastavení barvy podle stavu úkolu s 20% průhledností
+        when (task.taskState) {
+            TaskState.DONE -> {
+                val doneColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButtonDone)
+                val blendedColor = ColorUtils.blendARGB(baseColor, doneColor, 0.2f)
+                holder.itemView.background?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(blendedColor, BlendModeCompat.SRC_IN)
+            }
+            TaskState.AVAILABLE -> {
+                val availableColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButtonAvailable)
+                val blendedColor = ColorUtils.blendARGB(baseColor, availableColor, 0.2f)
+                holder.itemView.background?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(blendedColor, BlendModeCompat.SRC_IN)
+            }
+            TaskState.DELETED -> {
+                val deletedColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButtonDeleted)
+                val blendedColor = ColorUtils.blendARGB(baseColor, deletedColor, 0.2f)
+                holder.itemView.background?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(blendedColor, BlendModeCompat.SRC_IN)
+            }
+            else -> {
+                val defaultColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButtonInProgress)
+                holder.itemView.background?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(defaultColor, BlendModeCompat.SRC_IN)
             }
         }
 
