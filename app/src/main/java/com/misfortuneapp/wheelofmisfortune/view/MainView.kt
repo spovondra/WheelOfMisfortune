@@ -239,8 +239,10 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 (taskList.layoutManager as LinearLayoutManager).reverseLayout = true
                 (taskList.layoutManager as LinearLayoutManager).stackFromEnd = true
 
-                // Vytvořte nový seznam obsahující pouze úkoly ve stavu IN_PROGRESS
+                // Nový seznam obsahující pouze úkoly ve stavu IN_PROGRESS, seřazený podle endTime
                 val inProgressTasks = controller.getTasksInStates(TaskState.IN_PROGRESS)
+                    .sortedBy { it.endTime }
+
                 textNumDrawn.text = getString(R.string.your_drawn_tasks, inProgressTasks.size)
 
                 // Vytvořte nový adaptér s aktuálním seznamem úkolů ve stavu IN_PROGRESS

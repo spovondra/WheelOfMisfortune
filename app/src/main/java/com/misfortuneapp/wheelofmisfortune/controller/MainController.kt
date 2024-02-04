@@ -124,11 +124,18 @@ class MainControllerImpl(
     private fun updatePoints() {
         lifecycleScope.launch(Dispatchers.Main) {
             if (!isWheelSpinning) {
-                // Získání dostupných úloh
-                val tasks = model.getTasksByState(TaskState.AVAILABLE)
+                // Získání dostupných úloh seřazených podle priority
+                val tasks = model.getTasksByState(TaskState.AVAILABLE).sortedByDescending { it.priority }
 
                 if (tasks.isNotEmpty()) {
-                    val selectedTask = tasks.random()
+                    // Vytvoření seznamu úkolů, kde každý úkol bude opakován podle své priority
+                    val weightedTaskList = tasks.flatMap { task ->
+                        List(task.priority) { task }
+                    }
+
+                    // Náhodný výběr úkolu z nově vytvořeného seznamu
+                    val selectedTask = weightedTaskList.random()
+
                     setTaskInProgress(selectedTask)
 
                     val finalText = "$currentPoints"
