@@ -1,4 +1,4 @@
-package com.misfortuneapp.wheelofmisfortune.custom.GuideView
+package com.misfortuneapp.wheelofmisfortune.custom.guideView
 
 import android.content.Context
 import android.graphics.Canvas

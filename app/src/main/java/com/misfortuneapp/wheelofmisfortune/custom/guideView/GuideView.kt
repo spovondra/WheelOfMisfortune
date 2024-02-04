@@ -1,4 +1,4 @@
-package com.misfortuneapp.wheelofmisfortune.custom.GuideView
+package com.misfortuneapp.wheelofmisfortune.custom.guideView
 
 import android.animation.Animator
 import android.animation.ValueAnimator
@@ -23,11 +23,6 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.animation.AlphaAnimation
 import android.widget.FrameLayout
-import smartdevelop.ir.eram.showcaseviewlib.Targetable
-import smartdevelop.ir.eram.showcaseviewlib.config.DismissType
-import smartdevelop.ir.eram.showcaseviewlib.config.Gravity
-import smartdevelop.ir.eram.showcaseviewlib.config.PointerType
-import smartdevelop.ir.eram.showcaseviewlib.listener.GuideListener
 
 @SuppressLint("ViewConstructor")
 class GuideView private constructor(context: Context, view: View?) :
@@ -216,7 +211,7 @@ class GuideView private constructor(context: Context, view: View?) :
             targetPaint.setXfermode(xFerModeClear)
             targetPaint.isAntiAlias = true
             if (target is Targetable) {
-                canvas.drawPath((target as Targetable).guidePath(), targetPaint)
+                canvas.drawPath((target as Targetable).guidePath()!!, targetPaint)
             } else {
                 canvas.drawRoundRect(
                     targetRect!!,

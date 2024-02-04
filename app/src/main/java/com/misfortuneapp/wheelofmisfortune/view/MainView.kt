@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.controller.*
 import com.misfortuneapp.wheelofmisfortune.custom.*
-import com.misfortuneapp.wheelofmisfortune.custom.GuideView.GuideView
+import com.misfortuneapp.wheelofmisfortune.custom.guideView.GuideView
 import com.misfortuneapp.wheelofmisfortune.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -118,9 +118,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             .setContentTextSize(12) // optional
             .setTitleTextSize(14) // optional
 
-        guideView.setGuideListener {
-            helpCounter++
-        }
+        helpCounter++
 
         guideView.build().show()
     }
