@@ -19,7 +19,6 @@ class TaskAdapter(
     private val tasks: MutableList<Task>,  // Seznam úkolů
     private val onItemClick: (Task) -> Unit,  // Akce při kliknutí na položku
     private val mainController: MainController,  // Kontrolér pro interakci s daty a UI
-    private val fromMainView: Boolean
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     // ViewHolder pro jednotlivé položky v RecyclerView

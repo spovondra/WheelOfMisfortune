@@ -195,7 +195,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                     tasks.toMutableList(),
                     { selectedTask -> openTaskDetailsScreen(selectedTask, this@MainViewImp) },
                     controller,
-                    true
                 )
 
                 taskList.adapter = adapter
@@ -250,7 +249,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                     inProgressTasks.toMutableList(),
                     { selectedTask -> openTaskDetailsScreen(selectedTask, this@MainViewImp) },
                     controller,
-                    true
                 )
 
                 taskList.adapter = adapter

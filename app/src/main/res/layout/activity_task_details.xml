@@ -63,7 +63,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/rounded_half_circle_button_back"
                 android:gravity="center"
-                android:text="@string/done_button"
+                android:text="@string/back_button"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
     </ScrollView>

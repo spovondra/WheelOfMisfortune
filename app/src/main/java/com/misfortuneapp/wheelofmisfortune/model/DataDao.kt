@@ -27,8 +27,4 @@ interface DataDao {
     // Metoda pro získání formátovaných dat pro osu X grafu
     @Query("SELECT formattedDate FROM data_table")
     suspend fun getFormattedDates(): Array<String>
-
-    // Metoda pro smazání všech dat z databáze
-    @Query("DELETE FROM data_table")
-    suspend fun deleteAllData()
 }

@@ -139,7 +139,8 @@
                     android:layout_gravity="center_horizontal"
                     app:cardBackgroundColor="?android:attr/windowBackground"
                     app:cardCornerRadius="12dp"
-                    app:cardElevation="6dp">
+                    app:cardElevation="6dp"
+                    tools:ignore="TextSizeCheck">
 
                     <Button
                         android:id="@+id/buttonSetTime"
@@ -222,14 +223,15 @@
         android:id="@+id/floatingActionButton"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/circular_orange_button"
         android:contentDescription="@string/add_button_description"
         android:elevation="8dp"
         android:scaleType="center"
-        android:src="@drawable/ic_plus_icon" />
+        android:src="@drawable/ic_plus_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="RedundantDescriptionCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

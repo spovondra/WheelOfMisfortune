@@ -27,11 +27,13 @@
                 android:layout_height="48dp"
                 android:background="@drawable/edittext_border"
                 android:hint="@string/new_task_name"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 android:maxLength="50"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:importantForAutofill="no" />
+                android:textColorHint="#546E7A"
+                tools:ignore="TextContrastCheck" />
 
             <View
                 android:layout_width="match_parent"
@@ -42,16 +44,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext_border"
-                android:hint="@string/new_task_description"
-                android:inputType="textMultiLine"
-                android:minLines="5"
-                android:maxLines="10"
-                android:maxLength="200"
-                android:paddingTop="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
                 android:gravity="top"
-                android:importantForAutofill="no" />
+                android:hint="@string/new_task_description"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:maxLength="200"
+                android:maxLines="10"
+                android:minLines="5"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                tools:ignore="TextContrastCheck" />
 
             <View
                 android:layout_width="match_parent"
@@ -149,10 +152,11 @@
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:layout_weight="0"
+                    android:background="@drawable/icon_selection_background"
+                    android:contentDescription="@string/icon_4"
                     android:padding="8dp"
                     android:src="@drawable/ic_action_box"
-                    android:background="@drawable/icon_selection_background"
-                    android:contentDescription="@string/icon_4" />
+                    tools:ignore="ImageContrastCheck" />
             </LinearLayout>
 
 

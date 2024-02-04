@@ -6,7 +6,6 @@ interface DataRepository {
     suspend fun insertData(dataEntity: DataEntity)
     suspend fun getDataByDate(date: Int): DataEntity?
     suspend fun getAllData(): List<DataEntity>
-    suspend fun deleteAllData()
     suspend fun getAllValues(): List<Double>
     suspend fun getTasksByState(taskState: TaskState): List<Task>
 }
@@ -25,10 +24,6 @@ class DataRepositoryImpl(context: Context) : DataRepository {
 
     override suspend fun getAllData(): List<DataEntity> {
         return dataDao.getAllData()
-    }
-
-    override suspend fun deleteAllData() {
-        return dataDao.deleteAllData()
     }
 
     override suspend fun getAllValues(): List<Double> {

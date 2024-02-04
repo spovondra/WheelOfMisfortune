@@ -202,7 +202,6 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
                             doneTasksForSelectedDate.toMutableList(),
                             { selectedTask -> mainController.openTaskDetailsScreen(selectedTask, this@StatisticsViewImp) },
                             mainController,
-                            false
                         )
                         recyclerView.adapter = adapter
                         recyclerView.layoutManager = LinearLayoutManager(this@StatisticsViewImp)
@@ -275,7 +274,6 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
                     allTasks.toMutableList(),
                     { selectedTask -> mainController.openTaskDetailsScreen(selectedTask, this@StatisticsViewImp) },
                     mainController,
-                    false
                 )
                 allTaskList.adapter = adapter
             }

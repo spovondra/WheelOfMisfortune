@@ -9,7 +9,6 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.CountDownTimer
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
@@ -179,20 +178,18 @@ class BroadcastService : Service() {
 
     // Funkce pro vytvoření kanálu oznámení
     private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "WheelOfMisfortuneService"
-            val descriptionText = "Kanál pro foreground službu Wheel Of Misfortune"
+        val name = "WheelOfMisfortuneService"
+        val descriptionText = "Kanál pro foreground službu Wheel Of Misfortune"
 
-            // Vytvoření kanálu oznámení s výchozí důležitostí
-            val channel = NotificationChannel(CHANNEL_ID, name, IMPORTANCE_DEFAULT).apply {
-                description = descriptionText
-            }
-
-            // Získání správce oznámení a vytvoření kanálu
-            val notificationManager =
-                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+        // Vytvoření kanálu oznámení s výchozí důležitostí
+        val channel = NotificationChannel(CHANNEL_ID, name, IMPORTANCE_DEFAULT).apply {
+            description = descriptionText
         }
+
+        // Získání správce oznámení a vytvoření kanálu
+        val notificationManager =
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
     // Kontrola, za aplikace běží na popředí (aby se nevyhazovaly zbytečně notifikace)

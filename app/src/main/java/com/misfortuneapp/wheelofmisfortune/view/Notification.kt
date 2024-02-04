@@ -6,7 +6,6 @@ import android.app.PendingIntent
 import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.misfortuneapp.wheelofmisfortune.R
 
@@ -58,15 +57,13 @@ class NotificationHandler(private val context: Context) : Notification {
     // Metoda pro vytvoření notifikačního kanálu
     override fun createNotificationChannel(notificationManager: NotificationManager) {
         // Podmínka pro kontrolu verze Androidu
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Vytvoření notifikačního kanálu
-            val channel = NotificationChannel(
-                "info_channel",
-                "Wheel Spin",
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            // Přidání kanálu do systému
-            notificationManager.createNotificationChannel(channel)
-        }
+        // Vytvoření notifikačního kanálu
+        val channel = NotificationChannel(
+            "info_channel",
+            "Wheel Spin",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        // Přidání kanálu do systému
+        notificationManager.createNotificationChannel(channel)
     }
 }
