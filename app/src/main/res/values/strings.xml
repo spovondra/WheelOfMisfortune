@@ -39,4 +39,5 @@
     <!-- Content -->
     <string name="content_delete_button">Delete</string>
     <string name="content_back_arrow_button">Back</string>
+    <string name="allTasksInStatistics">All tasks</string>
 </resources>

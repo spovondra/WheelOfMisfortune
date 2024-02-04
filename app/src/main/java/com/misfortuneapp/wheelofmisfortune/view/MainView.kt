@@ -110,7 +110,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             buttonSetTime.text = getString(R.string.button_set_time_of_notification)
         }
         if (helpCounter == 3 && controller.getAllTasks().size == 1) {
-            buildGuideView (countdownTimerTextView, "Zatoč si kolečkem!", (displayHeight*0.05).toFloat())
+            buildGuideView (countdownTimerTextView, "Po skončení odpočtu zatoč kolečkem!", (displayHeight*0.05).toFloat())
             buttonSetTime.text = getString(R.string.button_change_time_of_notification)
         }
     }
@@ -213,7 +213,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
     // Metoda na zobrazení detailů o úloze
     override fun openTaskDetailsScreen(task: Task, context: Context) {
-        val intent = Intent(context, TaskDetailsActivity::class.java)
+        val intent = Intent(context, NewTaskActivity::class.java)
         intent.putExtra("taskId", task.id)
         context.startActivity(intent)
     }

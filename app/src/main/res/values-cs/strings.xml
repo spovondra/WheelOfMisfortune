@@ -39,4 +39,5 @@
     <!-- Content -->
     <string name="content_delete_button">Smazat</string>
     <string name="content_back_arrow_button">Zpět</string>
+    <string name="allTasksInStatistics">Všechny úlohy</string>
 </resources>

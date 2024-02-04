@@ -3,6 +3,9 @@ package com.misfortuneapp.wheelofmisfortune.view
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -31,6 +34,7 @@ import com.misfortuneapp.wheelofmisfortune.model.DataRepositoryImpl
 import com.misfortuneapp.wheelofmisfortune.model.TaskModel
 import com.misfortuneapp.wheelofmisfortune.model.TaskModelImpl
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
@@ -73,8 +77,11 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         // Přidání MonthPicker do layoutu
         val monthPicker = findViewById<MonthPicker>(R.id.monthPicker)
         configureMonthPicker(monthPicker)
-
         observeDataForMonthPicker(monthPicker)
+
+        lifecycleScope.launch{
+            showAllTasks()
+        }
     }
 
     private fun configureMonthPicker(monthPicker: MonthPicker) {
@@ -173,18 +180,9 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         toggleAdditionalStatisticsVisibility(entries.isNotEmpty())
     }
 
-    private fun toggleAdditionalStatisticsVisibility(hasData: Boolean) {
-        val additionalStatisticsView = findViewById<View>(R.id.additionalStatistics) // Replace R.id.additionalStatistics with the actual ID of your additional statistics view
-
-        if (hasData) {
-            additionalStatisticsView.visibility = View.VISIBLE
-        } else {
-            additionalStatisticsView.visibility = View.GONE
-        }
-    }
-
     override fun viewAfterClick(formattedDateStrings: Array<String>) {
         val recyclerView: RecyclerView = findViewById(R.id.statisticsRecyclerView)
+        val graphSpace: View = findViewById(R.id.graphSpace)
         recyclerView.adapter = null
         barChart.highlightValues(null)
 
@@ -209,12 +207,14 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
                         recyclerView.adapter = adapter
                         recyclerView.layoutManager = LinearLayoutManager(this@StatisticsViewImp)
                         (recyclerView.layoutManager as LinearLayoutManager).reverseLayout = true
+                        graphSpace.visibility = View.VISIBLE
                     }
                 }
             }
 
             override fun onNothingSelected() {
                 recyclerView.adapter = null
+                graphSpace.visibility = View.GONE
             }
         })
         barChart.invalidate()
@@ -227,6 +227,59 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
 
         dailyStatisticsText.text = getString(R.string.daily_statistics, dailyStatistics)
         overallStatisticsText.text = getString(R.string.overall_statistics, overallStatistics)
+    }
+
+    private fun toggleAdditionalStatisticsVisibility(hasData: Boolean) {
+        val additionalStatisticsView = findViewById<View>(R.id.additionalStatistics)
+        val showHideButton: LinearLayout = findViewById(R.id.showHideButton)
+        val relativeToShowHide: RelativeLayout = findViewById(R.id.relativeToShowHide)
+
+        if (hasData) {
+            additionalStatisticsView.visibility = View.VISIBLE
+            showHideButton.visibility = View.VISIBLE
+            relativeToShowHide.visibility = View.VISIBLE
+        } else {
+            additionalStatisticsView.visibility = View.GONE
+            showHideButton.visibility = View.GONE
+            relativeToShowHide.visibility = View.GONE
+        }
+
+        val showHideButtonImg: ImageView = findViewById(R.id.showHideButtonImg)
+        relativeToShowHide.visibility = View.GONE
+
+        showHideButton.setOnClickListener {
+            if (relativeToShowHide.visibility == View.VISIBLE) {
+                relativeToShowHide.visibility = View.GONE
+                showHideButtonImg.setImageResource(R.drawable.ic_arrow_right)
+            } else {
+                relativeToShowHide.visibility = View.VISIBLE
+                showHideButtonImg.setImageResource(R.drawable.ic_arrow_down)
+            }
+        }
+    }
+
+    private suspend fun showAllTasks() {
+        coroutineScope {
+            val allTaskList = findViewById<RecyclerView>(R.id.allTaskList)
+            allTaskList.layoutManager = LinearLayoutManager(this@StatisticsViewImp)
+            (allTaskList.layoutManager as LinearLayoutManager).reverseLayout = true
+            (allTaskList.layoutManager as LinearLayoutManager).stackFromEnd = true
+
+            // Získejte aktuální seznam úkolů přímo z kontroléru s filtrováním podle taskState
+            val allTasks = mainController.getAllTasks()
+
+            // Vytvořte nový adaptér s aktuálním seznamem úkolů
+            withContext(Dispatchers.Main) {
+                // Zobrazení hotových úkolů ve vhodném UI prvku (RecyclerView nebo jiném)
+                val adapter = TaskAdapter(
+                    allTasks.toMutableList(),
+                    { selectedTask -> mainController.openTaskDetailsScreen(selectedTask, this@StatisticsViewImp) },
+                    mainController,
+                    false
+                )
+                allTaskList.adapter = adapter
+            }
+        }
     }
 
     // Method for back navigation in the ActionBar
