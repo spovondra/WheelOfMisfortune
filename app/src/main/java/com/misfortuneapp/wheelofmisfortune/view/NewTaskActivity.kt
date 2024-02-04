@@ -18,6 +18,7 @@ import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.controller.NewTakController
 import com.misfortuneapp.wheelofmisfortune.controller.NewTaskControllerImpl
 import com.misfortuneapp.wheelofmisfortune.model.Task
+import com.misfortuneapp.wheelofmisfortune.model.TaskState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -78,10 +79,10 @@ class NewTaskActivity : AppCompatActivity() {
                 selectedImageView?.isSelected = true
             } else {
                 // Vytvoř nový úkol
-                val allTasks = newTaskController.getAllTasks()
+                val allTasks = newTaskController.getAllTasks().filter { it.taskState != TaskState.DELETED }
                 if (allTasks.isNotEmpty()) {
                     taskId = allTasks.last().id + 1
-                    newTaskId = newTaskController.getAllTasks().size + 1
+                    newTaskId = allTasks.size + 1
                 } else {
                     taskId = 1
                     newTaskId = 1

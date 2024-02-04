@@ -32,7 +32,6 @@ interface MainController {
     fun getIsWheelSpinning(): Boolean // Vrátí informaci, zda se kolo otáčí
     fun doWithTaskDialog() // Provede akce související s dialogem úlohy
     suspend fun getAllTasks(): List<Task> // Asynchronně získá všechny úlohy
-    suspend fun removeTask(task: Task, fromMainView: Boolean) // Asynchronně odstraní úlohu
     fun loadPointsFromDatabase() // Načte body z databáze
     fun startTimer(taskId: Int) // Spustí časovač pro úlohu
     fun stopTimer() // Zastaví časovač
@@ -49,6 +48,7 @@ interface MainController {
     )
 
     suspend fun getDoneTasksForDate(dateString: String): List<Task>
+    suspend fun setTaskDeleted(task: Task)
 }
 
 // Implementace rozhraní MainController
@@ -184,11 +184,9 @@ class MainControllerImpl(
     }
 
     // Metoda pro asynchronní odstranění úlohy
-    override suspend fun removeTask(task: Task, fromMainView: Boolean) {
+    override suspend fun setTaskDeleted(task: Task) {
         model.removeTask(task)
-        if (fromMainView) {
-            view.showAllTasks()
-        }
+        view.showAllTasks()
     }
 
     // Metoda pro načtení bodů z databáze
@@ -270,7 +268,7 @@ class MainControllerImpl(
                     object : UnderlayButtonClickListener {
                         @SuppressLint("ClickableViewAccessibility")
                         override fun onClick(pos: Int) {
-                            (recyclerView.adapter as? TaskAdapter)?.removeItem(pos)
+                            (recyclerView.adapter as? TaskAdapter)?.itemDeleted(pos)
                             recyclerView.adapter?.notifyItemRemoved(pos)
                         }
                     }
@@ -288,8 +286,6 @@ class MainControllerImpl(
                             @SuppressLint("ClickableViewAccessibility")
                             override fun onClick(pos: Int) {
                                 (recyclerView.adapter as? TaskAdapter)?.itemDone(pos)
-                                lifecycleScope.launch {
-                                }
                             }
                         }
                     ))
@@ -352,10 +348,10 @@ class MainControllerImpl(
         val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
 
         // Získání seznamu všech splněných úkolů
-        val allDoneTasks = model.getTasksByState(TaskState.DONE)
+        val allDoneAndDeletedTasks = model.getTasksByState(TaskState.DONE) + model.getTasksByState(TaskState.DELETED)
 
         // Filtrujeme úkoly podle vybraného data
-        return allDoneTasks.filter { task ->
+        return allDoneAndDeletedTasks.filter { task ->
             val taskCompletionDate = Date(task.completionTime)
             dateFormat.format(taskCompletionDate) == dateString
         }

@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 class TaskAdapter(
     private val tasks: MutableList<Task>,  // Seznam úkolů
     private val onItemClick: (Task) -> Unit,  // Akce při kliknutí na položku
-    private val onItemDelete: (Task) -> Unit,  // Akce při odstranění položky
     private val mainController: MainController,  // Kontrolér pro interakci s daty a UI
     private val fromMainView: Boolean
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
@@ -95,19 +94,14 @@ class TaskAdapter(
 
     // Metoda pro odstranění položky z RecyclerView a databáze
     @OptIn(DelicateCoroutinesApi::class)
-    fun removeItem(position: Int) {
+    fun itemDeleted(position: Int) {
         if (position >= 0 && position < tasks.size) {
-            val removedTask = tasks[position]
-
-            // Odstranění z seznamu
+            val taskDeleted = tasks[position]
             tasks.removeAt(position)
-            notifyItemRemoved(position)
 
-            // Odstranění z databáze pomocí MainController
             GlobalScope.launch {
-                mainController.removeTask(removedTask, fromMainView)
+                mainController.setTaskDeleted(taskDeleted)
             }
-            onItemDelete.invoke(removedTask)
         }
     }
 
@@ -121,7 +115,6 @@ class TaskAdapter(
             GlobalScope.launch {
                 mainController.setTaskDone(taskDone)
             }
-            onItemDelete.invoke(taskDone)
         }
     }
 }

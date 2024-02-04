@@ -36,7 +36,6 @@ interface TaskModel {
 
     // Suspend funkce pro získání posledního záznamu o čase
     suspend fun getTimeRecord(): TimeRecord
-    suspend fun deleteDoneTasks()
 }
 
 // Implementace rozhraní TaskModel
@@ -57,7 +56,8 @@ class TaskModelImpl(context: Context) : TaskModel {
 
     // Suspend funkce pro odstranění úkolu
     override suspend fun removeTask(task: Task) {
-        taskDao.deleteTask(task)
+        task.taskState = TaskState.DELETED
+        updateTask(task)
     }
 
     // Suspend funkce pro vložení úkolu
@@ -91,10 +91,6 @@ class TaskModelImpl(context: Context) : TaskModel {
     // Suspend funkce pro získání úkolů podle stavu
     override suspend fun getTasksByState(taskState: TaskState): List<Task> {
         return taskDao.getTasksByState(taskState)
-    }
-
-    override suspend fun deleteDoneTasks() {
-        taskDao.deleteTasksByState(TaskState.DONE)
     }
 
     // Suspend funkce pro vložení záznamu o čase (např. start a end čas) (imeRecord)

@@ -7,23 +7,24 @@ import androidx.room.PrimaryKey
 enum class TaskState {
     AVAILABLE,
     IN_PROGRESS,
-    DONE
+    DONE,
+    DELETED
 }
 
 // Entita reprezentující úkol v databázi
 @Entity
 data class Task(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,             // Identifikační číslo úkolu v databázi
-    var title: String,           // Název úkolu
-    var description: String,     // Popis úkolu
-    val points: Int = DEFAULT_POINTS, // Počet bodů při splnění úkolu, defaultně nastaven na 5
-    var priority: Int = 0,       // Priorita úkolu
-    var iconResId: Int = 0,      // ID ikonky úkolu
-    var startTime: Long = 0,     // Čas spuštění úlohy
+    val id: Int = 0,                                // Identifikační číslo úkolu v databázi
+    var title: String,                              // Název úkolu
+    var description: String,                        // Popis úkolu
+    val points: Int = DEFAULT_POINTS,               // Počet bodů při splnění úkolu, defaultně nastaven na 5
+var priority: Int = 0,                              // Priorita úkolu
+    var iconResId: Int = 0,                         // ID ikonky úkolu
+    var startTime: Long = 0,                        // Čas spuštění úlohy
     var taskState: TaskState = TaskState.AVAILABLE, // Stav úkolu (dostupný, probíhá, hotovo)
-    var endTime: Long = 0,       // Čas do konce úlohy (systémový čas + uživatelem zvolený)
-    var completionTime: Long = 0 // Čas splnění úlohy
+    var endTime: Long = 0,                          // Čas do konce úlohy (systémový čas + uživatelem zvolený)
+    var completionTime: Long = 0                    // Čas splnění úlohy
 ) {
     // Alternativní konstruktor pro vytvoření instance Task s určenými vlastnostmi
     constructor(

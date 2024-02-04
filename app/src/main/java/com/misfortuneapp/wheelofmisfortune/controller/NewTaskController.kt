@@ -3,6 +3,7 @@ package com.misfortuneapp.wheelofmisfortune.controller
 import com.misfortuneapp.wheelofmisfortune.model.Task
 import com.misfortuneapp.wheelofmisfortune.model.TaskModel
 import com.misfortuneapp.wheelofmisfortune.model.TaskModelImpl
+import com.misfortuneapp.wheelofmisfortune.model.TaskState
 import com.misfortuneapp.wheelofmisfortune.view.NewTaskActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

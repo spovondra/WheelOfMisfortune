@@ -17,10 +17,6 @@ interface TaskDao {
     @Query("SELECT * FROM Task")
     suspend fun getAllTasks(): List<Task>
 
-    // Metoda pro smazání úkolu z databáze
-    @Delete
-    suspend fun deleteTask(task: Task)
-
     // Metoda pro získání úkolu podle ID
     @Query("SELECT * FROM Task WHERE id = :taskId")
     suspend fun getTaskById(taskId: Int): Task?
@@ -39,7 +35,4 @@ interface TaskDao {
 
     @Query("SELECT * FROM Task WHERE taskState = :taskState")
     suspend fun getTasksByState(taskState: TaskState): List<Task>
-
-    @Query("DELETE FROM Task WHERE taskState = :taskState")
-    suspend fun deleteTasksByState(taskState: TaskState)
 }

@@ -203,11 +203,6 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
                         val adapter = TaskAdapter(
                             doneTasksForSelectedDate.toMutableList(),
                             { selectedTask -> mainController.openTaskDetailsScreen(selectedTask, this@StatisticsViewImp) },
-                            { removedTask ->
-                                lifecycleScope.launch {
-                                    (mainController as MainControllerImpl).removeTask(removedTask, false)
-                                }
-                            },
                             mainController,
                             false
                         )

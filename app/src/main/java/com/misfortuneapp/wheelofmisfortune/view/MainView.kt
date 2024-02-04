@@ -166,7 +166,11 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     @SuppressLint("SetTextI18n", "StringFormatMatches")
     private suspend fun showNumberOfAllTasks() {
         val textNum: TextView = findViewById(R.id.textNum)
-        textNum.text = getString(R.string.your_tasks, controller.getAllTasks().size)
+        textNum.text = getString(
+            R.string.your_tasks,
+            controller.getAllTasks().filter
+                { it.taskState != TaskState.DELETED }.size
+        )
     }
 
     // Metoda na zobrazní všech úloh v RecyclerView
@@ -181,20 +185,15 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 (taskList.layoutManager as LinearLayoutManager).reverseLayout = true
                 (taskList.layoutManager as LinearLayoutManager).stackFromEnd = true
 
-                // Získejte aktuální seznam úkolů přímo z kontroléru
-                val tasks = controller.getAllTasks()
+                // Získejte aktuální seznam úkolů přímo z kontroléru s filtrováním podle taskState
+                val tasks = controller.getAllTasks().filter { it.taskState != TaskState.DELETED }
 
                 updateUIVisibility() // změna zobrazovaných prvků na základě požadavků
 
-                // Vytvořte nový adapter s aktuálním seznamem úkolů
+                // Vytvořte nový adaptér s aktuálním seznamem úkolů
                 val adapter = TaskAdapter(
                     tasks.toMutableList(),
                     { selectedTask -> openTaskDetailsScreen(selectedTask, this@MainViewImp) },
-                    { removedTask ->
-                        launch {
-                            controller.removeTask(removedTask,true)
-                        }
-                    },
                     controller,
                     true
                 )
@@ -214,7 +213,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
     // Metoda na zobrazení detailů o úloze
     override fun openTaskDetailsScreen(task: Task, context: Context) {
-        val intent = Intent(context, NewTaskActivity::class.java)
+        val intent = Intent(context, TaskDetailsActivity::class.java)
         intent.putExtra("taskId", task.id)
         context.startActivity(intent)
     }
@@ -239,8 +238,9 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 (taskList.layoutManager as LinearLayoutManager).reverseLayout = true
                 (taskList.layoutManager as LinearLayoutManager).stackFromEnd = true
 
-                // Nový seznam obsahující pouze úkoly ve stavu IN_PROGRESS, seřazený podle endTime
+                // Nový seznam obsahující pouze úkoly ve stavu IN_PROGRESS a není DELETED, seřazený podle endTime
                 val inProgressTasks = controller.getTasksInStates(TaskState.IN_PROGRESS)
+                    .filter { it.taskState != TaskState.DELETED }
                     .sortedBy { it.endTime }
 
                 textNumDrawn.text = getString(R.string.your_drawn_tasks, inProgressTasks.size)
@@ -249,11 +249,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 val adapter = TaskAdapter(
                     inProgressTasks.toMutableList(),
                     { selectedTask -> openTaskDetailsScreen(selectedTask, this@MainViewImp) },
-                    { removedTask ->
-                        launch {
-                            controller.removeTask(removedTask, true)
-                        }
-                    },
                     controller,
                     true
                 )
