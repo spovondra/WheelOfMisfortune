@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.controller.*
 import com.misfortuneapp.wheelofmisfortune.custom.*
-import com.misfortuneapp.wheelofmisfortune.custom.guideView.GuideView
+import com.misfortuneapp.wheelofmisfortune.custom.guide.*
 import com.misfortuneapp.wheelofmisfortune.model.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -98,25 +98,30 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
         val drawnList = findViewById<RecyclerView>(R.id.drawnList)
 
+        val displayHeight = Resources.getSystem().displayMetrics.heightPixels
+
         Log.d("counter", helpCounter.toString())
         if (helpCounter == 0 && controller.getAllTasks().isEmpty()) {
-            buildGuideView (newTaskButton, "Přidej úlohu")
+            buildGuideView (newTaskButton, "Přidej úlohu", (displayHeight*0.1).toFloat())
         }
         if (helpCounter == 1 && controller.getAllTasks().size == 1) {
-            buildGuideView (buttonSetTime, "Nastav čas upozornění")
+            buildGuideView (buttonSetTime, "Nastav čas upozornění", (displayHeight*0.18).toFloat())
         }
         if (helpCounter == 3 && controller.getAllTasks().size == 1) {
-            buildGuideView (countdownTimerTextView, "Zatoč si kolečkem!")
+            buildGuideView (countdownTimerTextView, "Zatoč si kolečkem!", (displayHeight*0.05).toFloat())
         }
     }
 
-    private fun buildGuideView (targetView: View?, title: String) {
+    private fun buildGuideView (targetView: View?, title: String, indicatorHeight: Float) {
         val guideView = GuideView.Builder(this)
             .setTitle(title)
             //.setContentText(content)
             .setTargetView(targetView)
-            .setContentTextSize(12) // optional
-            .setTitleTextSize(14) // optional
+            .setContentTextSize(0) // optional
+            .setTitleTextSize(30) // optional
+            .setPointerType(PointerType.none)
+            .setIndicatorHeight(indicatorHeight)
+
 
         helpCounter++
 

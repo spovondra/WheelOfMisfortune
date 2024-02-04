@@ -1,4 +1,4 @@
-package com.misfortuneapp.wheelofmisfortune.custom.guideView
+package com.misfortuneapp.wheelofmisfortune.custom.guide
 
 import android.graphics.Path
 import android.graphics.RectF

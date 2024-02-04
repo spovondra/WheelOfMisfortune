@@ -1,10 +1,11 @@
-package com.misfortuneapp.wheelofmisfortune.custom.guideView
+package com.misfortuneapp.wheelofmisfortune.custom.guide
 
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -65,13 +66,7 @@ class GuideView private constructor(context: Context, view: View?) :
         density = context.resources.displayMetrics.density
         init()
         mMessageView = GuideMessageView(getContext())
-        mMessageView.setPadding(
-            messageViewPadding,
-            messageViewPadding,
-            messageViewPadding,
-            messageViewPadding
-        )
-        mMessageView.setColor(Color.WHITE)
+
         addView(
             mMessageView,
             LayoutParams(
@@ -83,21 +78,20 @@ class GuideView private constructor(context: Context, view: View?) :
             object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    val margin = 20
                     targetRect = if (target is Targetable) {
                         (target as Targetable).boundingRect()
                     } else {
                         val locationTarget = IntArray(2)
                         target!!.getLocationOnScreen(locationTarget)
                         RectF(
-                            locationTarget[0].toFloat(),
-                            locationTarget[1].toFloat(),
-                            (
-                                    locationTarget[0] + target.width).toFloat(),
-                            (
-                                    locationTarget[1] + target.height
-                                    ).toFloat()
+                            (locationTarget[0] - margin).toFloat(),
+                            (locationTarget[1] - margin).toFloat(),
+                            ((locationTarget[0] + target.width) + margin).toFloat(),
+                            ((locationTarget[1] + target.height) + margin).toFloat()
                         )
                     }
+
                     backgroundRect[paddingLeft, paddingTop, width - paddingRight] =
                         height - paddingBottom
 
@@ -277,13 +271,9 @@ class GuideView private constructor(context: Context, view: View?) :
     }
 
     private fun setMessageLocation(p: Point) {
-        mMessageView.x = p.x.toFloat()
+        mMessageView.x = ((width - mMessageView.width) / 2).toFloat()
         mMessageView.y = p.y.toFloat()
         postInvalidate()
-    }
-
-    fun updateGuideViewLocation() {
-        requestLayout()
     }
 
     private fun resolveMessageViewLocation(): Point {
@@ -592,16 +582,16 @@ class GuideView private constructor(context: Context, view: View?) :
     }
 
     companion object {
-        private const val INDICATOR_HEIGHT = 40
+        private const val INDICATOR_HEIGHT = 30
         private const val MESSAGE_VIEW_PADDING = 5
         private const val SIZE_ANIMATION_DURATION = 700
         private const val APPEARING_ANIMATION_DURATION = 400
         private const val CIRCLE_INDICATOR_SIZE = 6
         private const val LINE_INDICATOR_WIDTH_SIZE = 3
         private const val STROKE_CIRCLE_INDICATOR_SIZE = 3
-        private const val RADIUS_SIZE_TARGET_RECT = 15
-        private const val MARGIN_INDICATOR = 15
-        private const val BACKGROUND_COLOR = -0x67000000
+        private const val RADIUS_SIZE_TARGET_RECT = 100
+        private const val MARGIN_INDICATOR = 50
+        private const val BACKGROUND_COLOR = -0x50000000
         private const val CIRCLE_INNER_INDICATOR_COLOR = -0x333334
         private const val CIRCLE_INDICATOR_COLOR = Color.WHITE
         private const val LINE_INDICATOR_COLOR = Color.WHITE
