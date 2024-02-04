@@ -7,7 +7,6 @@
     <string name="button_set_time_of_notification">Set notification time</string>
     <string name="wheel_static_description">Static surroundings of the wheel</string>
     <string name="button_add_description">Add Button</string>
-    <string name="zero_priority">Selected Priority: 0</string>
     <string name="priority_static">Priority:</string>
     <string name="newTaskDescription">Task Description</string>
     <string name="newTaskName">Task Name</string>
@@ -34,4 +33,10 @@
     <string name="button_finish">Finish</string>
     <string name="task_edit">Task Edit</string>
     <string name="moreStatisticsText">Additional Statistics</string>
+    <string name="selected_priority">Selected Progress: %1$s</string>
+    <string name="selected_first_priority">Selected Progress: 1</string>
+
+    <!-- Content -->
+    <string name="content_delete_button">Delete</string>
+    <string name="content_back_arrow_button">Back</string>
 </resources>

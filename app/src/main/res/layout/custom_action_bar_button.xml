@@ -14,11 +14,12 @@
         app:cardBackgroundColor="@android:color/transparent"
         app:cardElevation="0dp">
 
-        <Button
+        <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:background="@drawable/arrow_back"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/content_back_arrow_button" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -34,21 +35,22 @@
         tools:ignore="RelativeOverlap" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:id="@+id/action_delete_task"
+        android:layout_width="48dp"
         android:layout_height="60dp"
         android:layout_alignParentEnd="true"
         android:layout_gravity="center"
-        android:layout_marginEnd="16dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:cardElevation="0dp">
 
-        <Button
-            android:id="@+id/action_delete_task"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="end|center"
+            android:layout_marginEnd="4dp"
             android:background="@drawable/rounded_half_circle_button"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:contentDescription="@string/content_delete_button" />
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

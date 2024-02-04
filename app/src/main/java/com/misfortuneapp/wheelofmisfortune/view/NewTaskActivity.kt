@@ -132,9 +132,12 @@ class NewTaskActivity : AppCompatActivity() {
 
         // Set up seek bar change listener for task priority
         taskPriority.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            @SuppressLint("SetTextI18n")
+            @SuppressLint("StringFormatMatches")
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                textViewProgress.text = "Selected Progress: $progress"
+                if (progress < 1) {
+                    seekBar?.progress = 1
+                }
+                textViewProgress.text = getString(R.string.selected_priority, seekBar?.progress)
                 saveTask()
             }
 
@@ -165,7 +168,7 @@ class NewTaskActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.elevation = 0f
 
-        customActionBarButton.findViewById<Button>(R.id.action_delete_task).setOnClickListener {
+        customActionBarButton.findViewById<CardView>(R.id.action_delete_task).setOnClickListener {
             if (currentTask != null) {
                 lifecycleScope.launch {
                     currentTask?.let { deleteTask(it) }

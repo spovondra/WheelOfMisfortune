@@ -3,11 +3,11 @@
     <item>
         <shape android:shape="rectangle">
             <solid android:color="@color/delete" /> <!-- Set the orange background color -->
-            <corners android:radius="12dp" /> <!-- Set the radius to create rounded edges -->
+            <corners android:radius="9dp" /> <!-- Set the radius to create rounded edges -->
         </shape>
     </item>
     <item
         android:drawable="@drawable/ic_action_trash"
-        android:height="48dp"
-        android:width="48dp"/>
+        android:height="36dp"
+        android:width="36dp"/>
 </layer-list>

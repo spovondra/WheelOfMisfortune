@@ -74,7 +74,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:max="10"
-                android:progressDrawable="@drawable/seekbar_custom" />
+                android:progress="1"
+                android:progressDrawable="@drawable/seekbar_custom"
+                android:thumb="@android:color/transparent"/>
 
             <TextView
                 android:id="@+id/textViewProgress"
@@ -82,8 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="13sp"
-                android:text="@string/zero_priority" />
-
+                android:text="@string/selected_first_priority"/>
 
             <Space
                 android:layout_width="match_parent"

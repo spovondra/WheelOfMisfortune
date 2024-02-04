@@ -307,7 +307,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private fun showSetTime() {
         val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
         val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.HOUR_OF_DAY, 1)
         calendar.set(Calendar.MINUTE, 0)
         buttonSetTime.setOnClickListener {
             val timePicker = TimePickerDialog(

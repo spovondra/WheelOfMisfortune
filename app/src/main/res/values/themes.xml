@@ -11,6 +11,7 @@
     <style name="Theme.KoleckoNestestiWindows" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/iconColor</item>
+        <item name="android:colorBackground">@color/backgroud</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
 </resources>

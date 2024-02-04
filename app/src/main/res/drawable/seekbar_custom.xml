@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Background track -->
+    <!-- Background -->
     <item android:id="@android:id/background">
         <shape>
-            <corners android:radius="8dp" /> <!-- Adjust the radius for rounded corners -->
-            <solid android:color="@color/border" /> <!-- Set the background color of the bar -->
+            <corners android:radius="8dp" />
+            <solid android:color="@color/border" />
         </shape>
     </item>
-    <!-- Progress track (set to red) -->
+    <!-- Progress track -->
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <corners android:radius="8dp" /> <!-- Adjust the radius for rounded corners -->
-                <solid android:color="@color/iconColor" /> <!-- Set the progress color to red -->
-                <size android:height="16dp" /> <!-- Adjust the height to match the SeekBar's height -->
+                <corners android:radius="8dp" />
+                <solid android:color="@color/iconColor" />
             </shape>
         </clip>
     </item>

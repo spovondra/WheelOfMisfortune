@@ -4,9 +4,9 @@
     <string name="zero_time">00:00</string>
     <string name="wheel_spin_description">Koło do obrócenia</string>
     <string name="button_change_time_of_notification">Zmień czas powiadomienia</string>
+    <string name="button_set_time_of_notification">Ustaw czas powiadomienia</string>
     <string name="wheel_static_description">Statyczne otoczenie koła</string>
     <string name="button_add_description">Dodaj przycisk</string>
-    <string name="zero_priority">Wybrany priorytet: 0</string>
     <string name="priority_static">Priorytet:</string>
     <string name="newTaskDescription">Opis zadania</string>
     <string name="newTaskName">Nazwa zadania</string>
@@ -33,5 +33,10 @@
     <string name="button_finish">Zakończyć</string>
     <string name="task_edit">Edycja zadania</string>
     <string name="moreStatisticsText">Dodatkowe Statystyki</string>
-    <string name="button_set_time_of_notification">Ustaw czas powiadomienia</string>
+    <string name="selected_priority">Wybrany priorytet: %1$s</string>
+    <string name="selected_first_priority">Wybrany priorytet: 1</string>
+
+    <!-- Content -->
+    <string name="content_delete_button">Usuń</string>
+    <string name="content_back_arrow_button">Wstecz</string>
 </resources>

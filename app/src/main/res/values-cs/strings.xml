@@ -6,7 +6,6 @@
     <string name="button_change_time_of_notification">Změnit čas upozornění</string>
     <string name="wheel_static_description">Neměnné okolí kola</string>
     <string name="button_add_description">Přidat tlačítko</string>
-    <string name="zero_priority">Vybraná priorita: 0</string>
     <string name="priority_static">Priorita:</string>
     <string name="newTaskDescription">Popis úkolu</string>
     <string name="newTaskName">Název úkolu</string>
@@ -34,4 +33,10 @@
     <string name="task_edit">Úprava úkolu</string>
     <string name="moreStatisticsText">Další statistiky</string>
     <string name="button_set_time_of_notification">Nastavit čas upozornění</string>
+    <string name="selected_priority">Vybraná priorita: %1$s</string>
+    <string name="selected_first_priority">Vybraná priorita: 1</string>
+
+    <!-- Content -->
+    <string name="content_delete_button">Smazat</string>
+    <string name="content_back_arrow_button">Zpět</string>
 </resources>

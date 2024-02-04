@@ -28,8 +28,9 @@
                 android:gravity="center"
                 android:paddingTop="14dp"
                 android:text="@string/achievementsTitleText"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textSize="28sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="24sp"
+                android:textStyle="bold"
                 android:paddingBottom="16dp"/>
 
             <TextView
@@ -73,8 +74,9 @@
                 android:gravity="center"
                 android:paddingTop="14dp"
                 android:text="@string/moreStatisticsText"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textSize="28sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="24sp"
+                android:textStyle="bold"
                 android:paddingBottom="8dp"/>
 
             <com.misfortuneapp.wheelofmisfortune.custom.MonthPicker
