@@ -5,7 +5,7 @@
     <color name="colorPrimary">#F9661B</color>
     <color name="background">#F4F4F4</color>
     <color name="colorButton">#FFFFFFFF</color>
-    <color name="colorButtonAvailable">#2196F3</color>
+    <color name="colorButtonAvailable">#FFFFFF</color>
     <color name="colorButtonInProgress">#F9661B</color>
     <color name="colorButtonDone">#4CAF50</color>
     <color name="colorButtonDeleted">#FD0001</color>

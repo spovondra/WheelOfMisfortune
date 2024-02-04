@@ -134,7 +134,7 @@
                 android:layout_height="80dp">
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="240dp"
+                    android:layout_width="280dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center_horizontal"
                     app:cardBackgroundColor="?android:attr/windowBackground"

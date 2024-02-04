@@ -49,6 +49,7 @@ interface MainController {
 
     suspend fun getDoneTasksForDate(dateString: String): List<Task>
     suspend fun setTaskDeleted(task: Task)
+    suspend fun getTimeSetByUserInTriple(): Triple<Long, Long, Long>
 }
 
 // Implementace rozhraní MainController
@@ -360,5 +361,9 @@ class MainControllerImpl(
     // Metoda pro asynchronní získání délky úlohy nastavené uživatelem
     private suspend fun getTimeSetByUser(): Long {
         return getTime().endTime - getTime().startTime
+    }
+
+    override suspend fun getTimeSetByUserInTriple(): Triple<Long, Long, Long> {
+        return calculateRemainingTime(getTimeSetByUser())
     }
 }

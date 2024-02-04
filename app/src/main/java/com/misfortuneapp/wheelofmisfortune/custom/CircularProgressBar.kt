@@ -7,6 +7,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.misfortuneapp.wheelofmisfortune.R
 
 class CircularProgressBar(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
@@ -22,7 +23,7 @@ class CircularProgressBar(context: Context, attrs: AttributeSet) : View(context,
     private fun initializePaints() {
         // Nastavení vlastností pro kreslení okraje kruhu
         circlePaint.isAntiAlias = true
-        circlePaint.color = ContextCompat.getColor(context, android.R.color.darker_gray) // Barva okraje (opravena deprecated metoda)
+        circlePaint.color = ContextCompat.getColor(context, R.color.background) // Barva okraje (opravena deprecated metoda)
         circlePaint.style = Paint.Style.STROKE  // Styl kreslení (okraje)
 
         // Nastavení vlastností pro kreslení průběhu

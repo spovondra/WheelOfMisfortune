@@ -3,7 +3,7 @@
     <string name="zero_points">0</string>
     <string name="zero_time">00:00</string>
     <string name="spin_description">Koło do obrócenia</string>
-    <string name="change_notification_time">Zmień czas powiadomienia</string>
+    <string name="change_notification_time">Zmień czas powiadomienia (%s)</string>
     <string name="set_notification_time">Ustaw czas powiadomienia</string>
     <string name="priority_static">Priorytet:</string>
     <string name="new_task_description">Opis zadania</string>

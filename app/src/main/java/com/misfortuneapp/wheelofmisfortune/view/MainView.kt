@@ -81,6 +81,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         setViewSizesBasedOnScreen()
         showStatistics()
         showSetTime()
+        showTimeByUser()
         wheelAbleToTouch()
         swipeToDeleteButton()
 
@@ -327,7 +328,37 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 helpCounter++
                 lifecycleScope.launch {
                     showHelp()
+                    showTimeByUser()
                 }
+            }
+        }
+    }
+
+    @SuppressLint("StringFormatMatches")
+    private fun showTimeByUser () {
+        lifecycleScope.launch {
+            val changeNotificationTime = findViewById<TextView>(R.id.buttonSetTime)
+
+            val hours = controller.getTimeSetByUserInTriple().first
+            val minutes = controller.getTimeSetByUserInTriple().second
+
+            val selectedTime = buildString {
+                if (hours > 0) {
+                    append("$hours"+ "h")
+                    if (minutes > 0) {
+                        append(" ")
+                    }
+                }
+                if (minutes > 0) {
+                    append("$minutes" + "m")
+                }
+            }
+
+            if (selectedTime == "") {
+                changeNotificationTime.text = getString(R.string.set_notification_time)
+            }
+            else {
+                changeNotificationTime.text = getString(R.string.change_notification_time, selectedTime)
             }
         }
     }
