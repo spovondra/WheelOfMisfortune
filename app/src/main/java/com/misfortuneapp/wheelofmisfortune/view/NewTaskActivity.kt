@@ -198,7 +198,7 @@ class NewTaskActivity : AppCompatActivity() {
             activityTitleTextView.text = getString(R.string.new_task_activity,"$newTaskId")
             finishLayout.visibility = View.GONE
         } else {
-            activityTitleTextView.text  = getString(R.string.task_edit)
+            activityTitleTextView.text  = getString(R.string.edit_task)
             finishLayout.visibility = View.VISIBLE
         }
     }

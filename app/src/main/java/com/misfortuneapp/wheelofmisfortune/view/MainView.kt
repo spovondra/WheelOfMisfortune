@@ -103,15 +103,15 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         Log.d("counter", helpCounter.toString())
         if (helpCounter == 0 && controller.getAllTasks().isEmpty()) {
             buildGuideView (newTaskButton, "Přidej úlohu", (displayHeight*0.1).toFloat())
-            buttonSetTime.text = getString(R.string.button_set_time_of_notification)
+            buttonSetTime.text = getString(R.string.set_notification_time)
         }
         if (helpCounter == 1 && controller.getAllTasks().size == 1) {
             buildGuideView (buttonSetTime, "Nastav čas upozornění", (displayHeight*0.18).toFloat())
-            buttonSetTime.text = getString(R.string.button_set_time_of_notification)
+            buttonSetTime.text = getString(R.string.set_notification_time)
         }
         if (helpCounter == 3 && controller.getAllTasks().size == 1) {
             buildGuideView (countdownTimerTextView, "Po skončení odpočtu zatoč kolečkem!", (displayHeight*0.05).toFloat())
-            buttonSetTime.text = getString(R.string.button_change_time_of_notification)
+            buttonSetTime.text = getString(R.string.change_notification_time)
         }
     }
 
@@ -167,7 +167,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private suspend fun showNumberOfAllTasks() {
         val textNum: TextView = findViewById(R.id.textNum)
         textNum.text = getString(
-            R.string.your_tasks,
+            R.string.all_tasks,
             controller.getAllTasks().filter
                 { it.taskState != TaskState.DELETED }.size
         )
@@ -243,7 +243,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                     .filter { it.taskState != TaskState.DELETED }
                     .sortedBy { it.endTime }
 
-                textNumDrawn.text = getString(R.string.your_drawn_tasks, inProgressTasks.size)
+                textNumDrawn.text = getString(R.string.drawn_tasks, inProgressTasks.size)
 
                 // Vytvořte nový adaptér s aktuálním seznamem úkolů ve stavu IN_PROGRESS
                 val adapter = TaskAdapter(

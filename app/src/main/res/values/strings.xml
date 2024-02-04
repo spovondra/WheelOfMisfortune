@@ -2,42 +2,45 @@
     <string name="app_name">Wheel Of Misfortune</string>
     <string name="zero_points">0</string>
     <string name="zero_time">00:00</string>
-    <string name="wheel_spin_description">Wheel To Spin</string>
-    <string name="button_change_time_of_notification">Change notification time</string>
-    <string name="button_set_time_of_notification">Set notification time</string>
-    <string name="wheel_static_description">Static surroundings of the wheel</string>
-    <string name="button_add_description">Add Button</string>
+    <string name="spin_description">Spin the Wheel</string>
+    <string name="change_notification_time">Change Notification Time</string>
+    <string name="set_notification_time">Set Notification Time</string>
     <string name="priority_static">Priority:</string>
-    <string name="newTaskDescription">Task Description</string>
-    <string name="newTaskName">Task Name</string>
+    <string name="new_task_description">Task Description</string>
+    <string name="new_task_name">Task Name</string>
     <string name="icon_1">Icon 1</string>
     <string name="icon_2">Icon 2</string>
     <string name="icon_3">Icon 3</string>
     <string name="icon_4">Icon 4</string>
-    <string name="achievementsTitleText">Your achievements</string>
-    <string name="doneBtn">Done</string>
-    <string name="backBtn">Back</string>
-    <string name="taskDescription">Task Description</string>
-    <string name="iconTassk">Task Icon</string>
-    <string name="nameTask">Task Name</string>
-    <string name="medal_icon_des">Medal Icon</string>
-    <string name="daily_statistics">Tasks completed today: %.0f</string>
-    <string name="overall_statistics">"Total number of completed tasks: %.0f "</string>
+    <string name="achievements_title">Your Achievements</string>
+    <string name="task_description">Task Description</string>
+    <string name="task_name">Task Name</string>
+    <string name="daily_statistics">Tasks Completed Today: %.0f</string>
+    <string name="overall_statistics">Total Completed Tasks: %.0f</string>
     <string name="statistics_view">Statistics</string>
     <string name="new_task_activity">Task %1$s</string>
-    <string name="your_tasks">All tasks (%1$s):</string>
-    <string name="your_drawn_tasks">Tasks in Progress (%1$s):</string>
-    <string name="countdown_start">Countdown started.</string>
-    <string name="time_to_spin">Time to spin the wheel</string>
-    <string name="wheel_is_waiting">The wheel of misfortune is waiting for you.</string>
-    <string name="button_finish">Finish</string>
-    <string name="task_edit">Task Edit</string>
-    <string name="moreStatisticsText">Additional Statistics</string>
-    <string name="selected_priority">Selected Progress: %1$s</string>
-    <string name="selected_first_priority">Selected Progress: 1</string>
+    <string name="all_tasks">All Tasks (%1$s):</string>
+    <string name="drawn_tasks">Tasks in Progress (%1$s):</string>
+    <string name="countdown_start">Countdown Started.</string>
+    <string name="time_to_spin">Time to Spin the Wheel</string>
+    <string name="wheel_waiting">Wheel Waiting for You.</string>
+    <string name="finish_button">Finish</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="additional_statistics">Additional Statistics</string>
+    <string name="selected_priority">Selected Priority: %1$s</string>
+    <string name="selected_first_priority">Selected Priority: 1</string>
+    <string name="all_tasks_statistics">All Tasks</string>
 
-    <!-- Content -->
-    <string name="content_delete_button">Delete</string>
-    <string name="content_back_arrow_button">Back</string>
-    <string name="allTasksInStatistics">All tasks</string>
+    <!-- Content description -->
+    <string name="add_button_description">Add Button</string>
+    <string name="medal_icon_description">Medal Icon</string>
+    <string name="static_wheel_description">Static Surroundings of the Wheel</string>
+    <string name="delete_button_description">Delete</string>
+    <string name="task_icon_description">Task Icon</string>
+    <string name="back_arrow_description">Back</string>
+    <string name="show_hide_description">Show or Hide Content</string>
+
+    <!-- To Edit or Delete -->
+    <string name="done_button">Done</string>
+    <string name="back_button">Back</string>
 </resources>

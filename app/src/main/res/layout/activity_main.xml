@@ -63,7 +63,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/medal"
-                            android:contentDescription="@string/medal_icon_des"
+                            android:contentDescription="@string/medal_icon_description"
                             android:layout_gravity="center"/>
 
                         <View
@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:contentDescription="@string/wheel_spin_description"
+                    android:contentDescription="@string/wheel_waiting"
                     android:src="@drawable/wheel_spin"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -125,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:contentDescription="@string/wheel_static_description"
+                    android:contentDescription="@string/static_wheel_description"
                     android:src="@drawable/wheel_static" />
             </RelativeLayout>
 
@@ -148,7 +148,7 @@
                         android:layout_centerInParent="true"
                         android:background="@drawable/button_shape"
                         android:elevation="10dp"
-                        android:text="@string/button_change_time_of_notification"
+                        android:text="@string/change_notification_time"
                         android:textAppearance="?attr/textAppearanceBody2"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textSize="18sp" />
@@ -227,7 +227,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/circular_orange_button"
-        android:contentDescription="@string/button_add_description"
+        android:contentDescription="@string/add_button_description"
         android:elevation="8dp"
         android:scaleType="center"
         android:src="@drawable/ic_plus_icon" />

@@ -47,7 +47,7 @@ class NotificationHandler(private val context: Context) : Notification {
         val notificationBuilder = NotificationCompat.Builder(context, "info_channel")
             .setSmallIcon(R.drawable.medal)
             .setContentTitle(context.getString(R.string.time_to_spin))
-            .setContentText(context.getString(R.string.wheel_is_waiting))
+            .setContentText(context.getString(R.string.wheel_waiting))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
 
