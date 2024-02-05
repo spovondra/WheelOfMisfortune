@@ -216,6 +216,9 @@ class MainControllerImpl(
 
                     val finalText = "$currentPoints"
                     view.showUpdatedPoints(finalText)
+                    //setTaskDone(selectedTask)
+
+                    //view.showDrawnTasks()
 
                     // Odebrání vybrané úlohy z databáze
                     // model.removeTask(selectedTask)

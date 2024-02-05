@@ -47,9 +47,9 @@ data class Task(
      */
     var description: String,
     /**
-     * Počet bodů při splnění úkolu, defaultně nastaven na 5.
+     * Počet bodů při splnění úkolu.
      */
-    val points: Int = 0,
+    val points: Int = DEFAULT_POINTS,
     /**
      * Priorita úkolu.
      */
