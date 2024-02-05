@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.misfortuneapp.wheelofmisfortune.custom.guide
 
 import android.animation.Animator
