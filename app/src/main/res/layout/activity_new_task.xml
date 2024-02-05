@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/edittext_border"
-                android:hint="@string/new_task_name"
+                android:hint="@string/task_name"
                 android:importantForAutofill="no"
                 android:inputType="text"
                 android:maxLength="50"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittext_border"
                 android:gravity="top"
-                android:hint="@string/new_task_description"
+                android:hint="@string/task_description"
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine"
                 android:maxLength="200"
@@ -58,7 +58,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <Space
                 android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                 android:max="10"
                 android:progress="1"
                 android:progressDrawable="@drawable/seekbar_custom"
-                android:thumb="@android:color/transparent"/>
+                android:thumb="@android:color/transparent" />
 
             <TextView
                 android:id="@+id/textViewProgress"
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="13sp"
-                android:text="@string/selected_first_priority"/>
+                android:text="@string/selected_first_priority" />
 
             <Space
                 android:layout_width="match_parent"

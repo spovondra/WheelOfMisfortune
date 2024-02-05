@@ -2,7 +2,6 @@ package com.misfortuneapp.wheelofmisfortune.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,20 +12,31 @@ import kotlinx.coroutines.launch
 import com.misfortuneapp.wheelofmisfortune.model.TaskModelImpl
 import kotlinx.coroutines.DelicateCoroutinesApi
 
+/**
+ * Activity representing the details of a specific task.
+ */
 class TaskDetailsActivity : AppCompatActivity() {
 
     private lateinit var taskNameTextView: TextView
     private lateinit var taskDescriptionTextView: TextView
     private lateinit var backButton: Button
 
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     * this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     */
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_details)
 
+        // Initialize UI elements
         taskNameTextView = findViewById(R.id.taskName)
         taskDescriptionTextView = findViewById(R.id.taskDescription)
-        backButton = findViewById(R.id.buttonBack) // Assuming the ID for your bottom button is buttonBack
+        backButton =
+            findViewById(R.id.buttonBack) // Assuming the ID for your bottom button is buttonBack
 
         // Retrieve data from the intent
         val taskId = intent.getIntExtra("taskId", -1)
@@ -38,7 +48,6 @@ class TaskDetailsActivity : AppCompatActivity() {
                 val task = taskModel.getTaskById(taskId)
                 task?.let {
                     // Update UI with task details
-                    Log.d("TaskDetailsActivity", "Task ID!!!!!§: $taskId")
                     taskNameTextView.text = it.title
                     taskDescriptionTextView.text = it.toString()
                 }

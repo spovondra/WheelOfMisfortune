@@ -17,28 +17,49 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-// Adapter pro RecyclerView zobrazující seznam úkolů
+/**
+ * Adaptér pro RecyclerView zobrazující seznam úkolů
+ */
 class TaskAdapter(
     private val tasks: MutableList<Task>,  // Seznam úkolů
     private val onItemClick: (Task) -> Unit,  // Akce při kliknutí na položku
     private val mainController: MainController,  // Kontrolér pro interakci s daty a UI
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
+    /**
+     * ViewHolder pro jednotlivé položky v RecyclerView
+     */
     // ViewHolder pro jednotlivé položky v RecyclerView
     class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        /**
+         * TextView pro zobrazení nadpisu úkolu.
+         */
         val taskTitle: TextView = view.findViewById(R.id.taskTitle)
+
+        /**
+         * TextView pro zobrazení popisu úkolu.
+         */
         val taskDescription: TextView = view.findViewById(R.id.taskDescription)
+
+        /**
+         * ImageView pro zobrazení ikony úkolu.
+         */
         val taskIcon: ImageView = view.findViewById(R.id.taskIcon)
     }
 
-    // Metoda volaná při vytvoření ViewHolderu
+    /**
+     * Metoda volaná při vytvoření ViewHolderu
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         // Vytvoření nového ViewHolderu na základě definovaného rozložení
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
         return TaskViewHolder(view)
     }
 
-    // Metoda volaná při vytváření a aktualizaci obsahu ViewHolderu
+    /**
+     * Metoda volaná při vytváření a aktualizaci obsahu ViewHolderu
+     */
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         // Získání aktuálního úkolu ze seznamu
         val task = tasks[position]
@@ -58,6 +79,7 @@ class TaskAdapter(
                     R.drawable.rounded_corners
                 )
             }
+
             position == itemCount - 1 -> {
                 holder.itemView.background = ContextCompat.getDrawable(
                     holder.itemView.context,
@@ -71,6 +93,7 @@ class TaskAdapter(
                     R.drawable.bottom_rounded_corners
                 )
             }
+
             else -> {
                 // Pro všechny ostatní položky nenastavujte zaoblení
                 holder.itemView.background = ContextCompat.getDrawable(
@@ -83,33 +106,56 @@ class TaskAdapter(
         // Získání základní barvy
         val baseColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButton)
 
-// Nastavení barvy podle stavu úkolu s 20% průhledností
+        // Nastavení barvy podle stavu úkolu s 20% průhledností
         when (task.taskState) {
             TaskState.DONE -> {
-                val doneColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButtonDone)
+                val doneColor =
+                    ContextCompat.getColor(holder.itemView.context, R.color.colorButtonDone)
                 val blendedColor = ColorUtils.blendARGB(baseColor, doneColor, 0.2f)
-                holder.itemView.background?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(blendedColor, BlendModeCompat.SRC_IN)
+                holder.itemView.background?.colorFilter =
+                    BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                        blendedColor,
+                        BlendModeCompat.SRC_IN
+                    )
             }
+
             TaskState.AVAILABLE -> {
-                val availableColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButtonAvailable)
+                val availableColor =
+                    ContextCompat.getColor(holder.itemView.context, R.color.colorButtonAvailable)
                 val blendedColor = ColorUtils.blendARGB(baseColor, availableColor, 0.2f)
-                holder.itemView.background?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(blendedColor, BlendModeCompat.SRC_IN)
+                holder.itemView.background?.colorFilter =
+                    BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                        blendedColor,
+                        BlendModeCompat.SRC_IN
+                    )
             }
+
             TaskState.DELETED -> {
-                val deletedColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButtonDeleted)
+                val deletedColor =
+                    ContextCompat.getColor(holder.itemView.context, R.color.colorButtonDeleted)
                 val blendedColor = ColorUtils.blendARGB(baseColor, deletedColor, 0.2f)
-                holder.itemView.background?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(blendedColor, BlendModeCompat.SRC_IN)
+                holder.itemView.background?.colorFilter =
+                    BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                        blendedColor,
+                        BlendModeCompat.SRC_IN
+                    )
             }
+
             else -> {
-                val inProgressColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButtonInProgress)
+                val inProgressColor =
+                    ContextCompat.getColor(holder.itemView.context, R.color.colorButtonInProgress)
                 val blendedColor = ColorUtils.blendARGB(baseColor, inProgressColor, 0.2f)
-                holder.itemView.background?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(blendedColor, BlendModeCompat.SRC_IN)
+                holder.itemView.background?.colorFilter =
+                    BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                        blendedColor,
+                        BlendModeCompat.SRC_IN
+                    )
             }
         }
 
         // Nastavení okraje mezi položkami
         val layoutParams = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.setMargins(14, 2,14,2)
+        layoutParams.setMargins(14, 2, 14, 2)
         holder.itemView.layoutParams = layoutParams
 
         // Nastavení akce při kliknutí na položku
@@ -118,10 +164,14 @@ class TaskAdapter(
         }
     }
 
-    // Metoda vracející počet položek v seznamu
+    /**
+     * Metoda vracející počet položek v seznamu
+     */
     override fun getItemCount() = tasks.size
 
-    // Metoda pro odstranění položky z RecyclerView a databáze
+    /**
+     * Metoda pro odstranění položky z RecyclerView a databáze
+     */
     @OptIn(DelicateCoroutinesApi::class)
     fun itemDeleted(position: Int) {
         if (position >= 0 && position < tasks.size) {
@@ -134,9 +184,11 @@ class TaskAdapter(
         }
     }
 
-    // Metoda pro nastavení položky DONE
+    /**
+     * Metoda pro nastavení položky DONE
+     */
     @OptIn(DelicateCoroutinesApi::class)
-    fun itemDone (position: Int) {
+    fun itemDone(position: Int) {
         if (position >= 0 && position < tasks.size) {
             val taskDone = tasks[position]
             tasks.removeAt(position)

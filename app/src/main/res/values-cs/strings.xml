@@ -2,19 +2,16 @@
     <string name="app_name">Kolečko neštěstí</string>
     <string name="zero_points">0</string>
     <string name="zero_time">00:00</string>
-    <string name="spin_description">Kolo k otočení</string>
     <string name="change_notification_time">Změnit čas upozornění (%s)</string>
     <string name="set_notification_time">Nastavit čas upozornění</string>
     <string name="priority_static">Priorita:</string>
-    <string name="new_task_description">Popis úkolu</string>
-    <string name="new_task_name">Název úkolu</string>
     <string name="icon_1">Ikona 1</string>
     <string name="icon_2">Ikona 2</string>
     <string name="icon_3">Ikona 3</string>
     <string name="icon_4">Ikona 4</string>
     <string name="achievements_title">Vaše úspěchy</string>
-    <string name="task_description">Popis úkolu</string>
     <string name="task_name">Název úkolu</string>
+    <string name="task_description">Popis úkolu</string>
     <string name="daily_statistics">Dnešní splněné úlohy: %.0f</string>
     <string name="overall_statistics">Celkem splněných úkolů: %.0f</string>
     <string name="statistics_view">Statistiky</string>
@@ -40,7 +37,5 @@
     <string name="back_arrow_description">Zpět</string>
     <string name="show_hide_description">Zobrazit nebo skrýt obsah</string>
 
-    <!-- To Edit or Delete -->
-    <string name="done_button">Hotovo</string>
-    <string name="back_button">Zpět</string>
+    <!-- To Edit -->
 </resources>

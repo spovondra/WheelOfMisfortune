@@ -15,7 +15,7 @@
         android:src="@drawable/ic_launcher_foreground"
         android:padding="8dp"
         android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"/>
+        android:layout_marginBottom="2dp" />
 
     <LinearLayout
         android:paddingStart="16dp"
@@ -32,7 +32,8 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             android:textSize="22sp"
-            android:layout_marginTop="-2dp" />
+            android:layout_marginTop="-2dp"
+            tools:ignore="NegativeMargin" />
 
         <TextView
             android:id="@+id/taskDescription"

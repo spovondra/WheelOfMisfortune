@@ -9,19 +9,39 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.misfortuneapp.wheelofmisfortune.R
 
-// Rozhraní pro zobrazení notifikace
+/**
+ * Rozhraní pro zobrazení notifikace. Definuje metody pro zobrazení notifikace a vytvoření notifikačního kanálu.
+ */
 interface Notification {
+    /**
+     * Metoda pro zobrazení notifikace.
+     */
     fun showNotification()
+
+    /**
+     * Metoda pro vytvoření notifikačního kanálu.
+     *
+     * @param notificationManager Instance `NotificationManager` pro správu notifikací.
+     */
     fun createNotificationChannel(notificationManager: NotificationManager)
 }
 
-// Implementace rozhraní Notification pro zobrazování notifikací
+/**
+ * Implementace rozhraní `Notification` pro zobrazování notifikací.
+ *
+ * @property context Kontext aktivity nebo aplikace.
+ * @constructor Inicializuje třídu `NotificationHandler` s daným kontextem.
+ */
 class NotificationHandler(private val context: Context) : Notification {
 
-    // Metoda pro zobrazení notifikace
+    /**
+     * Metoda pro zobrazení notifikace. Vytvoří notifikační kanál, intent pro spuštění hlavní aktivity
+     * a odesílá notifikaci s odpovídajícím obsahem.
+     */
     override fun showNotification() {
         // Získání systémové služby pro správu notifikací
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Vytvoření notifikačního kanálu
         createNotificationChannel(notificationManager)
@@ -54,7 +74,11 @@ class NotificationHandler(private val context: Context) : Notification {
         notificationManager.notify(1, notificationBuilder.build())
     }
 
-    // Metoda pro vytvoření notifikačního kanálu
+    /**
+     * Metoda pro vytvoření notifikačního kanálu. Vytvoří notifikační kanál s definovanými vlastnostmi a přidá ho do systému.
+     *
+     * @param notificationManager Instance `NotificationManager` pro správu notifikací.
+     */
     override fun createNotificationChannel(notificationManager: NotificationManager) {
         // Podmínka pro kontrolu verze Androidu
         // Vytvoření notifikačního kanálu

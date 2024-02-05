@@ -9,5 +9,5 @@
     <item
         android:drawable="@drawable/ic_action_cart"
         android:height="48dp"
-        android:width="48dp"/>
+        android:width="48dp" />
 </layer-list>

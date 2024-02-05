@@ -4,7 +4,7 @@
     android:viewportWidth="960"
     android:viewportHeight="960"
     android:tint="@color/inverted">
-  <path
-      android:fillColor="?attr/colorButtonNormal"
-      android:pathData="M480,602.15L253.85,376L296,333.85L480,517.85L664,333.85L706.15,376L480,602.15Z"/>
+    <path
+        android:fillColor="?attr/colorButtonNormal"
+        android:pathData="M480,602.15L253.85,376L296,333.85L480,517.85L664,333.85L706.15,376L480,602.15Z" />
 </vector>

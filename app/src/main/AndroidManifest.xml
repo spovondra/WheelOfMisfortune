@@ -28,21 +28,18 @@
             android:name=".view.StatisticsViewImp"
             android:exported="true"
             android:label="Statistics Activity"
-            android:theme="@style/Theme.KoleckoNestestiWindows">
-        </activity>
+            android:theme="@style/Theme.KoleckoNestestiWindows" />
         <activity
             android:name=".view.NewTaskActivity"
             android:exported="true"
             android:label="Nová úloha"
-            android:theme="@style/Theme.KoleckoNestestiWindows">
-        </activity>
+            android:theme="@style/Theme.KoleckoNestestiWindows" />
         <activity
             android:name=".view.TaskDetailsActivity"
             android:exported="true"
             android:label="Denní úloha"
-            android:theme="@style/Theme.KoleckoNestesti">
-        </activity>
-            
+            android:theme="@style/Theme.KoleckoNestesti" />
+
         <service
             android:name=".custom.BroadcastService"
             android:enabled="true"

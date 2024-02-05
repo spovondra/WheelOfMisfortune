@@ -12,7 +12,7 @@
         android:layout_height="25dp"
         android:src="@drawable/ic_baseline_arrow_back_ios_24"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="12dp" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/btn_next"
@@ -22,7 +22,7 @@
         android:layout_alignParentTop="true"
         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"/>
+        android:layout_marginEnd="12dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"
@@ -34,6 +34,6 @@
         android:textStyle="bold"
         android:gravity="center"
         android:layout_toStartOf="@id/btn_next"
-        android:layout_toEndOf="@id/btn_previous"/>
+        android:layout_toEndOf="@id/btn_previous" />
 
 </RelativeLayout>

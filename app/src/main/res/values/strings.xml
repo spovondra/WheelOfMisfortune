@@ -2,12 +2,9 @@
     <string name="app_name">Wheel Of Misfortune</string>
     <string name="zero_points">0</string>
     <string name="zero_time">00:00</string>
-    <string name="spin_description">Spin the Wheel</string>
     <string name="change_notification_time">Change Notification Time (%s)</string>
     <string name="set_notification_time">Set Notification Time</string>
     <string name="priority_static">Priority:</string>
-    <string name="new_task_description">Task Description</string>
-    <string name="new_task_name">Task Name</string>
     <string name="icon_1">Icon 1</string>
     <string name="icon_2">Icon 2</string>
     <string name="icon_3">Icon 3</string>
@@ -40,7 +37,7 @@
     <string name="back_arrow_description">Back</string>
     <string name="show_hide_description">Show or Hide Content</string>
 
-    <!-- To Edit or Delete -->
-    <string name="done_button">Done</string>
-    <string name="back_button">Back</string>
+    <string name="notification_channel_name" translatable="false">WheelOfMisfortune_notification_channel</string>
+
+    <!-- To Edit -->
 </resources>

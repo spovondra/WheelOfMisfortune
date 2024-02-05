@@ -26,33 +26,104 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-// Rozhraní definující hlavní funkce řídící aplikaci
+/**
+ * Rozhraní definující hlavní funkce řídící aplikaci.
+ */
 interface MainController {
-    fun setIsWheelSpinning(isIt: Boolean) // Nastaví příznak, zda se kolo otáčí
-    fun getIsWheelSpinning(): Boolean // Vrátí informaci, zda se kolo otáčí
-    fun doWithTaskDialog() // Provede akce související s dialogem úlohy
-    suspend fun getAllTasks(): List<Task> // Asynchronně získá všechny úlohy
-    fun loadPointsFromDatabase() // Načte body z databáze
-    fun startTimer(taskId: Int) // Spustí časovač pro úlohu
-    fun stopTimer() // Zastaví časovač
-    suspend fun setTaskDone(selectedTask: Task) // Nastaví úlohu na splněnou
-    suspend fun setTime(selectedTimeInMillis: Long) // Asynchronně nastaví čas úlohy
-    suspend fun setFirstTime() // Asynchronně nastaví první čas (při prvním spuštění)
-    suspend fun getTime(): TimeRecord // Asynchronně získá časový záznam
-    suspend fun getTasksInStates(taskState: TaskState): List<Task> // Asynchronně získá úlohy v daném stavu
+    /**
+     * Nastaví příznak, zda se kolo otáčí.
+     */
+    fun setIsWheelSpinning(isIt: Boolean)
+
+    /**
+     * Vrátí informaci, zda se kolo otáčí.
+     */
+    fun getIsWheelSpinning(): Boolean
+
+    /**
+     * Provede akce související s dialogem úlohy.
+     */
+    fun doWithTaskDialog()
+
+    /**
+     * Asynchronně získá všechny úlohy.
+     */
+    suspend fun getAllTasks(): List<Task>
+
+    /**
+     * Načte body z databáze.
+     */
+    fun loadPointsFromDatabase()
+
+    /**
+     * Spustí časovač pro úlohu.
+     */
+    fun startTimer(taskId: Int)
+
+    /**
+     * Zastaví časovač.
+     */
+    fun stopTimer()
+
+    /**
+     * Asynchronně nastaví úlohu na splněnou.
+     */
+    suspend fun setTaskDone(selectedTask: Task)
+
+    /**
+     * Asynchronně nastaví čas úlohy.
+     */
+    suspend fun setTime(selectedTimeInMillis: Long)
+
+    /**
+     * Asynchronně nastaví první čas (při prvním spuštění).
+     */
+    suspend fun setFirstTime()
+
+    /**
+     * Asynchronně získá časový záznam.
+     */
+    suspend fun getTime(): TimeRecord
+
+    /**
+     * Asynchronně získá úlohy v daném stavu.
+     */
+    suspend fun getTasksInStates(taskState: TaskState): List<Task>
+
+    /**
+     * Otevře obrazovku s podrobnostmi úkolu.
+     */
     fun openTaskDetailsScreen(task: Task, context: Context)
+
+    /**
+     * Konfiguruje funkcionalitu přejetí prstem pro mazání a úpravu úkolů.
+     */
     fun swipeHelperToDeleteAndEdit(
         recyclerView: RecyclerView,
         enableDone: Boolean,
         context: Context
     )
 
+    /**
+     * Asynchronně získá splněné úkoly pro konkrétní datum.
+     */
     suspend fun getDoneTasksForDate(dateString: String): List<Task>
+
+    /**
+     * Asynchronně nastaví úlohu jako smazanou.
+     */
     suspend fun setTaskDeleted(task: Task)
+
+    /**
+     *  Asynchronně získá čas úlohy nastavený uživatelem ve formátu trojice.
+     */
     suspend fun getTimeSetByUserInTriple(): Triple<Long, Long, Long>
 }
 
-// Implementace rozhraní MainController
+/**
+ * Implementace rozhraní MainController
+ */
+@SuppressLint("Registered")
 class MainControllerImpl(
     private val context: Context,
     private val view: MainView, // Instance pro interakci s uživatelským rozhraním
@@ -65,7 +136,9 @@ class MainControllerImpl(
     private var lastAddedDate: String = getCurrentDate() // Poslední datum přidání bodů
     private var countdownServiceIntent: Intent? = null
 
-    // Přijímač pro zachycení událostí z BroadcastService (např. časovač)
+    /**
+     *  Přijímač pro zachycení událostí z BroadcastService (např. časovač)
+     */
     @OptIn(DelicateCoroutinesApi::class)
     val countdownReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -90,7 +163,7 @@ class MainControllerImpl(
                         }
                     }
 
-                        // Formátování zbývajícího času
+                    // Formátování zbývajícího času
                     text = if (hours.toInt() == 0) {
                         String.format("%02d:%02d", minutes, seconds)
                     } else {
@@ -111,7 +184,9 @@ class MainControllerImpl(
         }
     }
 
-    // Metoda pro nastavení příznaku, zda se kolo otáčí
+    /**
+     * Metoda pro nastavení příznaku, zda se kolo otáčí
+     */
     override fun setIsWheelSpinning(isIt: Boolean) {
         isWheelSpinning = isIt
     }
@@ -141,9 +216,6 @@ class MainControllerImpl(
 
                     val finalText = "$currentPoints"
                     view.showUpdatedPoints(finalText)
-                    //setTaskDone(selectedTask)
-
-                    //view.showDrawnTasks()
 
                     // Odebrání vybrané úlohy z databáze
                     // model.removeTask(selectedTask)
@@ -223,7 +295,7 @@ class MainControllerImpl(
     }
 
     // Metoda pro výpočet zbývajícího času z millis
-    private fun calculateRemainingTime(remainingTimeMillis: Long): Triple<Long, Long, Long> {
+    internal fun calculateRemainingTime(remainingTimeMillis: Long): Triple<Long, Long, Long> {
         val remainingSeconds = remainingTimeMillis / 1000
         val remainingMinutes = remainingSeconds / 60
         val remainingHours = remainingMinutes / 60
@@ -246,11 +318,12 @@ class MainControllerImpl(
         return model.getTasksByState(taskState)
     }
 
+    // Metoda pro otevření obrazovky s podrobnostmi úkolu
     override fun openTaskDetailsScreen(task: Task, context: Context) {
-        view.openTaskDetailsScreen(task,context)
+        view.openTaskDetailsScreen(task, context)
     }
 
-    // Provedení akcí po swipu
+    // Konfigurace funkcionalit přejetí prstem pro mazání a úpravu úkolů
     override fun swipeHelperToDeleteAndEdit(recyclerView: RecyclerView, enableDone: Boolean, context: Context) {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -312,7 +385,6 @@ class MainControllerImpl(
         // Zvýšení bodů na základě výchozích bodů úlohy
         currentPoints += selectedTask.points
 
-
         val finalText = "$currentPoints"
         view.showUpdatedPoints(finalText)
 
@@ -359,10 +431,12 @@ class MainControllerImpl(
     }
 
     // Metoda pro asynchronní získání délky úlohy nastavené uživatelem
-    private suspend fun getTimeSetByUser(): Long {
+    internal suspend fun getTimeSetByUser(): Long {
         return getTime().endTime - getTime().startTime
     }
 
+
+     // Metoda pro získání délky úlohy nastavené uživatelem ve formátu trojice
     override suspend fun getTimeSetByUserInTriple(): Triple<Long, Long, Long> {
         return calculateRemainingTime(getTimeSetByUser())
     }

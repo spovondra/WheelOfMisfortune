@@ -21,15 +21,32 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-// Třída reprezentující službu pro odpočet času
+/**
+ * Služba reprezentující odpočet času.
+ */
 class BroadcastService : Service() {
 
-    // Konstanty pro ID kanálu, akci vysílání a extra úkol ID
+    /**
+     * Konstanty pro ID kanálu, akci vysílání a extra úkol ID.
+     */
     companion object {
-        const val CHANNEL_ID = "WheelOfMisfortune_id"
-        const val COUNTDOWN_BR = "com.misfortuneapp.wheelofmisfortune.custom.countdown_br"
-        const val EXTRA_TIME_ID = "extra_wheel_id"
+        /**
+         * Identifikátor kanálu pro oznámení.
+         */
+        const val CHANNEL_ID: String = "WheelOfMisfortune_notification_channel"
+
+        /**
+         * Akce vysílání pro odpočet času.
+         */
+        const val COUNTDOWN_BR: String =
+            "com.misfortuneapp.wheelofmisfortune.custom.countdown_broadcast"
+
+        /**
+         * Extra klíč pro předání ID úkolu.
+         */
+        const val EXTRA_TIME_ID: String = "extra_wheel_of_misfortune_task_id"
     }
+
 
     // Proměnné pro CountDownTimer a Intent
     private lateinit var br: CountDownTimer
@@ -42,7 +59,9 @@ class BroadcastService : Service() {
     // Variable to track the currently running timer ID
     private var currentRunningTimerId: Int? = null
 
-    // Metoda volaná při vytvoření služby
+    /**
+     * Metoda volaná při vytvoření služby.
+     */
     @SuppressLint("ForegroundServiceType")
     override fun onCreate() {
         super.onCreate()
@@ -63,14 +82,16 @@ class BroadcastService : Service() {
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.countdown_start))
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.medal)
             .setContentIntent(contentIntent)  // Přidání PendingIntent pro akci kliknutí
             .build()
 
         startForeground(321, notification)
     }
 
-    // Metoda volaná při spuštění služby
+    /**
+     * Metoda volaná při spuštění služby.
+     */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
 
@@ -96,7 +117,9 @@ class BroadcastService : Service() {
         return START_STICKY
     }
 
-    // Funkce pro spuštění odpočítávání
+    /**
+     * Funkce pro spuštění odpočítávání.
+     */
     @OptIn(DelicateCoroutinesApi::class)
     private fun startTimer(timeId: Int) {
         // Přístup k databázi úkolů
@@ -126,7 +149,9 @@ class BroadcastService : Service() {
                 }
             }
 
-            // Voláno po skončení časovače
+            /**
+             * Voláno po skončení časovače.
+             */
             override fun onFinish() {
                 GlobalScope.launch(Dispatchers.Main) {
                     // Odešlete vysílání oznamující, že časovač skončil
@@ -151,7 +176,9 @@ class BroadcastService : Service() {
         br.start()
     }
 
-    // Funkce na zastavení časovače
+    /**
+     * Funkce na zastavení časovače.
+     */
     private fun stopTimer(timerId: Int) {
         if (::br.isInitialized) {
             br.cancel()
@@ -163,7 +190,9 @@ class BroadcastService : Service() {
         }
     }
 
-    // Voláno pro zrušení služby
+    /**
+     * Voláno pro zrušení služby.
+     */
     override fun onDestroy() {
         // Pokud je časovač inicializován, zruší se
         if (::br.isInitialized) {
@@ -176,7 +205,9 @@ class BroadcastService : Service() {
         super.onDestroy()
     }
 
-    // Funkce pro vytvoření kanálu oznámení
+    /**
+     * Funkce pro vytvoření kanálu oznámení.
+     */
     private fun createNotificationChannel() {
         val name = "WheelOfMisfortuneService"
         val descriptionText = "Kanál pro foreground službu Wheel Of Misfortune"
@@ -192,8 +223,10 @@ class BroadcastService : Service() {
         notificationManager.createNotificationChannel(channel)
     }
 
-    // Kontrola, za aplikace běží na popředí (aby se nevyhazovaly zbytečně notifikace)
-    private fun isAppOnForeground(context: Context): Boolean {
+    /**
+     * Kontrola, zda aplikace běží na popředí (aby se nevyhazovaly zbytečně notifikace).
+     */
+    internal fun isAppOnForeground(context: Context): Boolean {
         val activityManager =
             context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val appProcesses = activityManager.runningAppProcesses ?: return false
@@ -207,14 +240,18 @@ class BroadcastService : Service() {
         return false
     }
 
-    // Funkce na smazání starých oznámení
+    /**
+     * Funkce na smazání starých oznámení.
+     */
     private fun cancelAllNotifications() {
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
     }
 
-    // Voláno při propojění služby s aktivitou
+    /**
+     * Voláno při propojení služby s aktivitou.
+     */
     override fun onBind(intent: Intent?): IBinder? {
         return null // Zatím nedefinováno
     }

@@ -41,12 +41,29 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ *
+ */
 interface StatisticsView {
+    /**
+     *
+     */
     fun createBarChart(entries: List<BarEntry>, formattedDateStrings: Array<String>)
+
+    /**
+     *
+     */
     fun updateStatistics(dailyStatistics: Double, overallStatistics: Double)
+
+    /**
+     *
+     */
     fun viewAfterClick(formattedDateStrings: Array<String>)
 }
 
+/**
+ *
+ */
 class StatisticsViewImp : AppCompatActivity(), StatisticsView {
     private lateinit var barChart: BarChart
     private lateinit var controller: StatisticsController
@@ -54,6 +71,9 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
     private lateinit var mainController: MainController
     private lateinit var mainView: MainView
 
+    /**
+     *
+     */
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +92,8 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         val taskRepository: TaskModel = TaskModelImpl(this)
         controller = StatisticsControllerImp(DataRepositoryImpl(this), this)
         mainView = MainViewImp()
-        mainController = MainControllerImpl(mainView as MainViewImp, mainView, taskRepository, controller)
+        mainController =
+            MainControllerImpl(mainView as MainViewImp, mainView, taskRepository, controller)
 
         // Přidání MonthPickeru do layoutu
         val monthPicker = findViewById<MonthPicker>(R.id.monthPicker)
@@ -121,7 +142,9 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         }
     }
 
-    // Metoda pro vytvoření BarChartu se zadanými daty a formátovanými popisky
+    /**
+     *
+     */// Metoda pro vytvoření BarChartu se zadanými daty a formátovanými popisky
     override fun createBarChart(entries: List<BarEntry>, formattedDateStrings: Array<String>) {
         val dataSet = BarDataSet(entries, "Počet splněných úkolů")
 
@@ -180,6 +203,9 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         toggleAdditionalStatisticsVisibility(entries.isNotEmpty())
     }
 
+    /**
+     *
+     */
     override fun viewAfterClick(formattedDateStrings: Array<String>) {
         val recyclerView: RecyclerView = findViewById(R.id.statisticsRecyclerView)
         val graphSpace: View = findViewById(R.id.graphSpace)
@@ -200,7 +226,12 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
                         // Zobrazení hotových úkolů ve vhodném UI prvku (RecyclerView nebo jiném)
                         val adapter = TaskAdapter(
                             doneTasksForSelectedDate.toMutableList(),
-                            { selectedTask -> mainController.openTaskDetailsScreen(selectedTask, this@StatisticsViewImp) },
+                            { selectedTask ->
+                                mainController.openTaskDetailsScreen(
+                                    selectedTask,
+                                    this@StatisticsViewImp
+                                )
+                            },
                             mainController,
                         )
                         recyclerView.adapter = adapter
@@ -219,7 +250,9 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         barChart.invalidate()
     }
 
-    // Metoda pro aktualizaci statistiky v uživatelském rozhraní
+    /**
+     *
+     */// Metoda pro aktualizaci statistiky v uživatelském rozhraní
     override fun updateStatistics(dailyStatistics: Double, overallStatistics: Double) {
         val dailyStatisticsText = findViewById<TextView>(R.id.dailyStatisticsText)
         val overallStatisticsText = findViewById<TextView>(R.id.overallStatisticsText)
@@ -272,7 +305,12 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
                 // Zobrazení hotových úkolů ve vhodném UI prvku (RecyclerView nebo jiném)
                 val adapter = TaskAdapter(
                     allTasks.toMutableList(),
-                    { selectedTask -> mainController.openTaskDetailsScreen(selectedTask, this@StatisticsViewImp) },
+                    { selectedTask ->
+                        mainController.openTaskDetailsScreen(
+                            selectedTask,
+                            this@StatisticsViewImp
+                        )
+                    },
                     mainController,
                 )
                 allTaskList.adapter = adapter
@@ -280,7 +318,9 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         }
     }
 
-    // Metoda pro zpětnou navigaci v ActionBaru
+    /**
+     *
+     */// Metoda pro zpětnou navigaci v ActionBaru
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true

@@ -9,6 +9,12 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.misfortuneapp.wheelofmisfortune.R
 
+/**
+ * Vlastní komponenta pro kruhový průběh postupu.
+ *
+ * @param context Kontext aktivity nebo aplikace.
+ * @param attrs Atributy XML prvku, pokud jsou k dispozici.
+ */
 class CircularProgressBar(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private val circlePaint = Paint()   // Paint pro kreslení kruhu (okraje)
@@ -20,19 +26,33 @@ class CircularProgressBar(context: Context, attrs: AttributeSet) : View(context,
         initializePaints()
     }
 
+    /**
+     * Inicializuje vlastnosti Paint pro kruh a oblouk.
+     */
     private fun initializePaints() {
         // Nastavení vlastností pro kreslení okraje kruhu
         circlePaint.isAntiAlias = true
-        circlePaint.color = ContextCompat.getColor(context, R.color.background) // Barva okraje (opravena deprecated metoda)
+        circlePaint.color = ContextCompat.getColor(
+            context,
+            R.color.background
+        ) // Barva okraje
         circlePaint.style = Paint.Style.STROKE  // Styl kreslení (okraje)
 
         // Nastavení vlastností pro kreslení průběhu
         arcPaint.isAntiAlias = true
-        arcPaint.color = ContextCompat.getColor(context, android.R.color.holo_green_light) // Barva průběhu (opravena deprecated metoda)
+        arcPaint.color = ContextCompat.getColor(
+            context,
+            android.R.color.holo_green_light
+        ) // Barva průběhu
         arcPaint.style = Paint.Style.STROKE  // Styl kreslení (průběhu)
         arcPaint.strokeCap = Paint.Cap.ROUND  // Zakončení průběhu zaoblením
     }
 
+    /**
+     * Metoda volaná při vykreslování view.
+     *
+     * @param canvas Plátno pro kreslení.
+     */
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
@@ -57,13 +77,21 @@ class CircularProgressBar(context: Context, attrs: AttributeSet) : View(context,
         canvas.drawArc(rectF, -90f, angle, false, arcPaint)
     }
 
-    // Metoda pro nastavení aktuální hodnoty postupu
+    /**
+     * Nastaví aktuální hodnotu postupu.
+     *
+     * @param progress Hodnota postupu v procentech.
+     */
     fun setProgress(progress: Int) {
         this.progress = progress
         invalidate()  // Znovu vykreslit view po změně hodnoty
     }
 
-    // Metoda pro nastavení dynamické šířky pruhu na základě rozměrů obrazovky
+    /**
+     * Nastaví dynamickou šířku pruhu na základě rozměrů obrazovky.
+     *
+     * @param size Velikost obrazovky.
+     */
     private fun adjustStrokeWidth(size: Float) {
         arcPaint.strokeWidth = size * 0.025f
     }

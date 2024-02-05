@@ -11,6 +11,12 @@ import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Vlastní ovládací prvek pro výběr měsíce a roku.
+ *
+ * @param context Kontext aktivity nebo aplikace.
+ * @param attrs Atributy XML prvku (nepoužívá se v této fázi).
+ */
 class MonthPicker(context: Context, attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
 
     private var currentDate: Calendar = Calendar.getInstance()
@@ -53,15 +59,31 @@ class MonthPicker(context: Context, attrs: AttributeSet? = null) : LinearLayout(
         }
     }
 
+    /**
+     * Nastaví rozsah datumů pro výběr.
+     *
+     * @param minDate Minimální datum ve formátu "MM.yyyy".
+     * @param maxDate Maximální datum ve formátu "MM.yyyy".
+     */
     fun setDateRange(minDate: String, maxDate: String) {
         this.minDate = parseDate(minDate)
         this.maxDate = parseDate(maxDate)
     }
 
+    /**
+     * Vrátí aktuálně vybrané datum jako text ve formátu "MM.yyyy".
+     *
+     * @return Textová reprezentace aktuálně vybraného data.
+     */
     fun getSelectedDateAsString(): String {
         return SimpleDateFormat("MM.yyyy", Locale.getDefault()).format(currentDate.time)
     }
 
+    /**
+     * Nastaví posluchače změny data.
+     *
+     * @param listener Funkce, která se zavolá při změně data.
+     */
     fun setDateChangeListener(listener: (String) -> Unit) {
         dateChangeListener = listener
     }

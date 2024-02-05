@@ -22,6 +22,9 @@ import com.misfortuneapp.wheelofmisfortune.model.TaskState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/**
+ *
+ */
 class NewTaskActivity : AppCompatActivity() {
 
     private lateinit var mainView: MainView
@@ -40,6 +43,9 @@ class NewTaskActivity : AppCompatActivity() {
     private var newTaskId: Int = 0
     private var taskIdFromIntent = 0
 
+    /**
+     *
+     */
     @SuppressLint("InflateParams", "CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +85,8 @@ class NewTaskActivity : AppCompatActivity() {
                 selectedImageView?.isSelected = true
             } else {
                 // Vytvoř nový úkol
-                val allTasks = newTaskController.getAllTasks().filter { it.taskState != TaskState.DELETED }
+                val allTasks =
+                    newTaskController.getAllTasks().filter { it.taskState != TaskState.DELETED }
                 if (allTasks.isNotEmpty()) {
                     taskId = allTasks.last().id + 1
                     newTaskId = allTasks.size + 1
@@ -164,7 +171,8 @@ class NewTaskActivity : AppCompatActivity() {
         icon4.setOnClickListener { onIconClick(icon4) }
 
         // Set up custom action bar button click listener
-        val customActionBarButton = layoutInflater.inflate(R.layout.custom_action_bar_button, FrameLayout(this))
+        val customActionBarButton =
+            layoutInflater.inflate(R.layout.custom_action_bar_button, FrameLayout(this))
         supportActionBar?.customView = customActionBarButton
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.elevation = 0f
@@ -174,8 +182,7 @@ class NewTaskActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     currentTask?.let { deleteTask(it) }
                 }
-            }
-            else {
+            } else {
                 finish()
             }
         }
@@ -190,15 +197,15 @@ class NewTaskActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateActivityTitle() {
+    internal fun updateActivityTitle() {
         val activityTitleTextView: TextView = findViewById(R.id.activityTitleTextView)
         val finishLayout: FrameLayout = findViewById(R.id.finishLayout)
 
         if (taskName.isNullOrBlank()) {
-            activityTitleTextView.text = getString(R.string.new_task_activity,"$newTaskId")
+            activityTitleTextView.text = getString(R.string.new_task_activity, "$newTaskId")
             finishLayout.visibility = View.GONE
         } else {
-            activityTitleTextView.text  = getString(R.string.edit_task)
+            activityTitleTextView.text = getString(R.string.edit_task)
             finishLayout.visibility = View.VISIBLE
         }
     }
@@ -219,12 +226,12 @@ class NewTaskActivity : AppCompatActivity() {
         saveTask()
     }
 
-    private fun saveTask() {
+    internal fun saveTask() {
         if (!isTaskCreated) {
             taskName = taskNameEditText.text.toString()
             val taskDescription = taskDescriptionEditText.text.toString()
 
-            if (taskName!!.isNotBlank()) {
+            if ((taskName ?: return).isNotBlank()) {
                 isTaskCreated = true
 
                 lifecycleScope.launch {
@@ -240,14 +247,15 @@ class NewTaskActivity : AppCompatActivity() {
                         updateActivityTitle()
 
                         newTaskController.addNewTask(
-                            title = taskName!!,
+                            title = taskName ?: return@launch,
                             description = taskDescription,
                             priority = taskPriority.progress,
                             iconResId = selectedIconResId
                         )
 
                         // Nastav aktuální úkol
-                        currentTask = newTaskController.getTaskById(newTaskController.getAllTasks().last().id)
+                        currentTask =
+                            newTaskController.getTaskById(newTaskController.getAllTasks().last().id)
                     }
 
                     isTaskCreated = false

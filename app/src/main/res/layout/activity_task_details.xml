@@ -1,5 +1,4 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,7 +24,8 @@
                 android:layout_height="59dp"
                 android:background="@drawable/edittext_border"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp" />
+                android:paddingRight="16dp"
+                android:textIsSelectable="true" />
 
             <View
                 android:layout_width="match_parent"
@@ -42,7 +42,8 @@
                 android:maxLength="200"
                 android:paddingLeft="16dp"
                 android:paddingTop="8dp"
-                android:paddingRight="16dp" />
+                android:paddingRight="16dp"
+                android:textIsSelectable="true" />
 
             <View
                 android:layout_width="match_parent"
@@ -53,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_half_circle_button_done"
                 android:gravity="center"
-                android:text="@string/done_button"
+                android:text="OK"
                 android:textColor="#FFFFFF" />
 
             <Button
@@ -63,7 +64,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/rounded_half_circle_button_back"
                 android:gravity="center"
-                android:text="@string/back_button"
+                android:text="Back"
                 android:textColor="#FFFFFF" />
         </LinearLayout>
     </ScrollView>

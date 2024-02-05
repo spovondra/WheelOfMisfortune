@@ -5,7 +5,6 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -26,7 +25,7 @@ import android.view.animation.AlphaAnimation
 import android.widget.FrameLayout
 
 @SuppressLint("ViewConstructor")
-class GuideView private constructor(context: Context, view: View?) :
+class GuideView internal constructor(context: Context, view: View?) :
     FrameLayout(context) {
     private val selfPaint = Paint()
     private val paintLine = Paint()
@@ -83,7 +82,7 @@ class GuideView private constructor(context: Context, view: View?) :
                         (target as Targetable).boundingRect()
                     } else {
                         val locationTarget = IntArray(2)
-                        target!!.getLocationOnScreen(locationTarget)
+                        (target ?: return).getLocationOnScreen(locationTarget)
                         RectF(
                             (locationTarget[0] - margin).toFloat(),
                             (locationTarget[1] - margin).toFloat(),
@@ -95,11 +94,12 @@ class GuideView private constructor(context: Context, view: View?) :
                     backgroundRect[paddingLeft, paddingTop, width - paddingRight] =
                         height - paddingBottom
 
-                    isTop = !(targetRect!!.top + indicatorHeight > height / 2f)
+                    isTop = !((targetRect ?: return).top + indicatorHeight > height / 2f)
                     marginGuide = (if (isTop) marginGuide else -marginGuide).toInt().toFloat()
                     setMessageLocation(resolveMessageViewLocation())
                     startYLineAndCircle =
-                        (if (isTop) targetRect!!.bottom else targetRect!!.top) + marginGuide
+                        (if (isTop) (targetRect ?: return).bottom else (targetRect
+                            ?: return).top) + marginGuide
                     stopY =
                         yMessageView + indicatorHeight + if (isTop) -marginGuide else marginGuide
                     startAnimationSize()
@@ -108,7 +108,7 @@ class GuideView private constructor(context: Context, view: View?) :
         viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
     }
 
-    private fun startAnimationSize() {
+    internal fun startAnimationSize() {
         if (!isPerformedAnimationSize) {
             val circleSizeAnimator = ValueAnimator.ofFloat(
                 0f,
@@ -172,9 +172,9 @@ class GuideView private constructor(context: Context, view: View?) :
             paintCircleInner.style = Paint.Style.FILL
             paintCircleInner.color = CIRCLE_INNER_INDICATOR_COLOR
             paintCircleInner.isAntiAlias = true
-            val x = targetRect!!.left / 2 + targetRect!!.right / 2
+            val x = (targetRect ?: return).left / 2 + (targetRect ?: return).right / 2
             when (pointerType) {
-                PointerType.circle -> {
+                PointerType.Circle -> {
                     canvas.drawLine(x, startYLineAndCircle, x, stopY, paintLine)
                     canvas.drawCircle(x, startYLineAndCircle, circleIndicatorSize, paintCircle)
                     canvas.drawCircle(
@@ -185,7 +185,7 @@ class GuideView private constructor(context: Context, view: View?) :
                     )
                 }
 
-                PointerType.arrow -> {
+                PointerType.Arrow -> {
                     canvas.drawLine(x, startYLineAndCircle, x, stopY, paintLine)
                     arrowPath.reset()
                     if (isTop) {
@@ -199,16 +199,16 @@ class GuideView private constructor(context: Context, view: View?) :
                     canvas.drawPath(arrowPath, paintCircle)
                 }
 
-                PointerType.none -> {}
+                PointerType.None -> {}
                 else -> {}
             }
             targetPaint.setXfermode(xFerModeClear)
             targetPaint.isAntiAlias = true
             if (target is Targetable) {
-                canvas.drawPath((target as Targetable).guidePath()!!, targetPaint)
+                canvas.drawPath((target as Targetable).guidePath() ?: return, targetPaint)
             } else {
                 canvas.drawRoundRect(
-                    targetRect!!,
+                    targetRect ?: return,
                     RADIUS_SIZE_TARGET_RECT.toFloat(),
                     RADIUS_SIZE_TARGET_RECT.toFloat(),
                     targetPaint
@@ -221,7 +221,7 @@ class GuideView private constructor(context: Context, view: View?) :
         ((context as Activity).window.decorView as ViewGroup).removeView(this)
         isShowing = false
         if (mGuideListener != null) {
-            mGuideListener!!.onDismiss(target)
+            (mGuideListener ?: return).onDismiss(target)
         }
     }
 
@@ -231,21 +231,21 @@ class GuideView private constructor(context: Context, view: View?) :
         val y = event.y
         if (event.action == MotionEvent.ACTION_DOWN) {
             when (dismissType) {
-                DismissType.outside -> if (!isViewContains(mMessageView, x, y)) {
+                DismissType.Outside -> if (!isViewContains(mMessageView, x, y)) {
                     dismiss()
                 }
 
-                DismissType.anywhere -> dismiss()
-                DismissType.targetView -> if (targetRect!!.contains(x, y)) {
+                DismissType.Anywhere -> dismiss()
+                DismissType.TargetView -> if (targetRect!!.contains(x, y)) {
                     target!!.performClick()
                     dismiss()
                 }
 
-                DismissType.selfView -> if (isViewContains(mMessageView, x, y)) {
+                DismissType.SelfView -> if (isViewContains(mMessageView, x, y)) {
                     dismiss()
                 }
 
-                DismissType.outsideTargetAndMessage -> if (!(targetRect!!.contains(
+                DismissType.OutsideTargetAndMessage -> if (!(targetRect!!.contains(
                         x,
                         y
                     ) || isViewContains(mMessageView, x, y))
@@ -270,15 +270,15 @@ class GuideView private constructor(context: Context, view: View?) :
         return !(rx < x || rx > x + w || ry < y || ry > y + h)
     }
 
-    private fun setMessageLocation(p: Point) {
+    internal fun setMessageLocation(p: Point) {
         mMessageView.x = ((width - mMessageView.width) / 2).toFloat()
         mMessageView.y = p.y.toFloat()
         postInvalidate()
     }
 
-    private fun resolveMessageViewLocation(): Point {
+    internal fun resolveMessageViewLocation(): Point {
         var xMessageView: Int
-        xMessageView = if (mGravity == Gravity.center) {
+        xMessageView = if (mGravity == Gravity.Center) {
             (targetRect!!.left - mMessageView.width / 2 + target!!.width / 2).toInt()
         } else {
             targetRect!!.right.toInt() - mMessageView.width
@@ -536,9 +536,9 @@ class GuideView private constructor(context: Context, view: View?) :
             val guideView = GuideView(
                 context, targetView
             )
-            guideView.mGravity = if (gravity != null) gravity else Gravity.auto
-            guideView.dismissType = if (dismissType != null) dismissType else DismissType.targetView
-            guideView.pointerType = if (pointerType != null) pointerType else PointerType.circle
+            guideView.mGravity = if (gravity != null) gravity else Gravity.Auto
+            guideView.dismissType = if (dismissType != null) dismissType else DismissType.TargetView
+            guideView.pointerType = if (pointerType != null) pointerType else PointerType.Circle
             val density = context.resources.displayMetrics.density
             guideView.setTitle(title)
             if (contentText != null) {

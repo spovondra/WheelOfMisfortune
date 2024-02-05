@@ -3,30 +3,79 @@ package com.misfortuneapp.wheelofmisfortune.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-// Enum pro stavy úkolu
+/**
+ * Enumerace pro různé stavy úkolu.
+ */
 enum class TaskState {
+    /**
+     * Úkol je dostupný ke splnění.
+     */
     AVAILABLE,
+
+    /**
+     * Úkol je v průběhu vykonávání.
+     */
     IN_PROGRESS,
+
+    /**
+     * Úkol byl úspěšně dokončen.
+     */
     DONE,
+
+    /**
+     * Úkol byl smazán nebo odstraněn.
+     */
     DELETED
 }
 
-// Entita reprezentující úkol v databázi
+/**
+ * Entita reprezentující úkol v databázi.
+ */
 @Entity
 data class Task(
+    /**
+     * Identifikační číslo úkolu v databázi.
+     */
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,                                // Identifikační číslo úkolu v databázi
-    var title: String,                              // Název úkolu
-    var description: String,                        // Popis úkolu
-    val points: Int = DEFAULT_POINTS,               // Počet bodů při splnění úkolu, defaultně nastaven na 5
-var priority: Int = 0,                              // Priorita úkolu
-    var iconResId: Int = 0,                         // ID ikonky úkolu
-    var startTime: Long = 0,                        // Čas spuštění úlohy
-    var taskState: TaskState = TaskState.AVAILABLE, // Stav úkolu (dostupný, probíhá, hotovo)
-    var endTime: Long = 0,                          // Čas do konce úlohy (systémový čas + uživatelem zvolený)
-    var completionTime: Long = 0                    // Čas splnění úlohy
+    val id: Int = 0,
+    /**
+     * Název úkolu.
+     */
+    var title: String,
+    /**
+     * Popis úkolu.
+     */
+    var description: String,
+    /**
+     * Počet bodů při splnění úkolu, defaultně nastaven na 5.
+     */
+    val points: Int = 0,
+    /**
+     * Priorita úkolu.
+     */
+    var priority: Int = 0,
+    /**
+     * ID ikonky úkolu.
+     */
+    var iconResId: Int = 0,
+    /**
+     * Čas spuštění úlohy.
+     */
+    var startTime: Long = 0,
+    /**
+     * Stav úkolu (dostupný, probíhá, hotovo).
+     */
+    var taskState: TaskState = TaskState.AVAILABLE,
+    /**
+     * Čas do konce úlohy (systémový čas + uživatelem zvolený).
+     */
+    var endTime: Long = 0,
+    /**
+     * Čas splnění úlohy.
+     */
+    var completionTime: Long = 0
 ) {
-    // Alternativní konstruktor pro vytvoření instance Task s určenými vlastnostmi
+    // Alternativní konstruktor pro vytvoření instance Task s určenými vlastnostmi.
     constructor(
         title: String,
         description: String,
@@ -36,10 +85,23 @@ var priority: Int = 0,                              // Priorita úkolu
         taskState: TaskState,
         endTime: Long,
         completionTime: Long
-    ) : this(0, title, description, DEFAULT_POINTS, priority, iconResId, startTime, taskState, endTime, completionTime)
+    ) : this(
+        title = title,
+        description = description,
+        points = DEFAULT_POINTS,
+        priority = priority,
+        iconResId = iconResId,
+        startTime = startTime,
+        taskState = taskState,
+        endTime = endTime,
+        completionTime = completionTime
+    )
 
-    // Společné hodnoty pro všechny instance třídy Task
+    // Společné hodnoty pro všechny instance třídy Task.
     companion object {
-        const val DEFAULT_POINTS = 1 // Výchozí hodnota pro počet bodů
+        /**
+         * Výchozí hodnota pro počet bodů.
+         */
+        const val DEFAULT_POINTS: Int = 1
     }
 }

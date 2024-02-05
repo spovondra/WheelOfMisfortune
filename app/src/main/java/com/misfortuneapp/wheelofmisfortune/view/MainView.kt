@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
@@ -33,14 +32,51 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import kotlin.random.Random
 
+/**
+ * Třída `MainViewImp` představuje implementaci rozhraní `MainView`.
+ * Tato třída slouží k ovládání hlavní obrazovky aplikace a zobrazuje seznam úkolů,
+ * statistiky a umožňuje uživateli interagovat s funkcemi aplikace.
+ *
+ * @constructor Inicializuje třídu `MainViewImp`.
+ */
 interface MainView {
+    /**
+     * Metoda pro zobrazení aktualizovaného počtu bodů.
+     *
+     * @param text Text obsahující aktualizovaný počet bodů.
+     */
     fun showUpdatedPoints(text: String)
+
+    /**
+     * Suspendovaná metoda pro zobrazení všech úkolů.
+     */
     suspend fun showAllTasks()
+
+    /**
+     * Metoda pro zobrazení stavu průběžného pruhu a aktuálního času odpočtu.
+     *
+     * @param progress Hodnota postupu pro pruhový prvek.
+     * @param currentCountdownTime Aktuální čas odpočtu ve formátu textu.
+     */
     fun showBarAndTime(progress: Int, currentCountdownTime: String)
+
+    /**
+     * Metoda pro posunutí obrazovky na vybraný úkol.
+     */
     fun scrollToTask()
+
+    /**
+     * Metoda pro otevření obrazovky s detaily o úkolu.
+     *
+     * @param task Objekt reprezentující vybraný úkol.
+     * @param context Kontext aktivity nebo fragmentu.
+     */
     fun openTaskDetailsScreen(task: Task, context: Context)
 }
 
+/**
+ * Implementace rozhraní `MainView` a třída reprezentující hlavní obrazovku aplikace.
+ */
 class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope() {
     private lateinit var controller: MainControllerImpl
     private lateinit var circularProgressBar: CircularProgressBar
@@ -50,6 +86,12 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private lateinit var taskDao: TaskDao
     private var helpCounter = 0
 
+    /**
+     * Metoda `onCreate` se volá při vytváření aktivity. Inicializuje všechny potřebné
+     * komponenty a zobrazuje hlavní obrazovku aplikace.
+     *
+     * @param savedInstanceState Instance stavu aktivity, pokud je dostupná.
+     */
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,29 +143,32 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
         val displayHeight = Resources.getSystem().displayMetrics.heightPixels
 
-        Log.d("counter", helpCounter.toString())
         if (helpCounter == 0 && controller.getAllTasks().isEmpty()) {
-            buildGuideView (newTaskButton, "Přidej úlohu", (displayHeight*0.1).toFloat())
+            buildGuideView(newTaskButton, "Přidej úlohu", (displayHeight * 0.1).toFloat())
             buttonSetTime.text = getString(R.string.set_notification_time)
         }
         if (helpCounter == 1 && controller.getAllTasks().size == 1) {
-            buildGuideView (buttonSetTime, "Nastav čas upozornění", (displayHeight*0.18).toFloat())
+            buildGuideView(buttonSetTime, "Nastav čas upozornění", (displayHeight * 0.18).toFloat())
             buttonSetTime.text = getString(R.string.set_notification_time)
         }
         if (helpCounter == 3 && controller.getAllTasks().size == 1) {
-            buildGuideView (countdownTimerTextView, "Po skončení odpočtu zatoč kolečkem!", (displayHeight*0.05).toFloat())
+            buildGuideView(
+                countdownTimerTextView,
+                "Po skončení odpočtu zatoč kolečkem!",
+                (displayHeight * 0.05).toFloat()
+            )
             buttonSetTime.text = getString(R.string.change_notification_time)
         }
     }
 
-    private fun buildGuideView (targetView: View?, title: String, indicatorHeight: Float) {
+    private fun buildGuideView(targetView: View?, title: String, indicatorHeight: Float) {
         val guideView = GuideView.Builder(this)
             .setTitle(title)
             //.setContentText(content)
             .setTargetView(targetView)
             .setContentTextSize(0) // optional
             .setTitleTextSize(30) // optional
-            .setPointerType(PointerType.none)
+            .setPointerType(PointerType.None)
             .setIndicatorHeight(indicatorHeight)
 
 
@@ -170,7 +215,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         textNum.text = getString(
             R.string.all_tasks,
             controller.getAllTasks().filter
-                { it.taskState != TaskState.DELETED }.size
+            { it.taskState != TaskState.DELETED }.size
         )
     }
 
@@ -204,11 +249,11 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     }
 
     // Akce po provedení swipu na úloze
-    private fun swipeToDeleteButton () {
+    private fun swipeToDeleteButton() {
         val taskList = findViewById<RecyclerView>(R.id.taskList)
         val drawnList = findViewById<RecyclerView>(R.id.drawnList)
-        controller.swipeHelperToDeleteAndEdit(taskList,false, this)
-        controller.swipeHelperToDeleteAndEdit(drawnList,true, this)
+        controller.swipeHelperToDeleteAndEdit(taskList, false, this)
+        controller.swipeHelperToDeleteAndEdit(drawnList, true, this)
     }
 
     // Metoda na zobrazení detailů o úloze
@@ -257,7 +302,10 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         }
     }
 
-    // Metoda na zobrazování/skrývání prvků na obrazovce podle aktuálního dění
+
+    /**
+     * Metoda na zobrazování/skrývání prvků na obrazovce podle aktuálního dění
+     */
     @SuppressLint("StringFormatMatches")
     suspend fun updateUIVisibility() {
         runOnUiThread {
@@ -335,7 +383,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     }
 
     @SuppressLint("StringFormatMatches")
-    private fun showTimeByUser () {
+    private fun showTimeByUser() {
         lifecycleScope.launch {
             val changeNotificationTime = findViewById<TextView>(R.id.buttonSetTime)
 
@@ -344,7 +392,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
             val selectedTime = buildString {
                 if (hours > 0) {
-                    append("$hours"+ "h")
+                    append("$hours" + "h")
                     if (minutes > 0) {
                         append(" ")
                     }
@@ -356,9 +404,9 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
             if (selectedTime == "") {
                 changeNotificationTime.text = getString(R.string.set_notification_time)
-            }
-            else {
-                changeNotificationTime.text = getString(R.string.change_notification_time, selectedTime)
+            } else {
+                changeNotificationTime.text =
+                    getString(R.string.change_notification_time, selectedTime)
             }
         }
     }
@@ -376,7 +424,10 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         wheel.setOnClickListener {
             if (!controller.getIsWheelSpinning()) {
                 GlobalScope.launch {
-                    if (controller.getAllTasks().isNotEmpty() && controller.getTasksInStates(TaskState.AVAILABLE).isNotEmpty()) {
+                    if (controller.getAllTasks().isNotEmpty() && controller.getTasksInStates(
+                            TaskState.AVAILABLE
+                        ).isNotEmpty()
+                    ) {
                         controller.setIsWheelSpinning(true)
                         showWheelSpin()
                     }
@@ -397,7 +448,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         val circularProgressBarSize = (displayMetrics.widthPixels * 0.807 * scalingFactor).toInt()
         val wheelSpinSize = (displayMetrics.widthPixels * 0.7083 * scalingFactor).toInt()
         val wheelStaticSize = (displayMetrics.widthPixels * 0.9 * scalingFactor).toInt()
-        val countdownTimerTextSize = (20 + displayMetrics.widthPixels/70)
+        val countdownTimerTextSize = (20 + displayMetrics.widthPixels / 70)
 
         // Nastavení vypočítaných rozměrů pro jednotlivé pohledy
         val circularProgressBar = findViewById<CircularProgressBar>(R.id.circularProgressBar)
@@ -422,20 +473,24 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     }
 
     // Metoda na zascrollování na vylosovanou úlohu
-    override fun scrollToTask () {
+    override fun scrollToTask() {
         val scrollView: CustomScrollView = findViewById(R.id.scrollView)
         scrollView.post {
             scrollView.scrollToChild(1000)
         }
     }
 
-    // Metoda na zrušení časovače
+    /**
+     * Metoda na zrušení časovače
+     */
     override fun onDestroy() {
         unregisterReceiver(controller.countdownReceiver)
         super.onDestroy()
     }
 
-    // Metoda na zovunačtení dat po navrácení se z jiné obrazovky
+    /**
+     * Metoda na zovunačtení dat po navrácení se z jiné obrazovky
+     */
     override fun onResume() {
         super.onResume()
 
