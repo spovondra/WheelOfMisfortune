@@ -120,7 +120,7 @@ interface MainController {
     suspend fun getTimeSetByUserInTriple(): Triple<Long, Long, Long>
 
     /**
-     * Suspendovaná metoda pro zobrazení nápovědy.
+     * Suspendovaná metoda pro zisk času nastaveného uživatelem.
      */
     suspend fun getTimeSetByUser(): Long
 }
@@ -416,7 +416,9 @@ class MainControllerImpl(
         model.insertTimeRecord(startTime, endTime)
         val timeId = getTime().id
 
-        startTimer(timeId)
+        if (getTasksInStates(TaskState.AVAILABLE).isNotEmpty()) {
+            startTimer(timeId)
+        }
     }
 
     // Metoda pro asynchronní nastavení prvního času (při prvním spuštění)

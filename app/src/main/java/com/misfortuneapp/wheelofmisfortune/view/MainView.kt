@@ -74,6 +74,10 @@ interface MainView {
      * @param context Kontext aktivity nebo fragmentu.
      */
     fun openTaskDetailsScreen(task: Task, context: Context)
+
+    /**
+     * Suspendovaná metoda na zobrazení nápovědy po prvním startu.
+     */
     suspend fun showHelp()
 }
 
@@ -196,6 +200,10 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 )
                 editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
                 editor.apply()
+            }
+            if(helpCounter == 5) {
+                scrollToTask()
+                delay (300)
             }
         }
     }
