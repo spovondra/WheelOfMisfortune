@@ -118,6 +118,10 @@ interface MainController {
      *  Asynchronně získá čas úlohy nastavený uživatelem ve formátu trojice.
      */
     suspend fun getTimeSetByUserInTriple(): Triple<Long, Long, Long>
+
+    /**
+     * Suspendovaná metoda pro zobrazení nápovědy.
+     */
     suspend fun getTimeSetByUser(): Long
 }
 
@@ -239,7 +243,6 @@ class MainControllerImpl(
             isWheelSpinning = false  // Nastavení na false po skončení dialogu úlohy
             setTime(getTimeSetByUser())
             delay(400)
-            view.setIsFinished(true)
             view.showHelp()
         }
     }
@@ -399,6 +402,10 @@ class MainControllerImpl(
         val formattedDate =
             SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date())
         statisticsController.insertOrUpdateData(formattedDate, currentPoints.toDouble())
+
+        lifecycleScope.launch {
+            view.showHelp()
+        }
     }
 
     // Metoda pro asynchronní nastavení času úlohy

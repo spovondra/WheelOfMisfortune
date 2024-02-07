@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
@@ -18,6 +17,7 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.mikephil.charting.charts.BarChart
 import com.misfortuneapp.wheelofmisfortune.R
 import com.misfortuneapp.wheelofmisfortune.controller.*
 import com.misfortuneapp.wheelofmisfortune.custom.*
@@ -29,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import kotlin.random.Random
@@ -73,7 +74,6 @@ interface MainView {
      * @param context Kontext aktivity nebo fragmentu.
      */
     fun openTaskDetailsScreen(task: Task, context: Context)
-    fun setIsFinished(value: Boolean)
     suspend fun showHelp()
 }
 
@@ -87,7 +87,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private lateinit var statisticsController: StatisticsController
     private lateinit var dataRepository: DataRepository
     private lateinit var taskDao: TaskDao
-    private var isFinished: Boolean = false
 
     /**
      * Metoda `onCreate` se volá při vytváření aktivity. Inicializuje všechny potřebné
@@ -139,54 +138,66 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         registerReceiver(controller.countdownReceiver, IntentFilter(BroadcastService.COUNTDOWN_BR))
     }
 
-    override fun setIsFinished(value: Boolean) {
-        isFinished = value
-    }
-
     override suspend fun showHelp() {
-        val newTaskButton: Button = findViewById(R.id.floatingActionButton)
-        val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
-        val itemTask = findViewById<LinearLayout>(R.id.itemTask)
+        lifecycleScope.launch {
+            val newTaskButton: Button = findViewById(R.id.floatingActionButton)
+            val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
+            val itemTask = findViewById<LinearLayout>(R.id.itemTask)
+            val linearLayoutButtonUp = findViewById<LinearLayout>(R.id.buttonUp)
 
-        val displayHeight = Resources.getSystem().displayMetrics.heightPixels
+            val displayHeight = Resources.getSystem().displayMetrics.heightPixels
 
-        val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
+            val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
 
-        // Načtení hodnoty helpCounter z SharedPreferences
-        val helpCounter = sharedPreferences.getInt("helpCounter", 0)
+            // Načtení hodnoty helpCounter z SharedPreferences
+            val helpCounter = sharedPreferences.getInt("helpCounter", 0)
 
-        if (helpCounter == 0 && controller.getAllTasks().isEmpty()) {
-            buildGuideView(newTaskButton, "Přidej úlohu", (displayHeight * 0.1).toFloat())
-            buttonSetTime.text = getString(R.string.set_notification_time)
-            editor.putInt("helpCounter", 1) // Uložení hodnoty helpCounter do SharedPreferences
-            editor.apply()
+            if (helpCounter == 0 && controller.getAllTasks().isEmpty()) {
+                buildGuideView(
+                    newTaskButton,
+                    getString(R.string.guide_1_add_task),
+                    (displayHeight * 0.1).toFloat())
+                editor.putInt("helpCounter", 1) // Uložení hodnoty helpCounter do SharedPreferences
+                editor.apply()
+            }
+            if (helpCounter == 1 && controller.getAllTasks().size == 1) {
+                buildGuideView(
+                    buttonSetTime,
+                    getString(R.string.guide_2_set_time),
+                    (displayHeight * 0.18).toFloat())
+                editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
+                editor.apply()
+            }
+            if (helpCounter == 2 && controller.getAllTasks().size == 1) {
+                buildGuideView(
+                    countdownTimerTextView,
+                    getString(R.string.guide_3_spin_the_wheel),
+                    (displayHeight * 0.05).toFloat())
+                editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
+                editor.apply()
+            }
+            if (helpCounter == 3 && controller.getTasksInStates(TaskState.IN_PROGRESS).size == 1) {
+                buildGuideView(
+                    itemTask,
+                    getString(R.string.guide_4_task_open_swipe),
+                    (displayHeight * 0.1).toFloat()
+                )
+                editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
+                editor.apply()
+            }
+            if (helpCounter == 4 && controller.getTasksInStates(TaskState.DONE).size == 1) {
+                scrollUp()
+                delay (200)
+                buildGuideView(
+                    linearLayoutButtonUp,
+                    getString(R.string.guide_5_show_statistics),
+                    (displayHeight * 0.15).toFloat()
+                )
+                editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
+                editor.apply()
+            }
         }
-        if (helpCounter == 1 && controller.getAllTasks().size == 1) {
-            buildGuideView(buttonSetTime, "Nastav čas upozornění", (displayHeight * 0.18).toFloat())
-            buttonSetTime.text = getString(R.string.set_notification_time)
-            editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
-            editor.apply()
-        }
-        if (helpCounter == 2 && controller.getAllTasks().size == 1) {
-            buildGuideView(
-                countdownTimerTextView,
-                "Po skončení odpočtu zatoč kolečkem!",
-                (displayHeight * 0.05).toFloat()
-            )
-            editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
-            editor.apply()
-        }
-        if (helpCounter == 3 && isFinished) {
-            buildGuideView(
-                itemTask,
-                "Stiskni pro otevření, swipni vlevo pro splnění",
-                (displayHeight * 0.1).toFloat()
-            )
-            editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
-            editor.apply()
-        }
-        Log.d("helpCounter", helpCounter.toString())
     }
 
     private fun buildGuideView(targetView: View?, title: String, indicatorHeight: Float) {
@@ -500,6 +511,13 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         val scrollView: CustomScrollView = findViewById(R.id.scrollView)
         scrollView.post {
             scrollView.scrollToChild(1000)
+        }
+    }
+
+    private fun scrollUp() {
+        val scrollView: CustomScrollView = findViewById(R.id.scrollView)
+        scrollView.post {
+            scrollView.scrollToChild(0)
         }
     }
 
