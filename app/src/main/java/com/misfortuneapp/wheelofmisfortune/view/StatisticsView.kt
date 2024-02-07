@@ -42,27 +42,27 @@ import java.util.Date
 import java.util.Locale
 
 /**
- *
+ * Rozhraní pro statistický pohled.
  */
 interface StatisticsView {
     /**
-     *
+     * Vytvoří sloupcový graf.
      */
     fun createBarChart(entries: List<BarEntry>, formattedDateStrings: Array<String>)
 
     /**
-     *
+     * Aktualizuje statistiku.
      */
     fun updateStatistics(dailyStatistics: Double, overallStatistics: Double)
 
     /**
-     *
+     * Zobrazí detaily úkolů po kliknutí na sloupeček v grafu.
      */
     fun viewAfterClick(formattedDateStrings: Array<String>)
 }
 
 /**
- *
+ * Implementace statistického pohledu.
  */
 class StatisticsViewImp : AppCompatActivity(), StatisticsView {
     private lateinit var barChart: BarChart
@@ -72,7 +72,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
     private lateinit var mainView: MainView
 
     /**
-     *
+     * Inicializuje aktivity.
      */
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -143,8 +143,8 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
     }
 
     /**
-     *
-     */// Metoda pro vytvoření BarChartu se zadanými daty a formátovanými popisky
+     * Metoda pro vytvoření BarChartu se zadanými daty a formátovanými popisky
+     */
     override fun createBarChart(entries: List<BarEntry>, formattedDateStrings: Array<String>) {
         val dataSet = BarDataSet(entries, "Počet splněných úkolů")
 
@@ -204,7 +204,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
     }
 
     /**
-     *
+     * Metoda na zobrazení úloh po kliknutí na sloupeček v grafu
      */
     override fun viewAfterClick(formattedDateStrings: Array<String>) {
         val recyclerView: RecyclerView = findViewById(R.id.statisticsRecyclerView)
@@ -252,8 +252,8 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
     }
 
     /**
-     *
-     */// Metoda pro aktualizaci statistiky v uživatelském rozhraní
+     * Metoda pro aktualizaci statistiky v uživatelském rozhraní
+     */
     override fun updateStatistics(dailyStatistics: Double, overallStatistics: Double) {
         val dailyStatisticsText = findViewById<TextView>(R.id.dailyStatisticsText)
         val overallStatisticsText = findViewById<TextView>(R.id.overallStatisticsText)
@@ -320,8 +320,8 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
     }
 
     /**
-     *
-     */// Metoda pro zpětnou navigaci v ActionBaru
+     * Metoda pro zpětnou navigaci v ActionBaru
+     */
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true

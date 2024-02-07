@@ -23,7 +23,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- *
+ * Aktivita pro vytváření nebo úpravu úkolů.
  */
 class NewTaskActivity : AppCompatActivity() {
 
@@ -44,14 +44,14 @@ class NewTaskActivity : AppCompatActivity() {
     private var taskIdFromIntent = 0
 
     /**
-     *
+     * Inicializuje aktivitu pro vytváření nebo úpravu úkolů.
      */
     @SuppressLint("InflateParams", "CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_task)
 
-        // Initialize instances
+        // Inicializace instancí
         mainView = MainViewImp()
         notification = NotificationHandler(this)
         newTaskController = NewTaskControllerImpl(this)
@@ -103,7 +103,7 @@ class NewTaskActivity : AppCompatActivity() {
         taskNameEditText = findViewById(R.id.editTextTaskName)
         taskDescriptionEditText = findViewById(R.id.editTextTaskDescription)
 
-        // Set up text change listener for task name
+        // Nastavení posluchače změn textu pro název úkolu
         taskNameEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -115,7 +115,7 @@ class NewTaskActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // Delay the saving by 500 milliseconds to capture continuous changes
+                // Zpožděte uložení o 500 milisekund, abyste zachytili nepřetržité změny
                 lifecycleScope.launch {
                     delay(500)
                     saveTask()
@@ -123,14 +123,14 @@ class NewTaskActivity : AppCompatActivity() {
             }
         })
 
-        // Set up text change listener for task description
+        // Nastavení posluchače změn textu pro popis úkolu
         taskDescriptionEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
-                // Delay the saving by 500 milliseconds to capture continuous changes
+                // Zpožděte uložení o 500 milisekund, abyste zachytili nepřetržité změny
                 lifecycleScope.launch {
                     delay(500)
                     saveTask()
@@ -138,7 +138,7 @@ class NewTaskActivity : AppCompatActivity() {
             }
         })
 
-        // Set up seek bar change listener for task priority
+        // Nastavení posluchače změn seek baru pro prioritu úkolu
         taskPriority.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             @SuppressLint("StringFormatMatches")
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -159,7 +159,7 @@ class NewTaskActivity : AppCompatActivity() {
             finish()
         }
 
-        // Set up click listeners for icons
+        // Nastavení posluchačů kliknutí pro ikony
         val icon1: ImageView = findViewById(R.id.icon1)
         val icon2: ImageView = findViewById(R.id.icon2)
         val icon3: ImageView = findViewById(R.id.icon3)
@@ -170,7 +170,7 @@ class NewTaskActivity : AppCompatActivity() {
         icon3.setOnClickListener { onIconClick(icon3) }
         icon4.setOnClickListener { onIconClick(icon4) }
 
-        // Set up custom action bar button click listener
+        // Nastavení posluchače kliknutí pro tlačítko vlastního panelu akcí
         val customActionBarButton =
             layoutInflater.inflate(R.layout.custom_action_bar_button, FrameLayout(this))
         supportActionBar?.customView = customActionBarButton
@@ -187,7 +187,7 @@ class NewTaskActivity : AppCompatActivity() {
             }
         }
 
-        // Set up back button click listener
+        // Nastavení posluchače kliknutí pro tlačítko zpět
         customActionBarButton.findViewById<CardView>(R.id.action_back).setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -197,6 +197,9 @@ class NewTaskActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Aktualizuje název aktivity podle stavu úkolu.
+     */
     internal fun updateActivityTitle() {
         val activityTitleTextView: TextView = findViewById(R.id.activityTitleTextView)
         val finishLayout: FrameLayout = findViewById(R.id.finishLayout)
@@ -210,6 +213,9 @@ class NewTaskActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Obsluha kliknutí na ikonu.
+     */
     private fun onIconClick(imageView: ImageView) {
         selectedImageView?.isSelected = false
         imageView.isSelected = true
@@ -226,6 +232,9 @@ class NewTaskActivity : AppCompatActivity() {
         saveTask()
     }
 
+    /**
+     * Uloží úkol.
+     */
     internal fun saveTask() {
         if (!isTaskCreated) {
             taskName = taskNameEditText.text.toString()
@@ -264,6 +273,9 @@ class NewTaskActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Odstraní úkol.
+     */
     private fun deleteTask(task: Task) {
         lifecycleScope.launch {
             newTaskController.removeTask(task)
