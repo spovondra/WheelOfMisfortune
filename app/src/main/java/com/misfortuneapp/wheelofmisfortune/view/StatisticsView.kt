@@ -225,7 +225,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
                     withContext(Dispatchers.Main) {
                         // Zobrazení hotových úkolů ve vhodném UI prvku (RecyclerView nebo jiném)
                         val adapter = TaskAdapter(
-                            doneTasksForSelectedDate.toMutableList(),
+                            doneTasksForSelectedDate.sortedBy { it.endTime }.toMutableList(),
                             { selectedTask ->
                                 mainController.openTaskDetailsScreen(
                                     selectedTask,
@@ -237,6 +237,7 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
                         recyclerView.adapter = adapter
                         recyclerView.layoutManager = LinearLayoutManager(this@StatisticsViewImp)
                         (recyclerView.layoutManager as LinearLayoutManager).reverseLayout = true
+                        (recyclerView.layoutManager as LinearLayoutManager).stackFromEnd = true
                         graphSpace.visibility = View.VISIBLE
                     }
                 }

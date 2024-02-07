@@ -118,6 +118,7 @@ interface MainController {
      *  Asynchronně získá čas úlohy nastavený uživatelem ve formátu trojice.
      */
     suspend fun getTimeSetByUserInTriple(): Triple<Long, Long, Long>
+    suspend fun getTimeSetByUser(): Long
 }
 
 /**
@@ -237,6 +238,9 @@ class MainControllerImpl(
             updatePoints()
             isWheelSpinning = false  // Nastavení na false po skončení dialogu úlohy
             setTime(getTimeSetByUser())
+            delay(400)
+            view.setIsFinished(true)
+            view.showHelp()
         }
     }
 
@@ -434,7 +438,7 @@ class MainControllerImpl(
     }
 
     // Metoda pro asynchronní získání délky úlohy nastavené uživatelem
-    internal suspend fun getTimeSetByUser(): Long {
+    override suspend fun getTimeSetByUser(): Long {
         return getTime().endTime - getTime().startTime
     }
 

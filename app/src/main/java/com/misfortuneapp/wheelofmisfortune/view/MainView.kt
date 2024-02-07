@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
@@ -72,6 +73,8 @@ interface MainView {
      * @param context Kontext aktivity nebo fragmentu.
      */
     fun openTaskDetailsScreen(task: Task, context: Context)
+    fun setIsFinished(value: Boolean)
+    suspend fun showHelp()
 }
 
 /**
@@ -84,7 +87,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private lateinit var statisticsController: StatisticsController
     private lateinit var dataRepository: DataRepository
     private lateinit var taskDao: TaskDao
-    private var helpCounter = 0
+    private var isFinished: Boolean = false
 
     /**
      * Metoda `onCreate` se volá při vytváření aktivity. Inicializuje všechny potřebné
@@ -136,29 +139,54 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         registerReceiver(controller.countdownReceiver, IntentFilter(BroadcastService.COUNTDOWN_BR))
     }
 
-    private suspend fun showHelp() {
+    override fun setIsFinished(value: Boolean) {
+        isFinished = value
+    }
+
+    override suspend fun showHelp() {
         val newTaskButton: Button = findViewById(R.id.floatingActionButton)
         val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
-        val drawnList = findViewById<RecyclerView>(R.id.drawnList)
+        val itemTask = findViewById<LinearLayout>(R.id.itemTask)
 
         val displayHeight = Resources.getSystem().displayMetrics.heightPixels
+
+        val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+        // Načtení hodnoty helpCounter z SharedPreferences
+        val helpCounter = sharedPreferences.getInt("helpCounter", 0)
 
         if (helpCounter == 0 && controller.getAllTasks().isEmpty()) {
             buildGuideView(newTaskButton, "Přidej úlohu", (displayHeight * 0.1).toFloat())
             buttonSetTime.text = getString(R.string.set_notification_time)
+            editor.putInt("helpCounter", 1) // Uložení hodnoty helpCounter do SharedPreferences
+            editor.apply()
         }
         if (helpCounter == 1 && controller.getAllTasks().size == 1) {
             buildGuideView(buttonSetTime, "Nastav čas upozornění", (displayHeight * 0.18).toFloat())
             buttonSetTime.text = getString(R.string.set_notification_time)
+            editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
+            editor.apply()
         }
-        if (helpCounter == 3 && controller.getAllTasks().size == 1) {
+        if (helpCounter == 2 && controller.getAllTasks().size == 1) {
             buildGuideView(
                 countdownTimerTextView,
                 "Po skončení odpočtu zatoč kolečkem!",
                 (displayHeight * 0.05).toFloat()
             )
-            buttonSetTime.text = getString(R.string.change_notification_time)
+            editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
+            editor.apply()
         }
+        if (helpCounter == 3 && isFinished) {
+            buildGuideView(
+                itemTask,
+                "Stiskni pro otevření, swipni vlevo pro splnění",
+                (displayHeight * 0.1).toFloat()
+            )
+            editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
+            editor.apply()
+        }
+        Log.d("helpCounter", helpCounter.toString())
     }
 
     private fun buildGuideView(targetView: View?, title: String, indicatorHeight: Float) {
@@ -170,10 +198,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             .setTitleTextSize(30) // optional
             .setPointerType(PointerType.None)
             .setIndicatorHeight(indicatorHeight)
-
-
-        helpCounter++
-
         guideView.build().show()
     }
 
@@ -373,7 +397,6 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
             )
             timePicker.show()
             timePicker.setOnDismissListener {
-                helpCounter++
                 lifecycleScope.launch {
                     showHelp()
                     showTimeByUser()
@@ -402,7 +425,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 }
             }
 
-            if (selectedTime == "") {
+            if (controller.getTimeSetByUser().toInt() == 0) {
                 changeNotificationTime.text = getString(R.string.set_notification_time)
             } else {
                 changeNotificationTime.text =

@@ -23,7 +23,7 @@ enum class TaskState {
     DONE,
 
     /**
-     * Úkol byl smazán nebo odstraněn.
+     * Úkol byl smazán.
      */
     DELETED
 }
