@@ -12,7 +12,7 @@ import android.content.Intent
 import android.os.CountDownTimer
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import com.misfortuneapp.wheelofmisfortune.R
+import com.usbapps.misfortunewheel.R
 import com.usbapps.misfortunewheel.model.TimeDatabase
 import com.usbapps.misfortunewheel.view.NotificationHandler
 import kotlinx.coroutines.DelicateCoroutinesApi

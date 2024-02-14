@@ -1,4 +1,4 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.usbapps.wheelofmisfortune
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

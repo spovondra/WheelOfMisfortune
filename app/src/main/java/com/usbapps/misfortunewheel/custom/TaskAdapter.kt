@@ -10,7 +10,7 @@ import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.RecyclerView
-import com.misfortuneapp.wheelofmisfortune.R
+import com.usbapps.misfortunewheel.R
 import com.usbapps.misfortunewheel.controller.MainController
 import com.usbapps.misfortunewheel.model.Task
 import com.usbapps.misfortunewheel.model.TaskState

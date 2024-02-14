@@ -18,7 +18,7 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.misfortuneapp.wheelofmisfortune.R
+import com.usbapps.misfortunewheel.R
 import com.usbapps.misfortunewheel.controller.*
 import com.usbapps.misfortunewheel.custom.*
 import com.usbapps.misfortunewheel.custom.guide.*

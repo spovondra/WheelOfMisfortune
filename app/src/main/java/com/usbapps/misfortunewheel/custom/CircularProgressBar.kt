@@ -7,7 +7,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.misfortuneapp.wheelofmisfortune.R
+import com.usbapps.misfortunewheel.R
 
 /**
  * Vlastní komponenta pro kruhový průběh postupu.

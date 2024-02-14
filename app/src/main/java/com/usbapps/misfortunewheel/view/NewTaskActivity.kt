@@ -14,7 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
-import com.misfortuneapp.wheelofmisfortune.R
+import com.usbapps.misfortunewheel.R
 import com.usbapps.misfortunewheel.controller.NewTakController
 import com.usbapps.misfortunewheel.controller.NewTaskControllerImpl
 import com.usbapps.misfortunewheel.model.Task

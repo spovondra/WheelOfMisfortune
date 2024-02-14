@@ -10,7 +10,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.misfortuneapp.wheelofmisfortune.R
+import com.usbapps.misfortunewheel.R
 import com.usbapps.misfortunewheel.custom.BroadcastService
 import com.usbapps.misfortunewheel.custom.SwipeHelper
 import com.usbapps.misfortunewheel.custom.TaskAdapter

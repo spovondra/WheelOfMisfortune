@@ -21,7 +21,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.misfortuneapp.wheelofmisfortune.R
+import com.usbapps.misfortunewheel.R
 import com.usbapps.misfortunewheel.controller.MainController
 import com.usbapps.misfortunewheel.controller.MainControllerImpl
 import com.usbapps.misfortunewheel.controller.StatisticsController

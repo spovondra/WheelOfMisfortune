@@ -1,4 +1,4 @@
-package com.misfortuneapp.wheelofmisfortune
+package com.usbapps.wheelofmisfortune
 
 import org.junit.Test
 

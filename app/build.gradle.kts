@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.misfortuneapp.wheelofmisfortune"
+    namespace = "com.usbapps.misfortunewheel"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.misfortuneapp.wheelofmisfortune"
+        applicationId = "com.usbapps.misfortunewheel"
         minSdk = 26
         targetSdk = 34
         versionCode = 12
@@ -63,7 +63,7 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3:1.1.2")
+    implementation("androidx.compose.material3:material3:1.2.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.android.material:material:1.11.0")
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
@@ -73,5 +73,5 @@ dependencies {
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.01.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.0")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.1")
 }
