@@ -80,7 +80,7 @@
                 android:textStyle="bold"
                 android:paddingBottom="8dp" />
 
-            <com.misfortuneapp.wheelofmisfortune.custom.MonthPicker
+            <com.usbapps.misfortunewheel.custom.MonthPicker
                 android:id="@+id/monthPicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

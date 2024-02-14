@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.misfortuneapp.wheelofmisfortune.custom.CustomScrollView
+    <com.usbapps.misfortunewheel.custom.CustomScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -101,7 +101,7 @@
                     android:textSize="36sp"
                     android:textStyle="bold" />
 
-                <com.misfortuneapp.wheelofmisfortune.custom.CircularProgressBar
+                <com.usbapps.misfortunewheel.custom.CircularProgressBar
                     android:id="@+id/circularProgressBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -219,7 +219,7 @@
                 android:background="@android:color/transparent" />
 
         </LinearLayout>
-    </com.misfortuneapp.wheelofmisfortune.custom.CustomScrollView>
+    </com.usbapps.misfortunewheel.custom.CustomScrollView>
 
     <Button
         android:id="@+id/floatingActionButton"

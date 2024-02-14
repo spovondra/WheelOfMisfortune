@@ -16,7 +16,7 @@
         android:theme="@style/Theme.KoleckoNestesti"
         tools:targetApi="31">
         <activity
-            android:name=".view.MainViewImp"
+            android:name="com.usbapps.misfortunewheel.view.MainViewImp"
             android:exported="true"
             android:theme="@style/Theme.KoleckoNestesti">
             <intent-filter>
@@ -25,23 +25,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.StatisticsViewImp"
+            android:name="com.usbapps.misfortunewheel.view.StatisticsViewImp"
             android:exported="true"
             android:label="Statistics Activity"
             android:theme="@style/Theme.KoleckoNestestiWindows" />
         <activity
-            android:name=".view.NewTaskActivity"
+            android:name="com.usbapps.misfortunewheel.view.NewTaskActivity"
             android:exported="true"
             android:label="Nová úloha"
             android:theme="@style/Theme.KoleckoNestestiWindows" />
         <activity
-            android:name=".view.TaskDetailsActivity"
+            android:name="com.usbapps.misfortunewheel.view.TaskDetailsActivity"
             android:exported="true"
             android:label="Denní úloha"
             android:theme="@style/Theme.KoleckoNestesti" />
 
         <service
-            android:name=".custom.BroadcastService"
+            android:name="com.usbapps.misfortunewheel.custom.BroadcastService"
             android:enabled="true"
             android:exported="false" />
     </application>
