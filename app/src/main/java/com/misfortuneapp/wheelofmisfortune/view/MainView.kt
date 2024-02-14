@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Button
@@ -127,7 +128,9 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
         setViewSizesBasedOnScreen()
         showStatistics()
-        showSetTime()
+        GlobalScope.launch {
+            showSetTime()
+        }
         showTimeByUser()
         wheelAbleToTouch()
         swipeToDeleteButton()
@@ -160,7 +163,8 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 buildGuideView(
                     newTaskButton,
                     getString(R.string.guide_1_add_task),
-                    (displayHeight * 0.1).toFloat())
+                    (displayHeight * 0.1).toFloat()
+                )
                 editor.putInt("helpCounter", 1) // Uložení hodnoty helpCounter do SharedPreferences
                 editor.apply()
             }
@@ -168,16 +172,24 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 buildGuideView(
                     buttonSetTime,
                     getString(R.string.guide_2_set_time),
-                    (displayHeight * 0.18).toFloat())
-                editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
+                    (displayHeight * 0.18).toFloat()
+                )
+                editor.putInt(
+                    "helpCounter",
+                    helpCounter + 1
+                ) // Uložení hodnoty helpCounter do SharedPreferences
                 editor.apply()
             }
             if (helpCounter == 2 && controller.getAllTasks().size == 1) {
                 buildGuideView(
                     countdownTimerTextView,
                     getString(R.string.guide_3_spin_the_wheel),
-                    (displayHeight * 0.05).toFloat())
-                editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
+                    (displayHeight * 0.05).toFloat()
+                )
+                editor.putInt(
+                    "helpCounter",
+                    helpCounter + 1
+                ) // Uložení hodnoty helpCounter do SharedPreferences
                 editor.apply()
             }
             if (helpCounter == 3 && controller.getTasksInStates(TaskState.IN_PROGRESS).size == 1) {
@@ -186,24 +198,36 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                     getString(R.string.guide_4_task_open_swipe),
                     (displayHeight * 0.1).toFloat()
                 )
-                editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
+                editor.putInt(
+                    "helpCounter",
+                    helpCounter + 1
+                ) // Uložení hodnoty helpCounter do SharedPreferences
                 editor.apply()
             }
             if (helpCounter == 4 && controller.getTasksInStates(TaskState.DONE).size == 1) {
                 scrollUp()
-                delay (200)
+                delay(200)
                 buildGuideView(
                     linearLayoutButtonUp,
                     getString(R.string.guide_5_show_statistics),
                     (displayHeight * 0.15).toFloat()
                 )
-                editor.putInt("helpCounter", helpCounter+1) // Uložení hodnoty helpCounter do SharedPreferences
+                editor.putInt(
+                    "helpCounter",
+                    helpCounter + 1
+                ) // Uložení hodnoty helpCounter do SharedPreferences
                 editor.apply()
             }
-            if(helpCounter == 5) {
+            if (helpCounter == 5) {
                 scrollToTask()
-                delay (300)
+                editor.putInt(
+                    "helpCounter",
+                    helpCounter + 1
+                ) // Uložení hodnoty helpCounter do SharedPreferences
+                editor.apply()
+                delay(300)
             }
+            Log.d("helpCounter", helpCounter.toString())
         }
     }
 
@@ -390,11 +414,19 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
 
     // Metoda na zobrazení dialogu s nastavením času
     @OptIn(DelicateCoroutinesApi::class)
-    private fun showSetTime() {
+    private suspend fun showSetTime() {
         val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
         val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 1)
+        if(controller.getAllTasks().isEmpty()) {
+            calendar.set(Calendar.HOUR_OF_DAY, 0)
+            calendar.set(Calendar.MINUTE, 1)
+        }
+        else {
+            val hours = controller.getTimeSetByUserInTriple().first
+            val minutes = controller.getTimeSetByUserInTriple().second
+            calendar.set(Calendar.HOUR_OF_DAY, hours.toInt())
+            calendar.set(Calendar.MINUTE, minutes.toInt())
+        }
         buttonSetTime.setOnClickListener {
             val timePicker = TimePickerDialog(
                 this,
