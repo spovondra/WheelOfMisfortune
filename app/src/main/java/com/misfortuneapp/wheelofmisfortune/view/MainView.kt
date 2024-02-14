@@ -257,7 +257,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         textNum.text = getString(
             R.string.all_tasks,
             controller.getAllTasks().filter
-            { it.taskState != TaskState.DELETED }.size
+            { it.taskState != TaskState.DELETED && it.taskState != TaskState.DONE}.size
         )
     }
 
@@ -274,7 +274,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 (taskList.layoutManager as LinearLayoutManager).stackFromEnd = true
 
                 // Získejte aktuální seznam úkolů přímo z kontroléru s filtrováním podle taskState
-                val tasks = controller.getAllTasks().filter { it.taskState != TaskState.DELETED }
+                val tasks = controller.getAllTasks().filter { it.taskState != TaskState.DELETED && it.taskState != TaskState.DONE}
 
                 updateUIVisibility() // změna zobrazovaných prvků na základě požadavků
 
@@ -393,8 +393,8 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
     private fun showSetTime() {
         val buttonSetTime = findViewById<Button>(R.id.buttonSetTime)
         val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 1)
-        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 1)
         buttonSetTime.setOnClickListener {
             val timePicker = TimePickerDialog(
                 this,
