@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Ruleta del Infortunio</string>
+    <string name="zero_points">0</string>
+    <string name="zero_time">00:00</string>
+    <string name="change_notification_time">Cambiar hora de la notificación (%s)</string>
+    <string name="set_notification_time">Establecer hora de la notificación</string>
+    <string name="priority_static">Prioridad:</string>
+    <string name="icon_1">Icono 1</string>
+    <string name="icon_2">Icono 2</string>
+    <string name="icon_3">Icono 3</string>
+    <string name="icon_4">Icono 4</string>
+    <string name="achievements_title">Tus Logros</string>
+    <string name="task_name">Nombre de la tarea</string>
+    <string name="task_description">Descripción de la tarea</string>
+    <string name="daily_statistics">Tareas completadas hoy: %.0f</string>
+    <string name="overall_statistics">Total de tareas completadas: %.0f</string>
+    <string name="statistics_view">Estadísticas</string>
+    <string name="all_tasks">Todas las tareas (%1$s):</string>
+    <string name="drawn_tasks">Tareas en curso (%1$s):</string>
+    <string name="new_task_activity">Tarea %1$s</string>
+    <string name="countdown_start">Inicio de la cuenta regresiva.</string>
+    <string name="time_to_spin">¡Es hora de girar la ruleta!</string>
+    <string name="wheel_waiting">La ruleta del infortunio te está esperando.</string>
+    <string name="finish_button">Finalizar</string>
+    <string name="edit_task">Editar tarea</string>
+    <string name="additional_statistics">Estadísticas adicionales</string>
+    <string name="selected_priority">Prioridad seleccionada: %1$s</string>
+    <string name="selected_first_priority">Prioridad seleccionada: 1</string>
+    <string name="all_tasks_statistics">Todas las tareas</string>
+
+    <!-- Contenido -->
+    <string name="static_wheel_description">Entorno estático de la ruleta</string>
+    <string name="medal_icon_description">Icono de medalla</string>
+    <string name="add_button_description">Botón para agregar nueva tarea</string>
+    <string name="delete_button_description">Eliminar</string>
+    <string name="task_icon_description">Icono de tarea</string>
+    <string name="back_arrow_description">Volver</string>
+    <string name="show_hide_description">Mostrar u ocultar contenido</string>
+
+    <!-- Guía -->
+    <string name="guide_1_add_task">Agregar una tarea</string>
+    <string name="guide_2_set_time">Establecer hora de la notificación</string>
+    <string name="guide_3_spin_the_wheel">¡Gira la ruleta después de que termine la cuenta regresiva!</string>
+    <string name="guide_4_task_open_swipe">Presiona para abrir, desliza hacia la izquierda para completar</string>
+    <string name="guide_5_show_statistics">Presiona para ver estadísticas</string>
+    <string name="guide_6_great_work">verde = tareas completadas</string>
+
+    <!-- Por editar -->
+</resources>

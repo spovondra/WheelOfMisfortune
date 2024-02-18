@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.usbapps.misfortunewheel.custom.guide
 
 import android.animation.Animator
@@ -591,7 +589,7 @@ class GuideView internal constructor(context: Context, view: View?) :
         private const val CIRCLE_INDICATOR_SIZE = 6
         private const val LINE_INDICATOR_WIDTH_SIZE = 3
         private const val STROKE_CIRCLE_INDICATOR_SIZE = 3
-        private const val RADIUS_SIZE_TARGET_RECT = 100
+        private const val RADIUS_SIZE_TARGET_RECT = 200
         private const val MARGIN_INDICATOR = 50
         private const val BACKGROUND_COLOR = -0x50000000
         private const val CIRCLE_INNER_INDICATOR_COLOR = -0x333334

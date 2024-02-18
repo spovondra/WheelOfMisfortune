@@ -28,6 +28,9 @@
     <string name="selected_first_priority">Selected Priority: 1</string>
     <string name="all_tasks_statistics">All Tasks</string>
 
+    <!-- Untranslatable -->
+    <string name="notification_channel_name" translatable="false">WheelOfMisfortune_notification_channel</string>
+
     <!-- Content description -->
     <string name="add_button_description">Add Button</string>
     <string name="medal_icon_description">Medal Icon</string>
@@ -37,13 +40,13 @@
     <string name="back_arrow_description">Back</string>
     <string name="show_hide_description">Show or Hide Content</string>
 
-    <string name="notification_channel_name" translatable="false">WheelOfMisfortune_notification_channel</string>
-    <string name="guide_1_add_task">Přidej úlohu</string>
-    <string name="guide_2_set_time">Nastav čas upozornění</string>
-    <string name="guide_3_spin_the_wheel">Po skončení odpočtu zatoč kolečkem!</string>
-    <string name="guide_4_task_open_swipe">Stiskni pro otevření, swipni vlevo pro splnění</string>
-    <string name="guide_5_show_statistics">Stiskni pro zobrazení statistik</string>
-    <string name="guide_6_great_work">zelená = hotové úlohy</string>
+    <!-- GuideView -->
+    <string name="guide_1_add_task">Add a task</string>
+    <string name="guide_2_set_time">Set reminder time</string>
+    <string name="guide_3_spin_the_wheel">Spin the wheel after countdown ends!</string>
+    <string name="guide_4_task_open_swipe">Tap to open, swipe left to complete</string>
+    <string name="guide_5_show_statistics">Tap to view statistics</string>
+    <string name="guide_6_great_work">green = completed tasks</string>
 
     <!-- To Edit -->
 </resources>

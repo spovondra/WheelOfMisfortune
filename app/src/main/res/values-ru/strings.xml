@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Колесо несчастья</string>
+    <string name="zero_points">0</string>
+    <string name="zero_time">00:00</string>
+    <string name="change_notification_time">Изменить время уведомления (%s)</string>
+    <string name="set_notification_time">Установить время уведомления</string>
+    <string name="priority_static">Приоритет:</string>
+    <string name="icon_1">Иконка 1</string>
+    <string name="icon_2">Иконка 2</string>
+    <string name="icon_3">Иконка 3</string>
+    <string name="icon_4">Иконка 4</string>
+    <string name="achievements_title">Ваши достижения</string>
+    <string name="task_name">Название задачи</string>
+    <string name="task_description">Описание задачи</string>
+    <string name="daily_statistics">Выполненные сегодня задачи: %.0f</string>
+    <string name="overall_statistics">Всего выполненных задач: %.0f</string>
+    <string name="statistics_view">Статистика</string>
+    <string name="all_tasks">Все задачи (%1$s):</string>
+    <string name="drawn_tasks">Задачи в процессе (%1$s):</string>
+    <string name="new_task_activity">Задача %1$s</string>
+    <string name="countdown_start">Обратный отсчет начат.</string>
+    <string name="time_to_spin">Время крутить колесо</string>
+    <string name="wheel_waiting">Колесо несчастья ждет вас.</string>
+    <string name="finish_button">Завершить</string>
+    <string name="edit_task">Редактировать задачу</string>
+    <string name="additional_statistics">Дополнительная статистика</string>
+    <string name="selected_priority">Выбранный приоритет: %1$s</string>
+    <string name="selected_first_priority">Выбранный приоритет: 1</string>
+    <string name="all_tasks_statistics">Все задачи</string>
+
+    <!-- Содержание -->
+    <string name="static_wheel_description">Статическая обстановка колеса</string>
+    <string name="medal_icon_description">Иконка медали</string>
+    <string name="add_button_description">Добавить кнопку</string>
+    <string name="delete_button_description">Удалить</string>
+    <string name="task_icon_description">Иконка задачи</string>
+    <string name="back_arrow_description">Назад</string>
+    <string name="show_hide_description">Показать или скрыть содержимое</string>
+
+    <!-- Гид -->
+    <string name="guide_1_add_task">Добавьте задачу</string>
+    <string name="guide_2_set_time">Установите время напоминания</string>
+    <string name="guide_3_spin_the_wheel">Крутите колесо после завершения обратного отсчета!</string>
+    <string name="guide_4_task_open_swipe">Нажмите, чтобы открыть, смахните влево для завершения</string>
+    <string name="guide_5_show_statistics">Нажмите, чтобы просмотреть статистику</string>
+    <string name="guide_6_great_work">Зеленый цвет = выполненные задачи</string>
+
+    <!-- Для редактирования -->
+</resources>

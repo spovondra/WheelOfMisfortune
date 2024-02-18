@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Ruota della Sfortuna</string>
+    <string name="zero_points">0</string>
+    <string name="zero_time">00:00</string>
+    <string name="change_notification_time">Modifica orario notifica (%s)</string>
+    <string name="set_notification_time">Imposta orario notifica</string>
+    <string name="priority_static">Priorità:</string>
+    <string name="icon_1">Icona 1</string>
+    <string name="icon_2">Icona 2</string>
+    <string name="icon_3">Icona 3</string>
+    <string name="icon_4">Icona 4</string>
+    <string name="achievements_title">I tuoi successi</string>
+    <string name="task_name">Nome dell\'attività</string>
+    <string name="task_description">Descrizione dell\'attività</string>
+    <string name="daily_statistics">Attività completate oggi: %.0f</string>
+    <string name="overall_statistics">Totale attività completate: %.0f</string>
+    <string name="statistics_view">Statistiche</string>
+    <string name="all_tasks">Tutte le attività (%1$s):</string>
+    <string name="drawn_tasks">Attività in corso (%1$s):</string>
+    <string name="new_task_activity">Attività %1$s</string>
+    <string name="countdown_start">Avvio del conto alla rovescia.</string>
+    <string name="time_to_spin">Tempo per girare la ruota!</string>
+    <string name="wheel_waiting">La ruota della sfortuna ti sta aspettando.</string>
+    <string name="finish_button">Fine</string>
+    <string name="edit_task">Modifica attività</string>
+    <string name="additional_statistics">Statistiche aggiuntive</string>
+    <string name="selected_priority">Priorità selezionata: %1$s</string>
+    <string name="selected_first_priority">Priorità selezionata: 1</string>
+    <string name="all_tasks_statistics">Tutte le attività</string>
+
+    <!-- Contenuto -->
+    <string name="static_wheel_description">Ambiente statico della ruota</string>
+    <string name="medal_icon_description">Icona della medaglia</string>
+    <string name="add_button_description">Pulsante per aggiungere nuova attività</string>
+    <string name="delete_button_description">Elimina</string>
+    <string name="task_icon_description">Icona dell\'attività</string>
+    <string name="back_arrow_description">Indietro</string>
+    <string name="show_hide_description">Mostra o nascondi contenuto</string>
+
+    <!-- Guida -->
+    <string name="guide_1_add_task">Aggiungi un\'attività</string>
+    <string name="guide_2_set_time">Imposta l\'orario della notifica</string>
+    <string name="guide_3_spin_the_wheel">Gira la ruota quando termina il conto alla rovescia!</string>
+    <string name="guide_4_task_open_swipe">Tocca per aprire, scorri a sinistra per completare</string>
+    <string name="guide_5_show_statistics">Tocca per visualizzare le statistiche</string>
+    <string name="guide_6_great_work">verde = attività completate</string>
+
+    <!-- Da modificare -->
+</resources>

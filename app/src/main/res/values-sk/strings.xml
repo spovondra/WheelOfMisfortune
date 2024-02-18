@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Kolo nešťastia</string>
+    <string name="zero_points">0</string>
+    <string name="zero_time">00:00</string>
+    <string name="change_notification_time">Zmeniť čas upozornenia (%s)</string>
+    <string name="set_notification_time">Nastaviť čas upozornenia</string>
+    <string name="priority_static">Priorita:</string>
+    <string name="icon_1">Ikona 1</string>
+    <string name="icon_2">Ikona 2</string>
+    <string name="icon_3">Ikona 3</string>
+    <string name="icon_4">Ikona 4</string>
+    <string name="achievements_title">Vaše úspechy</string>
+    <string name="task_name">Názov úlohy</string>
+    <string name="task_description">Popis úlohy</string>
+    <string name="daily_statistics">Dnešné splnené úlohy: %.0f</string>
+    <string name="overall_statistics">Celkom splnených úloh: %.0f</string>
+    <string name="statistics_view">Štatistiky</string>
+    <string name="all_tasks">Všetky úlohy (%1$s):</string>
+    <string name="drawn_tasks">Úlohy v priebehu (%1$s):</string>
+    <string name="new_task_activity">Úloha %1$s</string>
+    <string name="countdown_start">Odpočet spustený.</string>
+    <string name="time_to_spin">Čas na točenie s kolesom!</string>
+    <string name="wheel_waiting">Kolo nešťastia na Teba už čaká.</string>
+    <string name="finish_button">Dokončiť</string>
+    <string name="edit_task">Upraviť úlohu</string>
+    <string name="additional_statistics">Ďalšie štatistiky</string>
+    <string name="selected_priority">Vybraná priorita: %1$s</string>
+    <string name="selected_first_priority">Vybraná priorita: 1</string>
+    <string name="all_tasks_statistics">Všetky úlohy</string>
+
+    <!-- Obsah -->
+    <string name="static_wheel_description">Nemenné okolie kolesa</string>
+    <string name="medal_icon_description">Ikona medaily</string>
+    <string name="add_button_description">Tlačidlo na pridanie novej úlohy</string>
+    <string name="delete_button_description">Vymazať</string>
+    <string name="task_icon_description">Ikona úlohy</string>
+    <string name="back_arrow_description">Späť</string>
+    <string name="show_hide_description">Zobraziť alebo skryť obsah</string>
+
+    <!-- Príručka -->
+    <string name="guide_1_add_task">Pridaj úlohu</string>
+    <string name="guide_2_set_time">Nastav čas upozornenia</string>
+    <string name="guide_3_spin_the_wheel">Po skončení odpočtu zatoč kolesom!</string>
+    <string name="guide_4_task_open_swipe">Stlač pre otvorenie, posuň vľavo pre splnenie</string>
+    <string name="guide_5_show_statistics">Stlač pre zobrazenie štatistík</string>
+    <string name="guide_6_great_work">zelená = hotové úlohy</string>
+
+    <!-- Na úpravu -->
+</resources>

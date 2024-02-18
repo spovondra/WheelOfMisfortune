@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Rad des Unglücks</string>
+    <string name="zero_points">0</string>
+    <string name="zero_time">00:00</string>
+    <string name="change_notification_time">Benachrichtigungszeit ändern (%s)</string>
+    <string name="set_notification_time">Benachrichtigungszeit festlegen</string>
+    <string name="priority_static">Priorität:</string>
+    <string name="icon_1">Symbol 1</string>
+    <string name="icon_2">Symbol 2</string>
+    <string name="icon_3">Symbol 3</string>
+    <string name="icon_4">Symbol 4</string>
+    <string name="achievements_title">Deine Erfolge</string>
+    <string name="task_description">Aufgabenbeschreibung</string>
+    <string name="task_name">Aufgabenname</string>
+    <string name="daily_statistics">Heute abgeschlossene Aufgaben: %.0f</string>
+    <string name="overall_statistics">Insgesamt abgeschlossene Aufgaben: %.0f</string>
+    <string name="statistics_view">Statistiken</string>
+    <string name="new_task_activity">Aufgabe %1$s</string>
+    <string name="all_tasks">Alle Aufgaben (%1$s):</string>
+    <string name="drawn_tasks">Aufgaben in Bearbeitung (%1$s):</string>
+    <string name="countdown_start">Countdown gestartet.</string>
+    <string name="time_to_spin">Zeit, das Rad zu drehen</string>
+    <string name="wheel_waiting">Das Rad wartet auf dich.</string>
+    <string name="finish_button">Beenden</string>
+    <string name="edit_task">Aufgabe bearbeiten</string>
+    <string name="additional_statistics">Zusätzliche Statistiken</string>
+    <string name="selected_priority">Ausgewählte Priorität: %1$s</string>
+    <string name="selected_first_priority">Ausgewählte Priorität: 1</string>
+    <string name="all_tasks_statistics">Alle Aufgaben</string>
+
+    <!-- Beschreibung des Inhalts -->
+    <string name="add_button_description">Schaltfläche Hinzufügen</string>
+    <string name="medal_icon_description">Medaillensymbol</string>
+    <string name="static_wheel_description">Statische Umgebung des Rades</string>
+    <string name="delete_button_description">Löschen</string>
+    <string name="task_icon_description">Aufgabensymbol</string>
+    <string name="back_arrow_description">Zurück</string>
+    <string name="show_hide_description">Inhalt anzeigen oder ausblenden</string>
+
+    <!-- GuideView -->
+    <string name="guide_1_add_task">Füge eine Aufgabe hinzu</string>
+    <string name="guide_2_set_time">Setze die Erinnerungszeit</string>
+    <string name="guide_3_spin_the_wheel">Dreh das Rad, wenn der Countdown endet!</string>
+    <string name="guide_4_task_open_swipe">Tippe, um zu öffnen, streiche nach links, um abzuschließen</string>
+    <string name="guide_5_show_statistics">Tippe, um Statistiken anzuzeigen</string>
+    <string name="guide_6_great_work">grün = abgeschlossene Aufgaben</string>
+
+    <!-- Zum Bearbeiten -->
+</resources>

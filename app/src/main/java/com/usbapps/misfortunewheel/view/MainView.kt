@@ -189,7 +189,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 buildGuideView(
                     buttonSetTime,
                     getString(R.string.guide_2_set_time),
-                    (displayHeight * 0.18).toFloat()
+                    (displayHeight * 0.07).toFloat()
                 )
                 editor.putInt(
                     "helpCounter",
@@ -559,6 +559,8 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         wheelStatic.layoutParams.height = wheelStaticSize
 
         // Nastavení velikosti textu pro odpočítávací časovač
+        countdownTimerTextView.height = countdownTimerTextSize*7
+        countdownTimerTextView.width = countdownTimerTextSize*7
         countdownTimerTextView.textSize = countdownTimerTextSize.toFloat()
     }
 

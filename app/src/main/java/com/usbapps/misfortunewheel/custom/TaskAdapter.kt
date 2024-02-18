@@ -1,5 +1,6 @@
 package com.usbapps.misfortunewheel.custom
 
+import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -107,12 +108,17 @@ class TaskAdapter(
         // Získání základní barvy
         val baseColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButton)
 
-        // Nastavení barvy podle stavu úkolu s 20% průhledností
+// Získání aktuálního režimu noci
+        val isNightMode = (holder.itemView.context.resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+
+// Nastavení barvy podle stavu úkolu s odpovídající průhledností
+        val blendAlpha = if (isNightMode) 0.4f else 0.25f
+
         when (task.taskState) {
             TaskState.DONE -> {
-                val doneColor =
-                    ContextCompat.getColor(holder.itemView.context, R.color.colorButtonDone)
-                val blendedColor = ColorUtils.blendARGB(baseColor, doneColor, 0.2f)
+                val doneColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButtonDone)
+                val blendedColor = ColorUtils.blendARGB(baseColor, doneColor, blendAlpha)
                 holder.itemView.background?.colorFilter =
                     BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
                         blendedColor,
@@ -123,7 +129,7 @@ class TaskAdapter(
             TaskState.AVAILABLE -> {
                 val availableColor =
                     ContextCompat.getColor(holder.itemView.context, R.color.colorButtonAvailable)
-                val blendedColor = ColorUtils.blendARGB(baseColor, availableColor, 0.2f)
+                val blendedColor = ColorUtils.blendARGB(baseColor, availableColor, blendAlpha)
                 holder.itemView.background?.colorFilter =
                     BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
                         blendedColor,
@@ -132,9 +138,8 @@ class TaskAdapter(
             }
 
             TaskState.DELETED -> {
-                val deletedColor =
-                    ContextCompat.getColor(holder.itemView.context, R.color.colorButtonDeleted)
-                val blendedColor = ColorUtils.blendARGB(baseColor, deletedColor, 0.2f)
+                val deletedColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButtonDeleted)
+                val blendedColor = ColorUtils.blendARGB(baseColor, deletedColor, blendAlpha)
                 holder.itemView.background?.colorFilter =
                     BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
                         blendedColor,
@@ -143,9 +148,8 @@ class TaskAdapter(
             }
 
             else -> {
-                val inProgressColor =
-                    ContextCompat.getColor(holder.itemView.context, R.color.colorButtonInProgress)
-                val blendedColor = ColorUtils.blendARGB(baseColor, inProgressColor, 0.2f)
+                val inProgressColor = ContextCompat.getColor(holder.itemView.context, R.color.colorButtonInProgress)
+                val blendedColor = ColorUtils.blendARGB(baseColor, inProgressColor, blendAlpha)
                 holder.itemView.background?.colorFilter =
                     BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
                         blendedColor,

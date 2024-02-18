@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">厄运之轮</string>
+    <string name="zero_points">0</string>
+    <string name="zero_time">00:00</string>
+    <string name="change_notification_time">更改通知时间（%s）</string>
+    <string name="set_notification_time">设置通知时间</string>
+    <string name="priority_static">优先级：</string>
+    <string name="icon_1">图标 1</string>
+    <string name="icon_2">图标 2</string>
+    <string name="icon_3">图标 3</string>
+    <string name="icon_4">图标 4</string>
+    <string name="achievements_title">您的成就</string>
+    <string name="task_name">任务名称</string>
+    <string name="task_description">任务描述</string>
+    <string name="daily_statistics">今日已完成任务数：%.0f</string>
+    <string name="overall_statistics">总完成任务数：%.0f</string>
+    <string name="statistics_view">统计信息</string>
+    <string name="all_tasks">所有任务（%1$s）：</string>
+    <string name="drawn_tasks">进行中的任务（%1$s）：</string>
+    <string name="new_task_activity">任务 %1$s</string>
+    <string name="countdown_start">开始倒计时。</string>
+    <string name="time_to_spin">轮盘转动时间</string>
+    <string name="wheel_waiting">轮盘等待着您。</string>
+    <string name="finish_button">完成</string>
+    <string name="edit_task">编辑任务</string>
+    <string name="additional_statistics">附加统计信息</string>
+    <string name="selected_priority">选定优先级：%1$s</string>
+    <string name="selected_first_priority">选定优先级：1</string>
+    <string name="all_tasks_statistics">所有任务</string>
+
+    <!-- 内容 -->
+    <string name="static_wheel_description">轮盘的固定环境</string>
+    <string name="medal_icon_description">奖牌图标</string>
+    <string name="add_button_description">添加按钮</string>
+    <string name="delete_button_description">删除</string>
+    <string name="task_icon_description">任务图标</string>
+    <string name="back_arrow_description">返回</string>
+    <string name="show_hide_description">显示或隐藏内容</string>
+
+    <!-- 指南视图 -->
+    <string name="guide_1_add_task">添加任务</string>
+    <string name="guide_2_set_time">设置提醒时间</string>
+    <string name="guide_3_spin_the_wheel">倒计时结束后转动轮盘！</string>
+    <string name="guide_4_task_open_swipe">点击打开，向左滑动完成</string>
+    <string name="guide_5_show_statistics">点击查看统计信息</string>
+    <string name="guide_6_great_work">绿色 = 已完成的任务</string>
+
+    <!-- 待编辑 -->
+</resources>

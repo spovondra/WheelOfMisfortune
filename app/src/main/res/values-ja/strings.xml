@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">Wheel Of Misfortune</string>
+    <string name="zero_points">0</string>
+    <string name="zero_time">00:00</string>
+    <string name="change_notification_time">通知時間を変更する (%s)</string>
+    <string name="set_notification_time">通知時間を設定する</string>
+    <string name="priority_static">優先度:</string>
+    <string name="icon_1">アイコン1</string>
+    <string name="icon_2">アイコン2</string>
+    <string name="icon_3">アイコン3</string>
+    <string name="icon_4">アイコン4</string>
+    <string name="achievements_title">あなたの実績</string>
+    <string name="task_description">タスクの説明</string>
+    <string name="task_name">タスク名</string>
+    <string name="daily_statistics">本日完了したタスク数: %.0f</string>
+    <string name="overall_statistics">合計完了タスク数: %.0f</string>
+    <string name="statistics_view">統計</string>
+    <string name="new_task_activity">タスク %1$s</string>
+    <string name="all_tasks">すべてのタスク（%1$s）:</string>
+    <string name="drawn_tasks">進行中のタスク（%1$s）:</string>
+    <string name="countdown_start">カウントダウンが開始されました。</string>
+    <string name="time_to_spin">ルーレットを回す時間です</string>
+    <string name="wheel_waiting">ルーレットがあなたを待っています。</string>
+    <string name="finish_button">完了</string>
+    <string name="edit_task">タスクを編集</string>
+    <string name="additional_statistics">追加の統計情報</string>
+    <string name="selected_priority">選択した優先度: %1$s</string>
+    <string name="selected_first_priority">選択した優先度: 1</string>
+    <string name="all_tasks_statistics">すべてのタスク</string>
+
+    <!-- 不翻訳 -->
+    <string name="notification_channel_name" translatable="false">WheelOfMisfortune_notification_channel</string>
+
+    <!-- コンテンツの説明 -->
+    <string name="add_button_description">ボタンを追加する</string>
+    <string name="medal_icon_description">メダルアイコン</string>
+    <string name="static_wheel_description">ルーレットの静的な周囲</string>
+    <string name="delete_button_description">削除</string>
+    <string name="task_icon_description">タスクアイコン</string>
+    <string name="back_arrow_description">戻る</string>
+    <string name="show_hide_description">コンテンツの表示または非表示</string>
+
+    <!-- ガイドビュー -->
+    <string name="guide_1_add_task">タスクを追加</string>
+    <string name="guide_2_set_time">リマインダーの時間を設定</string>
+    <string name="guide_3_spin_the_wheel">カウントダウンが終了した後、ルーレットを回してください！</string>
+    <string name="guide_4_task_open_swipe">タップして開く、左にスワイプして完了</string>
+    <string name="guide_5_show_statistics">タップして統計を表示</string>
+    <string name="guide_6_great_work">緑色 = 完了したタスク</string>
+
+    <!-- 編集対象 -->
+</resources>

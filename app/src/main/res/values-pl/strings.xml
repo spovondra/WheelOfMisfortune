@@ -37,5 +37,13 @@
     <string name="back_arrow_description">Wstecz</string>
     <string name="show_hide_description">Pokaż lub ukryj treść</string>
 
+    <!-- GuideView -->
+    <string name="guide_1_add_task">Dodaj zadanie</string>
+    <string name="guide_2_set_time">Ustaw czas przypomnienia</string>
+    <string name="guide_3_spin_the_wheel">Po zakończeniu odliczania obróć kołem!</string>
+    <string name="guide_4_task_open_swipe">Dotknij, aby otworzyć, przesuń w lewo, aby ukończyć</string>
+    <string name="guide_5_show_statistics">Dotknij, aby wyświetlić statystyki</string>
+    <string name="guide_6_great_work">zielony = zakończone zadania</string>
+
     <!-- To Edit -->
 </resources>

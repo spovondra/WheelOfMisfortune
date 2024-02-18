@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Колесо нещастя</string>
+    <string name="zero_points">0</string>
+    <string name="zero_time">00:00</string>
+    <string name="change_notification_time">Змінити час сповіщення (%s)</string>
+    <string name="set_notification_time">Встановити час сповіщення</string>
+    <string name="priority_static">Пріоритет:</string>
+    <string name="icon_1">Ікона 1</string>
+    <string name="icon_2">Ікона 2</string>
+    <string name="icon_3">Ікона 3</string>
+    <string name="icon_4">Ікона 4</string>
+    <string name="achievements_title">Ваші досягнення</string>
+    <string name="task_name">Назва завдання</string>
+    <string name="task_description">Опис завдання</string>
+    <string name="daily_statistics">Виконані сьогодні завдання: %.0f</string>
+    <string name="overall_statistics">Всього виконаних завдань: %.0f</string>
+    <string name="statistics_view">Статистика</string>
+    <string name="all_tasks">Усі завдання (%1$s):</string>
+    <string name="drawn_tasks">Завдання в процесі (%1$s):</string>
+    <string name="new_task_activity">Завдання %1$s</string>
+    <string name="countdown_start">Розпочато зворотній відлік.</string>
+    <string name="time_to_spin">Час крутити колесо</string>
+    <string name="wheel_waiting">Колесо нещастя чекає на вас.</string>
+    <string name="finish_button">Завершити</string>
+    <string name="edit_task">Редагувати завдання</string>
+    <string name="additional_statistics">Додаткова статистика</string>
+    <string name="selected_priority">Обраний пріоритет: %1$s</string>
+    <string name="selected_first_priority">Обраний пріоритет: 1</string>
+    <string name="all_tasks_statistics">Усі завдання</string>
+
+    <!-- Зміст -->
+    <string name="static_wheel_description">Статичне оточення колеса</string>
+    <string name="medal_icon_description">Ікона медалі</string>
+    <string name="add_button_description">Додати кнопку</string>
+    <string name="delete_button_description">Видалити</string>
+    <string name="task_icon_description">Ікона завдання</string>
+    <string name="back_arrow_description">Назад</string>
+    <string name="show_hide_description">Показати або приховати вміст</string>
+
+    <!-- Покажчик -->
+    <string name="guide_1_add_task">Додайте завдання</string>
+    <string name="guide_2_set_time">Встановіть час нагадування</string>
+    <string name="guide_3_spin_the_wheel">Крутіть колесо після завершення зворотного відліку!</string>
+    <string name="guide_4_task_open_swipe">Натисніть, щоб відкрити, змахніть вліво для завершення</string>
+    <string name="guide_5_show_statistics">Натисніть, щоб переглянути статистику</string>
+    <string name="guide_6_great_work">Зелений колір = виконані завдання</string>
+
+    <!-- Для редагування -->
+</resources>

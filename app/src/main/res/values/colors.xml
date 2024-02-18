@@ -8,7 +8,7 @@
     <color name="colorButtonAvailable">#FFFFFF</color>
     <color name="colorButtonInProgress">#F9661B</color>
     <color name="colorButtonDone">#4CAF50</color>
-    <color name="colorButtonDeleted">#FD0001</color>
+    <color name="colorButtonDeleted">#292929</color>
     <color name="shadowButton">#80FFFFFF</color>
     <color name="iconColor">#F9661B</color>
     <color name="iconInactiveColor">#80F9661B</color>
