@@ -30,6 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/task_name"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="?android:attr/textColorPrimary"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             android:textSize="22sp"

@@ -559,8 +559,8 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         wheelStatic.layoutParams.height = wheelStaticSize
 
         // Nastavení velikosti textu pro odpočítávací časovač
-        countdownTimerTextView.height = countdownTimerTextSize*7
-        countdownTimerTextView.width = countdownTimerTextSize*7
+        countdownTimerTextView.height = countdownTimerTextSize*10
+        countdownTimerTextView.width = countdownTimerTextSize*10
         countdownTimerTextView.textSize = countdownTimerTextSize.toFloat()
     }
 
