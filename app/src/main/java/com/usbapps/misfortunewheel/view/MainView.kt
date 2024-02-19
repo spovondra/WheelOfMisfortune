@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
@@ -534,11 +535,17 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         // Faktor pro zvětšení velikostí o 20%
         val scalingFactor = 1.2f
 
-        // Výpočet rozměrů na základě poměrů a aplikace faktoru zvětšení
+        // Faktor pro zmenšení velikostí na tabletech
+        val tabletScalingFactor = 0.1f
+
+        // Výpočet rozměrů na základě poměrů a aplikace faktoru zvětšení nebo zmenšení
         val circularProgressBarSize = (displayMetrics.widthPixels * 0.807 * scalingFactor).toInt()
         val wheelSpinSize = (displayMetrics.widthPixels * 0.7083 * scalingFactor).toInt()
         val wheelStaticSize = (displayMetrics.widthPixels * 0.9 * scalingFactor).toInt()
         val countdownTimerTextSize = (20 + displayMetrics.widthPixels / 70)
+
+        // Pokud je zařízení tablet, použijte zmenšený faktor
+        val scaleFactor = if (isTablet()) tabletScalingFactor else 1.0f
 
         // Nastavení vypočítaných rozměrů pro jednotlivé pohledy
         val circularProgressBar = findViewById<CircularProgressBar>(R.id.circularProgressBar)
@@ -547,22 +554,29 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         val countdownTimerTextView = findViewById<TextView>(R.id.countdownTimerTextView)
 
         // Nastavení rozměrů pro kruhový průběh
-        circularProgressBar.layoutParams.width = circularProgressBarSize
-        circularProgressBar.layoutParams.height = circularProgressBarSize
+        circularProgressBar.layoutParams.width = (circularProgressBarSize * scaleFactor).toInt()
+        circularProgressBar.layoutParams.height = (circularProgressBarSize * scaleFactor).toInt()
 
         // Nastavení rozměrů pro otáčivý obrázek
-        wheelSpin.layoutParams.width = wheelSpinSize
-        wheelSpin.layoutParams.height = wheelSpinSize
+        wheelSpin.layoutParams.width = (wheelSpinSize * scaleFactor).toInt()
+        wheelSpin.layoutParams.height = (wheelSpinSize * scaleFactor).toInt()
 
         // Nastavení rozměrů pro statický obrázek
-        wheelStatic.layoutParams.width = wheelStaticSize
-        wheelStatic.layoutParams.height = wheelStaticSize
+        wheelStatic.layoutParams.width = (wheelStaticSize * scaleFactor).toInt()
+        wheelStatic.layoutParams.height = (wheelStaticSize * scaleFactor).toInt()
 
         // Nastavení velikosti textu pro odpočítávací časovač
-        countdownTimerTextView.height = countdownTimerTextSize*10
-        countdownTimerTextView.width = countdownTimerTextSize*10
-        countdownTimerTextView.textSize = countdownTimerTextSize.toFloat()
+        countdownTimerTextView.height = (countdownTimerTextSize * scaleFactor * 10).toInt()
+        countdownTimerTextView.width = (countdownTimerTextSize * scaleFactor * 10).toInt()
+        countdownTimerTextView.textSize = (countdownTimerTextSize * scaleFactor)
     }
+
+    // Funkce pro zjištění, zda je zařízení tablet
+    private fun isTablet(): Boolean {
+        val configuration = resources.configuration
+        return configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
+    }
+
 
     // Metoda na zascrollování na vylosovanou úlohu
     override fun scrollToTask() {

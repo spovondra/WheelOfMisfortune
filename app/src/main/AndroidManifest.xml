@@ -18,7 +18,9 @@
         <activity
             android:name="com.usbapps.misfortunewheel.view.MainViewImp"
             android:exported="true"
-            android:theme="@style/Theme.KoleckoNestesti">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.KoleckoNestesti"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -44,5 +46,15 @@
             android:name="com.usbapps.misfortunewheel.custom.BroadcastService"
             android:enabled="true"
             android:exported="false" />
+
+        <receiver
+            android:name=".custom.BroadcastService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.usbapps.misfortunewheel.custom.countdown_broadcast" />
+            </intent-filter>
+        </receiver>
+
+
     </application>
 </manifest>

@@ -39,7 +39,7 @@ class BroadcastService : Service() {
          * Akce vysílání pro odpočet času.
          */
         const val COUNTDOWN_BR: String =
-            "com.misfortuneapp.wheelofmisfortune.custom.countdown_broadcast"
+            " com.usbapps.misfortunewheel.custom.countdown_broadcast"
 
         /**
          * Extra klíč pro předání ID úkolu.
