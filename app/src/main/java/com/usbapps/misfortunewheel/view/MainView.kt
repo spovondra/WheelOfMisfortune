@@ -400,7 +400,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
                 val textNumDrawn: TextView = findViewById(R.id.textNumDrawn)
                 val drawnSpace: View = findViewById(R.id.drawnSpace)
 
-                val tasks = controller.getAllTasks()
+                val tasks = controller.getAllTasks().filter {it.taskState != TaskState.DELETED && it.taskState != TaskState.DONE}
 
                 // Vytvořit nový seznam obsahující pouze úkoly ve stavu IN_PROGRESS
                 val inDrawnTasks = tasks.filter { it.taskState == TaskState.IN_PROGRESS }
@@ -536,7 +536,7 @@ class MainViewImp : ComponentActivity(), MainView, CoroutineScope by MainScope()
         val scalingFactor = 1.2f
 
         // Faktor pro zmenšení velikostí na tabletech
-        val tabletScalingFactor = 0.1f
+        val tabletScalingFactor = 0.7f
 
         // Výpočet rozměrů na základě poměrů a aplikace faktoru zvětšení nebo zmenšení
         val circularProgressBarSize = (displayMetrics.widthPixels * 0.807 * scalingFactor).toInt()

@@ -53,11 +53,6 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:background="@android:color/transparent" />
-
         <LinearLayout
             android:id="@+id/additionalStatistics"
             android:layout_width="match_parent"
@@ -69,30 +64,42 @@
             android:layout_marginEnd="8dp"
             android:visibility="gone">
 
-            <TextView
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingTop="14dp"
-                android:text="@string/additional_statistics"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:paddingBottom="8dp" />
+                android:layout_height="20dp"
+                android:background="@android:color/transparent" />
 
-            <com.usbapps.misfortunewheel.custom.MonthPicker
-                android:id="@+id/monthPicker"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/barChart"
-                android:layout_width="match_parent"
-                android:layout_height="240dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp" />
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/additional_statistics"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <com.usbapps.misfortunewheel.custom.MonthPicker
+                    android:id="@+id/monthPicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp" />
+            </LinearLayout>
 
         </LinearLayout>
 

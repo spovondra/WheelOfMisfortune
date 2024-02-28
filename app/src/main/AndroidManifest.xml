@@ -29,16 +29,19 @@
         <activity
             android:name="com.usbapps.misfortunewheel.view.StatisticsViewImp"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:label="Statistics Activity"
             android:theme="@style/Theme.KoleckoNestestiWindows" />
         <activity
             android:name="com.usbapps.misfortunewheel.view.NewTaskActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:label="Nová úloha"
             android:theme="@style/Theme.KoleckoNestestiWindows" />
         <activity
             android:name="com.usbapps.misfortunewheel.view.TaskDetailsActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:label="Denní úloha"
             android:theme="@style/Theme.KoleckoNestesti" />
 

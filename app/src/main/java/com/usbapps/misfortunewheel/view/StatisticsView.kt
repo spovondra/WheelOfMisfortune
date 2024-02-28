@@ -200,7 +200,9 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         barChart.invalidate()
 
         // Přepnutí viditelnosti dalšího statistického zobrazení
-        toggleAdditionalStatisticsVisibility(entries.isNotEmpty())
+        lifecycleScope.launch {
+            toggleAdditionalStatisticsVisibility(entries.isNotEmpty(), mainController.getAllTasks().isNotEmpty())
+        }
     }
 
     /**
@@ -262,15 +264,20 @@ class StatisticsViewImp : AppCompatActivity(), StatisticsView {
         overallStatisticsText.text = getString(R.string.overall_statistics, overallStatistics)
     }
 
-    private fun toggleAdditionalStatisticsVisibility(hasData: Boolean) {
+    private fun toggleAdditionalStatisticsVisibility(hasEntries: Boolean, hasTasks: Boolean) {
         val additionalStatisticsView = findViewById<View>(R.id.additionalStatistics)
         val showHideButton: LinearLayout = findViewById(R.id.showHideButton)
         val relativeToShowHide: RelativeLayout = findViewById(R.id.relativeToShowHide)
 
-        if (hasData) {
-            additionalStatisticsView.visibility = View.VISIBLE
+        if (hasTasks) {
             showHideButton.visibility = View.VISIBLE
             relativeToShowHide.visibility = View.VISIBLE
+            if (hasEntries) {
+                additionalStatisticsView.visibility = View.VISIBLE
+            }
+            else {
+                additionalStatisticsView.visibility = View.GONE
+            }
         } else {
             additionalStatisticsView.visibility = View.GONE
             showHideButton.visibility = View.GONE
